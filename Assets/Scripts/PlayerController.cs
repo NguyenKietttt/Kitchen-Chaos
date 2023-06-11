@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private const int SPEED = 7;
+    private const int MOVING_SPEED = 7;
+    private const int ROTATION_SPEED = 10;
 
     private void Update()
     {
         Vector2 input = GetInputVector();
-        UpdatePosition(input);
+        Vector3 moveDir = UpdatePosition(input);
+        UpdateRotationByMovingDirection(moveDir);
     }
 
     private static Vector2 GetInputVector()
@@ -37,10 +39,18 @@ public class PlayerController : MonoBehaviour
         return input;
     }
 
-    private void UpdatePosition(Vector2 input)
+    private Vector3 UpdatePosition(Vector2 input)
     {
         input = input.normalized;
+
         var moveDir = new Vector3(input.x, 0, input.y);
-        transform.position += moveDir * (SPEED * Time.deltaTime);
+        transform.position += moveDir * (MOVING_SPEED * Time.deltaTime);
+
+        return moveDir;
+    }
+
+    private void UpdateRotationByMovingDirection(Vector3 moveDir)
+    {
+        transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * ROTATION_SPEED);
     }
 }
