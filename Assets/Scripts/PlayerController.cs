@@ -5,11 +5,25 @@ public class PlayerController : MonoBehaviour
     private const int MOVING_SPEED = 7;
     private const int ROTATION_SPEED = 10;
 
+    [SerializeField] private PlayerAnimator _playerAnimator;
+
     private void Update()
     {
         Vector2 input = GetInputVector();
-        Vector3 moveDir = UpdatePosition(input);
-        UpdateRotationByMovingDirection(moveDir);
+        bool isMoving = IsMoving(input);
+
+        if (isMoving)
+        {
+            Vector3 moveDir = UpdatePosition(input);
+            UpdateRotationByMovingDirection(moveDir);
+        }
+
+        _playerAnimator.UpdateWalkingAnim(isMoving);
+    }
+
+    private static bool IsMoving(Vector2 input)
+    {
+        return input != Vector2.zero;
     }
 
     private static Vector2 GetInputVector()
