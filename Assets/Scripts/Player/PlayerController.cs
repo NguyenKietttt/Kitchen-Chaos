@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public sealed class PlayerController : MonoBehaviour
 {
+    private const float PLAYER_RADIUS = 0.7f;
+    private const int PLAYER_HEIGHT = 2;
     private const int MOVING_SPEED = 7;
     private const int ROTATION_SPEED = 10;
 
@@ -15,11 +17,48 @@ public class PlayerController : MonoBehaviour
 
         if (isMoving)
         {
-            Vector3 moveDir = UpdatePosition(input);
+            var moveDir = new Vector3(input.x, 0, input.y);
+            float moveDistance = MOVING_SPEED * Time.deltaTime;
+
+            if (!CanMove(moveDir, moveDistance))
+            {
+                moveDir = TryMoveHugWall(moveDir, moveDistance);
+            }
+
+            if (CanMove(moveDir, moveDistance))
+            {
+                UpdatePosition(moveDir, moveDistance);
+            }
+
             UpdateRotationByMovingDirection(moveDir);
         }
 
         _playerAnimator.UpdateWalkingAnim(isMoving);
+    }
+
+    private Vector3 TryMoveHugWall(Vector3 moveDir, float moveDistance)
+    {
+        Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
+
+        if (CanMove(moveDirX, moveDistance))
+        {
+            return moveDirX;
+        }
+
+        Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
+
+        if (CanMove(moveDirZ, moveDistance))
+        {
+            return moveDirZ;
+        }
+
+        return Vector3.zero;
+    }
+
+    private bool CanMove(Vector3 moveDir, float moveDistance)
+    {
+        Vector3 curPos = transform.position;
+        return !Physics.CapsuleCast(curPos, curPos + Vector3.up * PLAYER_HEIGHT, PLAYER_RADIUS, moveDir, moveDistance);
     }
 
     private bool IsMoving(Vector2 input)
@@ -27,12 +66,9 @@ public class PlayerController : MonoBehaviour
         return input != Vector2.zero;
     }
 
-    private Vector3 UpdatePosition(Vector2 input)
+    private void UpdatePosition(Vector3 moveDir, float moveDistance)
     {
-        var moveDir = new Vector3(input.x, 0, input.y);
-        transform.position += moveDir * (MOVING_SPEED * Time.deltaTime);
-
-        return moveDir;
+        transform.position += moveDir * moveDistance;
     }
 
     private void UpdateRotationByMovingDirection(Vector3 moveDir)
