@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public sealed class PlayerController : MonoBehaviour
@@ -14,23 +15,28 @@ public sealed class PlayerController : MonoBehaviour
 
     private Vector3 _lastInteractionDir;
 
+    private void OnEnable()
+    {
+        _inputManager.OnInteractAction += OnInteractAction;
+    }
+
     private void Update()
     {
         Vector2 input = _inputManager.GetInputVectorNormalized();
         bool isMoving = IsMoving(input);
 
         HandleMovement(isMoving, input);
-        HandleInteraction(isMoving, input);
     }
 
-    private void HandleInteraction(bool isMoving, Vector2 input)
+    private void OnInteractAction()
     {
+        Vector2 input = _inputManager.GetInputVectorNormalized();
         Vector3 curPos = transform.position;
 
         var playerPos = new Vector3(curPos.x, PLAYER_HEIGHT * 0.5f, curPos.z);
         var moveDir = new Vector3(input.x, 0, input.y);
 
-        if (isMoving)
+        if (moveDir != Vector3.zero)
         {
             _lastInteractionDir = moveDir;
         }
