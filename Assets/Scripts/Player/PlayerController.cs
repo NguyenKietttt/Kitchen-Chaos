@@ -6,15 +6,65 @@ public sealed class PlayerController : MonoBehaviour
     private const int PLAYER_HEIGHT = 2;
     private const int MOVING_SPEED = 7;
     private const int ROTATION_SPEED = 10;
+    private const int INTERACTION_DISTANCE = 2;
 
-    [SerializeField] private InputManager _inputManager;
     [SerializeField] private PlayerAnimator _playerAnimator;
+    [SerializeField] private LayerMask _counterLayerMask;
+
+    private InputManager _inputMgr;
+    private EventManager _eventMgr;
+    private Vector3 _lastInteractionDir;
+    
+    private void Start()
+    {
+        _inputMgr = Bootstrap.Instance.InputMgr;
+        _eventMgr = Bootstrap.Instance.EventMgr;
+        
+       _eventMgr.OnInteractAction += OnInteractAction;
+    }
 
     private void Update()
     {
-        Vector2 input = _inputManager.GetInputVectorNormalized();
+        Vector2 input = _inputMgr.GetInputVectorNormalized();
         bool isMoving = IsMoving(input);
 
+        HandleMovement(isMoving, input);
+    }
+    
+    private void OnDestroy()
+    {
+       _eventMgr.OnInteractAction -= OnInteractAction;
+    }
+
+    private void OnInteractAction()
+    {
+        Vector2 input = _inputMgr.GetInputVectorNormalized();
+        Vector3 curPos = transform.position;
+
+        var playerPos = new Vector3(curPos.x, PLAYER_HEIGHT * 0.5f, curPos.z);
+        var moveDir = new Vector3(input.x, 0, input.y);
+
+        if (moveDir != Vector3.zero)
+        {
+            _lastInteractionDir = moveDir;
+        }
+
+        if (Physics.Raycast(playerPos, _lastInteractionDir, out RaycastHit hit, INTERACTION_DISTANCE,
+                _counterLayerMask))
+        {
+            if (hit.transform.TryGetComponent(out ClearCounter clearCounter))
+            {
+                _eventMgr.OnSelectCounter?.Invoke(clearCounter);
+            }
+        }
+        else
+        {
+            _eventMgr.OnSelectCounter?.Invoke(null);
+        }
+    }
+
+    private void HandleMovement(bool isMoving, Vector2 input)
+    {
         if (isMoving)
         {
             var moveDir = new Vector3(input.x, 0, input.y);
