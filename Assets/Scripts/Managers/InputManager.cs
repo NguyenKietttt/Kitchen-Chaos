@@ -1,24 +1,17 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public sealed class InputManager : MonoBehaviour
+public sealed class InputManager
 {
-    public Action OnInteractAction;
-
     private PlayerInputAction _playerInputAction;
 
-    private void Awake()
+    public InputManager()
     {
         InitPlayerInputAction();
-    }
-
-    private void OnEnable()
-    {
         SubscribeEvents();
     }
 
-    private void OnDisable()
+    ~InputManager()
     {
         UnsubscribeEvents();
     }
@@ -46,6 +39,6 @@ public sealed class InputManager : MonoBehaviour
 
     private void OnInteractPerformed(InputAction.CallbackContext obj)
     {
-        OnInteractAction?.Invoke();
+        Bootstrap.Instance.EventMgr.OnInteractAction?.Invoke();
     }
 }
