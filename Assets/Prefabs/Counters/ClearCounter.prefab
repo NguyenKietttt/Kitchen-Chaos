@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c0e404b87574c4192bd4cecae1cef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _kitchenObjectSO: {fileID: 11400000, guid: fd7825f3a2dbb5048a053c46709593e6, type: 2}
+  _kitchenObjSO: {fileID: 11400000, guid: fd7825f3a2dbb5048a053c46709593e6, type: 2}
   _selectedVisual: {fileID: 663168043433383404}
   _spawnPoint: {fileID: 4892657604223497121}
 --- !u!1001 &4157680311464321129
