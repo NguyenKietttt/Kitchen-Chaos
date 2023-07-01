@@ -14,7 +14,7 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 
     private InputManager _inputMgr;
     private EventManager _eventMgr;
-    private ClearCounter _selectedCounter;
+    private BaseCounter _selectedCounter;
     private KitchenObject _kitchenObj;
     private Vector3 _lastInteractionDir;
 
@@ -54,11 +54,11 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 
         if (Physics.Raycast(playerPos, _lastInteractionDir, out RaycastHit hit, INTERACTION_DISTANCE, _counterLayerMask))
         {
-            if (hit.transform.TryGetComponent(out ClearCounter clearCounter))
+            if (hit.transform.TryGetComponent(out BaseCounter baseCounter))
             {
-                if (_selectedCounter == null || _selectedCounter != clearCounter)
+                if (_selectedCounter == null || _selectedCounter != baseCounter)
                 {
-                    _selectedCounter = clearCounter;
+                    _selectedCounter = baseCounter;
                     _eventMgr.OnSelectCounter?.Invoke(_selectedCounter);
                 }
             }
