@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public sealed class PlayerController : MonoBehaviour
+public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 {
     private const float PLAYER_RADIUS = 0.7f;
     private const int PLAYER_HEIGHT = 2;
@@ -10,10 +10,12 @@ public sealed class PlayerController : MonoBehaviour
 
     [SerializeField] private PlayerAnimator _playerAnimator;
     [SerializeField] private LayerMask _counterLayerMask;
+    [SerializeField] private Transform _kitchenObjHoldPoint;
 
     private InputManager _inputMgr;
     private EventManager _eventMgr;
     private ClearCounter _selectedCounter;
+    private KitchenObject _kitchenObj;
     private Vector3 _lastInteractionDir;
 
     private void Start()
@@ -78,7 +80,7 @@ public sealed class PlayerController : MonoBehaviour
     {
         if (_selectedCounter != null)
         {
-           _selectedCounter.OnInteract();
+           _selectedCounter.OnInteract(this);
         }
     }
 
@@ -143,5 +145,25 @@ public sealed class PlayerController : MonoBehaviour
     private void UpdateRotationByMovingDirection(Vector3 moveDir)
     {
         transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * ROTATION_SPEED);
+    }
+
+    public Transform GetSpawnPoint()
+    {
+        return _kitchenObjHoldPoint;
+    }
+
+    public KitchenObject GetKitchenObj()
+    {
+        return _kitchenObj;
+    }
+
+    public void SetKitchenObj(KitchenObject newKitchenObj)
+    {
+        _kitchenObj = newKitchenObj;
+    }
+
+    public bool HasKitchenObj()
+    {
+        return _kitchenObj != null;
     }
 }

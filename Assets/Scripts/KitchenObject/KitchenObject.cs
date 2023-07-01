@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public sealed class KitchenObject : MonoBehaviour
@@ -6,7 +5,7 @@ public sealed class KitchenObject : MonoBehaviour
    [SerializeField] private KitchenObjectSO _kitchenObjectS0;
 
    private Transform _transform;
-   private ClearCounter _curClearCounter;
+   private IKitchenObjParent _curKitchenObjParent;
 
    private void Awake()
    {
@@ -18,21 +17,27 @@ public sealed class KitchenObject : MonoBehaviour
       return _kitchenObjectS0;
    }
 
-   public ClearCounter GetCurClearCounter()
+   public IKitchenObjParent GetKitchenObjParent()
    {
-      return _curClearCounter;
+      return _curKitchenObjParent;
    }
 
-   public void SetCurClearCounter(ClearCounter newClearCounter)
+   public void SetCurKitchenObjParent(IKitchenObjParent newKitchenObjParent)
    {
-      if (_curClearCounter != null)
+      if (_curKitchenObjParent != null)
       {
-         _curClearCounter.SetKitchenObj(null);
+         _curKitchenObjParent.SetKitchenObj(null);
       }
 
-      _curClearCounter = newClearCounter;
-      _curClearCounter.SetKitchenObj(this);
-      _transform.parent = newClearCounter.GetCounterSpawnPoint();
+      _curKitchenObjParent = newKitchenObjParent;
+
+      if (_curKitchenObjParent.HasKitchenObj())
+      {
+         Debug.Log("IKitchenObjParent already has a KitchenObj!");
+      }
+
+      _curKitchenObjParent.SetKitchenObj(this);
+      _transform.parent = newKitchenObjParent.GetSpawnPoint();
       _transform.localPosition = Vector3.zero;
    }
 }

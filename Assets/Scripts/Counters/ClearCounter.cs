@@ -1,8 +1,6 @@
-using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public sealed class ClearCounter : MonoBehaviour
+public sealed class ClearCounter : MonoBehaviour, IKitchenObjParent
 {
     [Header("Prefabs")]
     [SerializeField] private KitchenObjectSO _kitchenObjSO;
@@ -10,8 +8,6 @@ public sealed class ClearCounter : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject _selectedVisual;
     [SerializeField] private Transform _spawnPoint;
-    [SerializeField] private ClearCounter _secondClearCounter;
-    [SerializeField] private bool _isTesting;
 
     private KitchenObject _kitchenObj;
 
@@ -20,32 +16,25 @@ public sealed class ClearCounter : MonoBehaviour
         Bootstrap.Instance.EventMgr.OnSelectCounter += OnSelected;
     }
 
-    private void Update()
-    {
-        if (_isTesting && Input.GetKeyDown(KeyCode.T))
-        {
-            if (_kitchenObj != null)
-            {
-                _kitchenObj.SetCurClearCounter(_secondClearCounter);
-            }
-        }
-    }
-
     private void OnDisable()
     {
         Bootstrap.Instance.EventMgr.OnSelectCounter -= OnSelected;
     }
 
-    public void OnInteract()
+    public void OnInteract(PlayerController playerController)
     {
         if (_kitchenObj == null)
         {
             _kitchenObj = Instantiate(_kitchenObjSO.Prefab, parent: _spawnPoint).GetComponent<KitchenObject>();
-            _kitchenObj.SetCurClearCounter(this);
+            _kitchenObj.SetCurKitchenObjParent(this);
+        }
+        else
+        {
+            _kitchenObj.SetCurKitchenObjParent(playerController);
         }
     }
 
-    public Transform GetCounterSpawnPoint()
+    public Transform GetSpawnPoint()
     {
         return _spawnPoint;
     }
