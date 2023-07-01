@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public sealed class PlayerController : MonoBehaviour
+public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 {
     private const float PLAYER_RADIUS = 0.7f;
     private const int PLAYER_HEIGHT = 2;
@@ -10,16 +10,19 @@ public sealed class PlayerController : MonoBehaviour
 
     [SerializeField] private PlayerAnimator _playerAnimator;
     [SerializeField] private LayerMask _counterLayerMask;
+    [SerializeField] private Transform _kitchenObjHoldPoint;
 
     private InputManager _inputMgr;
     private EventManager _eventMgr;
+    private ClearCounter _selectedCounter;
+    private KitchenObject _kitchenObj;
     private Vector3 _lastInteractionDir;
-    
+
     private void Start()
     {
         _inputMgr = Bootstrap.Instance.InputMgr;
         _eventMgr = Bootstrap.Instance.EventMgr;
-        
+
        _eventMgr.OnInteractAction += OnInteractAction;
     }
 
@@ -29,16 +32,16 @@ public sealed class PlayerController : MonoBehaviour
         bool isMoving = IsMoving(input);
 
         HandleMovement(isMoving, input);
+        HandleCounterSelection(input);
     }
-    
+
     private void OnDestroy()
     {
        _eventMgr.OnInteractAction -= OnInteractAction;
     }
 
-    private void OnInteractAction()
+    private void HandleCounterSelection(Vector2 input)
     {
-        Vector2 input = _inputMgr.GetInputVectorNormalized();
         Vector3 curPos = transform.position;
 
         var playerPos = new Vector3(curPos.x, PLAYER_HEIGHT * 0.5f, curPos.z);
@@ -49,17 +52,35 @@ public sealed class PlayerController : MonoBehaviour
             _lastInteractionDir = moveDir;
         }
 
-        if (Physics.Raycast(playerPos, _lastInteractionDir, out RaycastHit hit, INTERACTION_DISTANCE,
-                _counterLayerMask))
+        if (Physics.Raycast(playerPos, _lastInteractionDir, out RaycastHit hit, INTERACTION_DISTANCE, _counterLayerMask))
         {
             if (hit.transform.TryGetComponent(out ClearCounter clearCounter))
             {
-                _eventMgr.OnSelectCounter?.Invoke(clearCounter);
+                if (_selectedCounter == null || _selectedCounter != clearCounter)
+                {
+                    _selectedCounter = clearCounter;
+                    _eventMgr.OnSelectCounter?.Invoke(_selectedCounter);
+                }
+            }
+            else
+            {
+                _selectedCounter = null;
+                _eventMgr.OnSelectCounter?.Invoke(null);
             }
         }
         else
         {
+            _selectedCounter = null;
             _eventMgr.OnSelectCounter?.Invoke(null);
+        }
+
+    }
+
+    private void OnInteractAction()
+    {
+        if (_selectedCounter != null)
+        {
+           _selectedCounter.OnInteract(this);
         }
     }
 
@@ -124,5 +145,25 @@ public sealed class PlayerController : MonoBehaviour
     private void UpdateRotationByMovingDirection(Vector3 moveDir)
     {
         transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * ROTATION_SPEED);
+    }
+
+    public Transform GetSpawnPoint()
+    {
+        return _kitchenObjHoldPoint;
+    }
+
+    public KitchenObject GetKitchenObj()
+    {
+        return _kitchenObj;
+    }
+
+    public void SetKitchenObj(KitchenObject newKitchenObj)
+    {
+        _kitchenObj = newKitchenObj;
+    }
+
+    public bool HasKitchenObj()
+    {
+        return _kitchenObj != null;
     }
 }

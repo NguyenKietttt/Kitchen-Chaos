@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public sealed class Bootstrap : MonoBehaviour
 {
@@ -7,18 +9,16 @@ public sealed class Bootstrap : MonoBehaviour
    public EventManager EventMgr { get; private set; }
    public InputManager InputMgr { get; private set; }
 
-   [Header("Objects")]
-   [SerializeField] private GameObject[] _sceneObjects;
-
    private void Awake()
    {
       if (Instance == null)
       {
          Instance = this;
+         DontDestroyOnLoad(this);
       }
-      
+
       InitManagers();
-      ActiveSceneObjects();
+      StartCoroutine(LoadGameSceneAsync());
    }
 
    private void InitManagers()
@@ -26,12 +26,17 @@ public sealed class Bootstrap : MonoBehaviour
       EventMgr = new EventManager();
       InputMgr = new InputManager();
    }
-
-   private void ActiveSceneObjects()
+   private IEnumerator LoadGameSceneAsync()
    {
-      foreach (GameObject sceneObj in _sceneObjects)
-      {
-         sceneObj.SetActive(true);
-      }
+      yield return new WaitForSeconds(0.5f);
+
+      AsyncOperation loadOp = SceneManager.LoadSceneAsync(1);
+      loadOp.allowSceneActivation = false;
+
+      Debug.Log("Loading completed! Transitioning");
+
+      yield return new WaitForSeconds(0.5f);
+
+      loadOp.allowSceneActivation = true;
    }
 }
