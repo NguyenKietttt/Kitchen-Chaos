@@ -2,6 +2,9 @@ using UnityEngine;
 
 public sealed class ContainerCounter : BaseCounter
 {
+    [Header("SO")]
+    [SerializeField] private KitchenObjectSO _kitchenObjSO;
+
     [Header("Child Internal Ref")]
     [SerializeField] private Animator _animator;
 
@@ -15,9 +18,7 @@ public sealed class ContainerCounter : BaseCounter
         }
 
         TriggerAnimationClid();
-
-        KitchenObject kitchenObj = Instantiate(_kitchenObjSO.Prefab).GetComponent<KitchenObject>();
-        kitchenObj.SetCurKitchenObjParent(playerController);
+        KitchenObject.SpawnKitchenObj(_kitchenObjSO, playerController);
     }
 
     private void TriggerAnimationClid()

@@ -30,15 +30,22 @@ public sealed class InputManager
     private void SubscribeEvents()
     {
         _playerInputAction.Player.Interact.performed += OnInteractPerformed;
+        _playerInputAction.Player.CuttingInteract.performed += OnCuttingInteractPerformed;
     }
 
     private void UnsubscribeEvents()
     {
         _playerInputAction.Player.Interact.performed -= OnInteractPerformed;
+        _playerInputAction.Player.CuttingInteract.performed -= OnCuttingInteractPerformed;
     }
 
     private void OnInteractPerformed(InputAction.CallbackContext obj)
     {
         Bootstrap.Instance.EventMgr.OnInteractAction?.Invoke();
+    }
+
+    private void OnCuttingInteractPerformed(InputAction.CallbackContext obj)
+    {
+        Bootstrap.Instance.EventMgr.OnCuttingInteractAction?.Invoke();
     }
 }

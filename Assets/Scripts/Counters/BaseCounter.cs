@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class BaseCounter : MonoBehaviour, IKitchenObjParent
 {
-    [Header("SO")]
-    [SerializeField] protected KitchenObjectSO _kitchenObjSO;
-
     [Header("Internal Ref")]
     [SerializeField] private GameObject _selectedVisual;
     [SerializeField] private Transform _spawnPoint;
@@ -22,6 +19,8 @@ public class BaseCounter : MonoBehaviour, IKitchenObjParent
     }
 
     public virtual void OnInteract(PlayerController playerController) { }
+
+    public virtual void OnCuttingInteract(PlayerController playerController) { }
 
     public Transform GetSpawnPoint()
     {
@@ -41,6 +40,11 @@ public class BaseCounter : MonoBehaviour, IKitchenObjParent
     public bool HasKitchenObj()
     {
         return _kitchenObj != null;
+    }
+
+    public void ClearKitchenObj()
+    {
+        _kitchenObj = null;
     }
 
     private void OnSelected(BaseCounter selectedCounter)

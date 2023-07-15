@@ -9,4 +9,6 @@ public interface IKitchenObjParent
     public void SetKitchenObj(KitchenObject newKitchenObj);
 
     public bool HasKitchenObj();
+
+    public void ClearKitchenObj();
 }
