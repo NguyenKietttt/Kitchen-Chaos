@@ -71,11 +71,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4589716710238282922, guid: 9a9137fa2b035d34e881701d2c178192,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6320346469296181351}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a9137fa2b035d34e881701d2c178192, type: 3}
 --- !u!4 &3506690648747263650 stripped
 Transform:
@@ -83,25 +79,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1088665594153050633}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3506690648747263651 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4589716710238282922, guid: 9a9137fa2b035d34e881701d2c178192,
-    type: 3}
-  m_PrefabInstance: {fileID: 1088665594153050633}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6320346469296181351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3506690648747263651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eeba2defe2856e84db1345489d85809a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 6364301749727637964}
 --- !u!95 &6364301749727637964 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6289625630049244101, guid: 9a9137fa2b035d34e881701d2c178192,
@@ -264,7 +241,7 @@ PrefabInstance:
     - target: {fileID: 2539354700477630772, guid: bf512aba332c134459aeaf874ad26206,
         type: 3}
       propertyPath: m_Name
-      value: ContainerCounter
+      value: _BaseContainerCounter
       objectReference: {fileID: 0}
     - target: {fileID: 4697021595426686914, guid: bf512aba332c134459aeaf874ad26206,
         type: 3}
@@ -359,6 +336,7 @@ MonoBehaviour:
   _kitchenObjSO: {fileID: 11400000, guid: fd7825f3a2dbb5048a053c46709593e6, type: 2}
   _selectedVisual: {fileID: 2202959312823447366}
   _spawnPoint: {fileID: 7688849579243335949}
+  _animator: {fileID: 6364301749727637964}
 --- !u!4 &7529277085300295022 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4697021595426686914, guid: bf512aba332c134459aeaf874ad26206,

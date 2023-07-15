@@ -2,7 +2,6 @@ using System;
 
 public sealed class EventManager
 {
-   public Action OnInteractAction;
-   public Action<BaseCounter> OnSelectCounter;
-   public Action OnPlayerGrabObj;
+    public Action OnInteractAction;
+    public Action<BaseCounter> OnSelectCounter;
 }

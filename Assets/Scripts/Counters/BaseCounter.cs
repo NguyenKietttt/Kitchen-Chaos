@@ -5,7 +5,7 @@ public class BaseCounter : MonoBehaviour, IKitchenObjParent
     [Header("SO")]
     [SerializeField] protected KitchenObjectSO _kitchenObjSO;
 
-    [Header("References")]
+    [Header("Internal Ref")]
     [SerializeField] private GameObject _selectedVisual;
     [SerializeField] private Transform _spawnPoint;
 
