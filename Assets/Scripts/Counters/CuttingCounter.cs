@@ -3,7 +3,7 @@ using UnityEngine;
 public sealed class CuttingCounter : BaseCounter
 {
     [Header("SO")]
-    [SerializeField] private KitchenObjectSO _cutKitchenObjSO;
+    [SerializeField] private CuttingReceiptSO[] _listCuttingReceiptSO;
 
     public override void OnInteract(PlayerController playerController)
     {
@@ -16,7 +16,7 @@ public sealed class CuttingCounter : BaseCounter
         }
         else
         {
-            if (playerController.HasKitchenObj())
+            if (playerController.HasKitchenObj() && HasReceiptWithInput(playerController.GetKitchenObj().GetKitchenObjectSO()))
             {
                 playerController.GetKitchenObj().SetCurKitchenObjParent(this);
             }
@@ -25,10 +25,38 @@ public sealed class CuttingCounter : BaseCounter
 
     public override void OnCuttingInteract(PlayerController playerController)
     {
-        if (HasKitchenObj())
+        if (HasKitchenObj() && HasReceiptWithInput(GetKitchenObj().GetKitchenObjectSO()))
         {
+            KitchenObjectSO outputKitchenObjSO = GetOutputForInput(GetKitchenObj().GetKitchenObjectSO());
+
             GetKitchenObj().DestroySelf();
-            KitchenObject.SpawnKitchenObj(_cutKitchenObjSO, this);
+            KitchenObject.SpawnKitchenObj(outputKitchenObjSO, this);
         }
+    }
+
+    private bool HasReceiptWithInput(KitchenObjectSO inputKitchenObjSO)
+    {
+        foreach (CuttingReceiptSO cuttingReceiptSO in _listCuttingReceiptSO)
+        {
+            if (cuttingReceiptSO.Input == inputKitchenObjSO)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private KitchenObjectSO GetOutputForInput(KitchenObjectSO inputKitchenObjSO)
+    {
+        foreach (CuttingReceiptSO cuttingReceiptSO in _listCuttingReceiptSO)
+        {
+            if (cuttingReceiptSO.Input == inputKitchenObjSO)
+            {
+                return cuttingReceiptSO.Output;
+            }
+        }
+
+        return null;
     }
 }
