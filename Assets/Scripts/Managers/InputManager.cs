@@ -11,7 +11,7 @@ public sealed class InputManager
         SubscribeEvents();
     }
 
-    ~InputManager()
+    public void OnDestroy()
     {
         UnsubscribeEvents();
     }

@@ -21,6 +21,11 @@ public sealed class Bootstrap : MonoBehaviour
         StartCoroutine(LoadGameSceneAsync());
     }
 
+    private void OnDestroy()
+    {
+        InputMgr.OnDestroy();
+    }
+
     private void InitManagers()
     {
         EventMgr = new EventManager();
