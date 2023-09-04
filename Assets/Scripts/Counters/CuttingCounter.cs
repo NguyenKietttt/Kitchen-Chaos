@@ -18,7 +18,9 @@ public sealed class CuttingCounter : BaseCounter
         {
             if (!playerController.HasKitchenObj())
             {
-                UpdateCounterProgress(0);
+                _curCuttingProcess = 0;
+                Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(0, gameObject.GetInstanceID());
+
                 GetKitchenObj().SetCurKitchenObjParent(playerController);
             }
         }

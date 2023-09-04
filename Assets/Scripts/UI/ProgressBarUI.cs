@@ -28,7 +28,15 @@ public sealed class ProgressBarUI : MonoBehaviour
         }
 
         _progressImg.fillAmount = progressNormalized;
-        ToggleProgressBar(progressNormalized <= 0 || progressNormalized >= 1);
+
+        if (progressNormalized <= 0 || progressNormalized >= 1)
+        {
+            ToggleProgressBar(false);
+        }
+        else
+        {
+            ToggleProgressBar(true);
+        }
     }
 
     private void ToggleProgressBar(bool isEnabled)
