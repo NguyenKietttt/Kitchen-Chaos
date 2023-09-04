@@ -4,39 +4,45 @@ using UnityEngine.SceneManagement;
 
 public sealed class Bootstrap : MonoBehaviour
 {
-   public static Bootstrap Instance { get; private set; }
+    public static Bootstrap Instance { get; private set; }
 
-   public EventManager EventMgr { get; private set; }
-   public InputManager InputMgr { get; private set; }
+    public EventManager EventMgr { get; private set; }
+    public InputManager InputMgr { get; private set; }
 
-   private void Awake()
-   {
-      if (Instance == null)
-      {
-         Instance = this;
-         DontDestroyOnLoad(this);
-      }
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this);
+        }
 
-      InitManagers();
-      StartCoroutine(LoadGameSceneAsync());
-   }
+        InitManagers();
+        StartCoroutine(LoadGameSceneAsync());
+    }
 
-   private void InitManagers()
-   {
-      EventMgr = new EventManager();
-      InputMgr = new InputManager();
-   }
-   private IEnumerator LoadGameSceneAsync()
-   {
-      yield return new WaitForSeconds(0.5f);
+    private void OnDestroy()
+    {
+        InputMgr.OnDestroy();
+    }
 
-      AsyncOperation loadOp = SceneManager.LoadSceneAsync(1);
-      loadOp.allowSceneActivation = false;
+    private void InitManagers()
+    {
+        EventMgr = new EventManager();
+        InputMgr = new InputManager();
+    }
 
-      Debug.Log("Loading completed! Transitioning");
+    private IEnumerator LoadGameSceneAsync()
+    {
+        yield return new WaitForSeconds(0.5f);
 
-      yield return new WaitForSeconds(0.5f);
+        AsyncOperation loadOp = SceneManager.LoadSceneAsync(1);
+        loadOp.allowSceneActivation = false;
 
-      loadOp.allowSceneActivation = true;
-   }
+        Debug.Log("Loading completed! Transitioning");
+
+        yield return new WaitForSeconds(0.5f);
+
+        loadOp.allowSceneActivation = true;
+    }
 }
