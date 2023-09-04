@@ -4,13 +4,7 @@ public sealed class KitchenObject : MonoBehaviour
 {
     [SerializeField] private KitchenObjectSO _kitchenObjectS0;
 
-    private Transform _transform;
     private IKitchenObjParent _curKitchenObjParent;
-
-    private void Awake()
-    {
-        _transform = transform;
-    }
 
     public static KitchenObject SpawnKitchenObj(KitchenObjectSO kitchenObjectSO, IKitchenObjParent kitchenObjParent)
     {
@@ -26,18 +20,9 @@ public sealed class KitchenObject : MonoBehaviour
         return _kitchenObjectS0;
     }
 
-    public IKitchenObjParent GetKitchenObjParent()
-    {
-        return _curKitchenObjParent;
-    }
-
     public void SetCurKitchenObjParent(IKitchenObjParent newKitchenObjParent)
     {
-        if (_curKitchenObjParent != null)
-        {
-            _curKitchenObjParent.SetKitchenObj(null);
-        }
-
+        _curKitchenObjParent?.SetKitchenObj(null);
         _curKitchenObjParent = newKitchenObjParent;
 
         if (_curKitchenObjParent.HasKitchenObj())
@@ -46,8 +31,8 @@ public sealed class KitchenObject : MonoBehaviour
         }
 
         _curKitchenObjParent.SetKitchenObj(this);
-        _transform.parent = newKitchenObjParent.GetSpawnPoint();
-        _transform.localPosition = Vector3.zero;
+        transform.parent = newKitchenObjParent.GetSpawnPoint();
+        transform.localPosition = Vector3.zero;
     }
 
     public void DestroySelf()

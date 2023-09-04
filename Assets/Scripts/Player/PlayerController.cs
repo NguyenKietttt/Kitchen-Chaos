@@ -8,9 +8,12 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
     private const int ROTATION_SPEED = 10;
     private const int INTERACTION_DISTANCE = 2;
 
+    [Header("Internal Ref")]
     [SerializeField] private PlayerAnimator _playerAnimator;
-    [SerializeField] private LayerMask _counterLayerMask;
     [SerializeField] private Transform _kitchenObjHoldPoint;
+
+    [Header("Property")]
+    [SerializeField] private LayerMask _counterLayerMask;
 
     private BaseCounter _selectedCounter;
     private KitchenObject _kitchenObj;
@@ -18,8 +21,8 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 
     private void Start()
     {
-        Bootstrap.Instance.EventMgr.OnInteractAction += OnInteractAction;
-        Bootstrap.Instance.EventMgr.OnCuttingInteractAction += OnCuttingInteractAction;
+        Bootstrap.Instance.EventMgr.Interact += OnInteractAction;
+        Bootstrap.Instance.EventMgr.CuttingInteract += OnCuttingInteractAction;
     }
 
     private void Update()
@@ -33,16 +36,15 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 
     private void OnDestroy()
     {
-        Bootstrap.Instance.EventMgr.OnInteractAction -= OnInteractAction;
-        Bootstrap.Instance.EventMgr.OnCuttingInteractAction -= OnCuttingInteractAction;
+        Bootstrap.Instance.EventMgr.Interact -= OnInteractAction;
+        Bootstrap.Instance.EventMgr.CuttingInteract -= OnCuttingInteractAction;
     }
 
     private void HandleCounterSelection(Vector2 input)
     {
         Vector3 curPos = transform.position;
-
-        var playerPos = new Vector3(curPos.x, PLAYER_HEIGHT * 0.5f, curPos.z);
-        var moveDir = new Vector3(input.x, 0, input.y);
+        Vector3 playerPos = new(curPos.x, PLAYER_HEIGHT * 0.5f, curPos.z);
+        Vector3 moveDir = new(input.x, 0, input.y);
 
         if (moveDir != Vector3.zero)
         {
@@ -56,19 +58,19 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
                 if (_selectedCounter == null || _selectedCounter != baseCounter)
                 {
                     _selectedCounter = baseCounter;
-                    Bootstrap.Instance.EventMgr.OnSelectCounter?.Invoke(_selectedCounter);
+                    Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(_selectedCounter);
                 }
             }
             else
             {
                 _selectedCounter = null;
-                Bootstrap.Instance.EventMgr.OnSelectCounter?.Invoke(null);
+                Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(null);
             }
         }
         else
         {
             _selectedCounter = null;
-            Bootstrap.Instance.EventMgr.OnSelectCounter?.Invoke(null);
+            Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(null);
         }
     }
 

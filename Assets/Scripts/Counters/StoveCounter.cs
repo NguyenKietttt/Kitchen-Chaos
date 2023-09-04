@@ -2,11 +2,11 @@ using UnityEngine;
 
 public sealed class StoveCounter : BaseCounter
 {
+    public enum State { Idle, Frying, Fried, Burned }
+
     [Header("Child Asset Ref")]
     [SerializeField] private FryingReceiptSO[] _listFryingReceiptSO;
     [SerializeField] private BurningReceiptSO[] _listBurningReceiptSO;
-
-    public enum State { Idle, Frying, Fried, Burned }
 
     private FryingReceiptSO _fryingReceiptSO;
     private BurningReceiptSO _burningReceiptSO;
@@ -30,13 +30,11 @@ public sealed class StoveCounter : BaseCounter
 
         switch (_curState)
         {
-            case State.Idle:
-                break;
             case State.Frying:
                 _fryingTimer += Time.deltaTime;
 
                 progressNormalized = _fryingTimer / _fryingReceiptSO.FryingTimeMax;
-                Bootstrap.Instance.EventMgr.OnProgressChanged?.Invoke(progressNormalized, gameObject.GetInstanceID());
+                Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(progressNormalized, gameObject.GetInstanceID());
 
                 if (_fryingTimer >= _fryingReceiptSO.FryingTimeMax)
                 {
@@ -47,14 +45,14 @@ public sealed class StoveCounter : BaseCounter
                     _curState = State.Fried;
                     _burningReceiptSO = GetBurningReceiptSOWithInput(GetKitchenObj().GetKitchenObjectSO());
 
-                    Bootstrap.Instance.EventMgr.OnStoveCounterStateChanged?.Invoke(_curState);
+                    Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState);
                 }
                 break;
             case State.Fried:
                 _burningTimer += Time.deltaTime;
 
                 progressNormalized = _burningTimer / _burningReceiptSO.BurningTimeMax;
-                Bootstrap.Instance.EventMgr.OnProgressChanged?.Invoke(progressNormalized, gameObject.GetInstanceID());
+                Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(progressNormalized, gameObject.GetInstanceID());
 
                 if (_burningTimer >= _burningReceiptSO.BurningTimeMax)
                 {
@@ -63,11 +61,9 @@ public sealed class StoveCounter : BaseCounter
 
                     _curState = State.Burned;
 
-                    Bootstrap.Instance.EventMgr.OnStoveCounterStateChanged?.Invoke(_curState);
-                    Bootstrap.Instance.EventMgr.OnProgressChanged?.Invoke(0, gameObject.GetInstanceID());
+                    Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState);
+                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(0, gameObject.GetInstanceID());
                 }
-                break;
-            case State.Burned:
                 break;
         }
     }
@@ -81,7 +77,7 @@ public sealed class StoveCounter : BaseCounter
                 GetKitchenObj().SetCurKitchenObjParent(playerController);
                 _curState = State.Idle;
 
-                Bootstrap.Instance.EventMgr.OnStoveCounterStateChanged?.Invoke(_curState);
+                Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState);
             }
         }
         else
@@ -94,10 +90,10 @@ public sealed class StoveCounter : BaseCounter
                 _fryingTimer = 0;
                 _curState = State.Frying;
 
-                Bootstrap.Instance.EventMgr.OnStoveCounterStateChanged?.Invoke(_curState);
+                Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState);
 
                 float progressNormalized = _fryingTimer / _fryingReceiptSO.FryingTimeMax;
-                Bootstrap.Instance.EventMgr.OnProgressChanged?.Invoke(progressNormalized, gameObject.GetInstanceID());
+                Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(progressNormalized, gameObject.GetInstanceID());
             }
         }
     }
@@ -105,18 +101,6 @@ public sealed class StoveCounter : BaseCounter
     private bool HasReceiptWithInput(KitchenObjectSO inputKitchenObjSO)
     {
         return GetFryingReceiptSOWithInput(inputKitchenObjSO) != null;
-    }
-
-    private KitchenObjectSO GetOutputForInput(KitchenObjectSO inputKitchenObjSO)
-    {
-        FryingReceiptSO fryingReceiptSO = GetFryingReceiptSOWithInput(inputKitchenObjSO);
-
-        if (fryingReceiptSO != null)
-        {
-            return fryingReceiptSO.Output;
-        }
-
-        return null;
     }
 
     private FryingReceiptSO GetFryingReceiptSOWithInput(KitchenObjectSO inputKitchenObjSO)

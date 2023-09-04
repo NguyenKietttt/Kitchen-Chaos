@@ -8,7 +8,7 @@ public sealed class ContainerCounter : BaseCounter
     [Header("Child Internal Ref")]
     [SerializeField] private Animator _animator;
 
-    private readonly int _openCloseKeyHash = Animator.StringToHash("OpenClose");
+    private readonly int _clidAnimKeyHash = Animator.StringToHash("OpenClose");
 
     public override void OnInteract(PlayerController playerController)
     {
@@ -17,12 +17,12 @@ public sealed class ContainerCounter : BaseCounter
             return;
         }
 
-        TriggerAnimationClid();
+        TriggerClidAnim();
         KitchenObject.SpawnKitchenObj(_kitchenObjSO, playerController);
     }
 
-    private void TriggerAnimationClid()
+    private void TriggerClidAnim()
     {
-        _animator.SetTrigger(_openCloseKeyHash);
+        _animator.SetTrigger(_clidAnimKeyHash);
     }
 }

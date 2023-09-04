@@ -41,11 +41,11 @@ public sealed class InputManager
 
     private void OnInteractPerformed(InputAction.CallbackContext obj)
     {
-        Bootstrap.Instance.EventMgr.OnInteractAction?.Invoke();
+        Bootstrap.Instance.EventMgr.Interact?.Invoke();
     }
 
     private void OnCuttingInteractPerformed(InputAction.CallbackContext obj)
     {
-        Bootstrap.Instance.EventMgr.OnCuttingInteractAction?.Invoke();
+        Bootstrap.Instance.EventMgr.CuttingInteract?.Invoke();
     }
 }

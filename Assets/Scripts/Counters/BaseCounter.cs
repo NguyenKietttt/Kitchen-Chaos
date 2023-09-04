@@ -3,19 +3,19 @@ using UnityEngine;
 public class BaseCounter : MonoBehaviour, IKitchenObjParent
 {
     [Header("Internal Ref")]
-    [SerializeField] private GameObject _selectedVisual;
+    [SerializeField] private GameObject _selectedVisualObj;
     [SerializeField] private Transform _spawnPoint;
 
-    private KitchenObject _kitchenObj;
+    private KitchenObject _curKitchenObj;
 
-    private void OnEnable()
+    private void Start()
     {
-        Bootstrap.Instance.EventMgr.OnSelectCounter += OnSelected;
+        Bootstrap.Instance.EventMgr.SelectCounter += OnCounterSelected;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
-        Bootstrap.Instance.EventMgr.OnSelectCounter -= OnSelected;
+        Bootstrap.Instance.EventMgr.SelectCounter -= OnCounterSelected;
     }
 
     public virtual void OnInteract(PlayerController playerController) { }
@@ -29,26 +29,26 @@ public class BaseCounter : MonoBehaviour, IKitchenObjParent
 
     public KitchenObject GetKitchenObj()
     {
-        return _kitchenObj;
+        return _curKitchenObj;
     }
 
     public void SetKitchenObj(KitchenObject newKitchenObj)
     {
-        _kitchenObj = newKitchenObj;
+        _curKitchenObj = newKitchenObj;
     }
 
     public bool HasKitchenObj()
     {
-        return _kitchenObj != null;
+        return _curKitchenObj != null;
     }
 
     public void ClearKitchenObj()
     {
-        _kitchenObj = null;
+        _curKitchenObj = null;
     }
 
-    private void OnSelected(BaseCounter selectedCounter)
+    private void OnCounterSelected(BaseCounter selectedCounter)
     {
-        _selectedVisual.SetActive(selectedCounter == this);
+        _selectedVisualObj.SetActive(selectedCounter == this);
     }
 }

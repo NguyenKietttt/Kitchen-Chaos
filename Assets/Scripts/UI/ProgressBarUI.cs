@@ -9,7 +9,7 @@ public sealed class ProgressBarUI : MonoBehaviour
 
     private void Start()
     {
-        Bootstrap.Instance.EventMgr.OnProgressChanged += OnProgressChanged;
+        Bootstrap.Instance.EventMgr.UpdateCounterProgress += OnCounterProgressChanged;
 
         _progressImg.fillAmount = 0;
         ToggleProgressBar(false);
@@ -17,10 +17,10 @@ public sealed class ProgressBarUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        Bootstrap.Instance.EventMgr.OnProgressChanged -= OnProgressChanged;
+        Bootstrap.Instance.EventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
     }
 
-    private void OnProgressChanged(float progressNormalized, int counterInstanceID)
+    private void OnCounterProgressChanged(float progressNormalized, int counterInstanceID)
     {
         if (counterInstanceID != _progressCounterObj.GetInstanceID())
         {
@@ -28,15 +28,7 @@ public sealed class ProgressBarUI : MonoBehaviour
         }
 
         _progressImg.fillAmount = progressNormalized;
-
-        if (progressNormalized <= 0 || progressNormalized >= 1)
-        {
-            ToggleProgressBar(false);
-        }
-        else
-        {
-            ToggleProgressBar(true);
-        }
+        ToggleProgressBar(progressNormalized <= 0 || progressNormalized >= 1);
     }
 
     private void ToggleProgressBar(bool isEnabled)

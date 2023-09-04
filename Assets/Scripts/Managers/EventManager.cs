@@ -2,9 +2,9 @@ using System;
 
 public sealed class EventManager
 {
-    public Action OnInteractAction;
-    public Action OnCuttingInteractAction;
-    public Action<BaseCounter> OnSelectCounter;
-    public Action<StoveCounter.State> OnStoveCounterStateChanged;
-    public Action<float, int> OnProgressChanged;
+    public Action Interact;
+    public Action CuttingInteract;
+    public Action<BaseCounter> SelectCounter;
+    public Action<StoveCounter.State> ChangeStoveCounterState;
+    public Action<float, int> UpdateCounterProgress;
 }
