@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public sealed class ProgressBarUI : MonoBehaviour
 {
     [Header("Internal Ref")]
-    [SerializeField] private CuttingCounter _cuttingCounter;
+    [SerializeField] private GameObject _progressCounterObj;
     [SerializeField] private Image _progressImg;
 
     private void Start()
@@ -20,8 +20,13 @@ public sealed class ProgressBarUI : MonoBehaviour
         Bootstrap.Instance.EventMgr.OnProgressChanged -= OnProgressChanged;
     }
 
-    private void OnProgressChanged(float progressNormalized)
+    private void OnProgressChanged(float progressNormalized, int counterInstanceID)
     {
+        if (counterInstanceID != _progressCounterObj.GetInstanceID())
+        {
+            return;
+        }
+
         _progressImg.fillAmount = progressNormalized;
 
         if (progressNormalized <= 0 || progressNormalized >= 1)

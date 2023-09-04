@@ -31,7 +31,7 @@ public sealed class CuttingCounter : BaseCounter
                 CuttingReceiptSO outputCuttingReceiptSO = GetCuttingReceiptSOWithInput(GetKitchenObj().GetKitchenObjectSO());
 
                 float progressNormalized = (float)_cuttingProcess / outputCuttingReceiptSO.CuttingProcessMax;
-                Bootstrap.Instance.EventMgr.OnProgressChanged?.Invoke(progressNormalized);
+                Bootstrap.Instance.EventMgr.OnProgressChanged?.Invoke(progressNormalized, gameObject.GetInstanceID());
             }
         }
     }
@@ -46,7 +46,7 @@ public sealed class CuttingCounter : BaseCounter
             CuttingReceiptSO outputCuttingReceiptSO = GetCuttingReceiptSOWithInput(GetKitchenObj().GetKitchenObjectSO());
 
             float progressNormalized = (float)_cuttingProcess / outputCuttingReceiptSO.CuttingProcessMax;
-            Bootstrap.Instance.EventMgr.OnProgressChanged?.Invoke(progressNormalized);
+            Bootstrap.Instance.EventMgr.OnProgressChanged?.Invoke(progressNormalized, gameObject.GetInstanceID());
 
             if (_cuttingProcess >= outputCuttingReceiptSO.CuttingProcessMax)
             {

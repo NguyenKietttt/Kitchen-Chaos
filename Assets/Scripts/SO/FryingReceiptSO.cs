@@ -1,16 +1,16 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewCuttingReceiptSO", menuName = "ScriptableObject/CuttingReceipt")]
-public sealed class CuttingReceiptSO : ScriptableObject
+[CreateAssetMenu(fileName = "FryingReceiptSO", menuName = "ScriptableObject/FryingReceipt")]
+public sealed class FryingReceiptSO : ScriptableObject
 {
     public KitchenObjectSO Input => _input;
     public KitchenObjectSO Output => _output;
-    public int CuttingProcessMax => _cuttingProcessMax;
+    public float FryingTimeMax => _fryingTimeMax;
 
     [Header("Asset Ref")]
     [SerializeField] private KitchenObjectSO _input;
     [SerializeField] private KitchenObjectSO _output;
 
     [Header("Property")]
-    [SerializeField] private int _cuttingProcessMax = 1;
+    [SerializeField] private float _fryingTimeMax;
 }
