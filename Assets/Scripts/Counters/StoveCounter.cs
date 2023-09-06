@@ -14,8 +14,9 @@ public sealed class StoveCounter : BaseCounter
     private float _fryingTimer;
     private float _burningTimer;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         _curState = State.Idle;
     }
 
@@ -72,11 +73,24 @@ public sealed class StoveCounter : BaseCounter
     {
         if (HasKitchenObj())
         {
-            if (!playerController.HasKitchenObj())
+            if (playerController.HasKitchenObj())
+            {
+                if (playerController.GetKitchenObj().TryGetPlate(out PlateKitchenObject plateKitchenObj))
+                {
+                    KitchenObject kitchenObj = GetKitchenObj();
+                    if (plateKitchenObj.TryAddIngredient(kitchenObj.GetKitchenObjectSO()))
+                    {
+                        kitchenObj.DestroySelf();
+
+                        _curState = State.Idle;
+                        Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState);
+                    }
+                }
+            }
+            else
             {
                 GetKitchenObj().SetCurKitchenObjParent(playerController);
                 _curState = State.Idle;
-
                 Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState);
             }
         }

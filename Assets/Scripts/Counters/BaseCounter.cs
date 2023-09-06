@@ -8,7 +8,7 @@ public class BaseCounter : MonoBehaviour, IKitchenObjParent
 
     private KitchenObject _curKitchenObj;
 
-    private void Start()
+    protected virtual void Start()
     {
         Bootstrap.Instance.EventMgr.SelectCounter += OnCounterSelected;
     }
