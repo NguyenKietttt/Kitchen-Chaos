@@ -16,6 +16,12 @@ public sealed class PlateKitchenObject : KitchenObject
             return false;
         }
 
-        return _listKitchenObjSO.Add(kitchenObjSO);
+        if (_listKitchenObjSO.Add(kitchenObjSO))
+        {
+            Bootstrap.Instance.EventMgr.AddIngredientSuccess?.Invoke(GetInstanceID(), kitchenObjSO);
+            return true;
+        }
+
+        return false;
     }
 }
