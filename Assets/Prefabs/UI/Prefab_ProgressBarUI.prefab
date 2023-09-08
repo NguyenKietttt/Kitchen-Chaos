@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddfe2c77b9cf96040a82aed90fc7a6e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cuttingCounter: {fileID: 0}
+  _progressCounterObj: {fileID: 0}
   _progressImg: {fileID: 8306269815563725809}
 --- !u!114 &3224738902453812281
 MonoBehaviour:

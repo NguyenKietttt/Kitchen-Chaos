@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public sealed class KitchenObject : MonoBehaviour
+public class KitchenObject : MonoBehaviour
 {
+    [Header("SO")]
     [SerializeField] private KitchenObjectSO _kitchenObjectS0;
 
     private IKitchenObjParent _curKitchenObjParent;
@@ -39,5 +40,19 @@ public sealed class KitchenObject : MonoBehaviour
     {
         _curKitchenObjParent.ClearKitchenObj();
         Destroy(gameObject);
+    }
+
+    public bool TryGetPlate(out PlateKitchenObject plateKitchenObj)
+    {
+        if (this is PlateKitchenObject curPlateKitchenObj)
+        {
+            plateKitchenObj = curPlateKitchenObj;
+            return true;
+        }
+        else
+        {
+            plateKitchenObj = null;
+            return false;
+        }
     }
 }

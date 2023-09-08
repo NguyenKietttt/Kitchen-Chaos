@@ -94,7 +94,9 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 17251720544094567, guid: 93af8b85a17635f40a5b76ed82a86c18, type: 3}
+    - {fileID: 5220305274835918574, guid: 93af8b85a17635f40a5b76ed82a86c18, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93af8b85a17635f40a5b76ed82a86c18, type: 3}
@@ -236,7 +238,7 @@ PrefabInstance:
     - target: {fileID: 2539354700477630772, guid: bf512aba332c134459aeaf874ad26206,
         type: 3}
       propertyPath: m_Name
-      value: StoveCounter
+      value: Prefab_StoveCounter
       objectReference: {fileID: 0}
     - target: {fileID: 4697021595426686914, guid: bf512aba332c134459aeaf874ad26206,
         type: 3}
