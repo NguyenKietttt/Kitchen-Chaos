@@ -91,7 +91,9 @@ public sealed class StoveCounter : BaseCounter
             {
                 GetKitchenObj().SetCurKitchenObjParent(playerController);
                 _curState = State.Idle;
+
                 Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState);
+                Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(0, gameObject.GetInstanceID());
             }
         }
         else

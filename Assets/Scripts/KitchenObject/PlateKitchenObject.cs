@@ -9,6 +9,11 @@ public sealed class PlateKitchenObject : KitchenObject
 
     private readonly HashSet<KitchenObjectSO> _listKitchenObjSO = new();
 
+    public HashSet<KitchenObjectSO> GetListKitchenObjectSO()
+    {
+        return _listKitchenObjSO;
+    }
+
     public bool TryAddIngredient(KitchenObjectSO kitchenObjSO)
     {
         if (!_validListKitchenObjSO.Contains(kitchenObjSO))
