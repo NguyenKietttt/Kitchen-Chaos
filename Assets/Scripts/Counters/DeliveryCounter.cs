@@ -8,6 +8,7 @@ public sealed class DeliveryCounter : BaseCounter
         {
             if (playerController.GetKitchenObj().TryGetPlate(out PlateKitchenObject plateKitchenObj))
             {
+                Bootstrap.Instance.DeliveryMgr.DeliveryReceipt(plateKitchenObj);
                 playerController.GetKitchenObj().DestroySelf();
             }
         }

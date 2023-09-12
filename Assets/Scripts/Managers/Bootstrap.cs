@@ -8,6 +8,7 @@ public sealed class Bootstrap : MonoBehaviour
 
     public EventManager EventMgr { get; private set; }
     public InputManager InputMgr { get; private set; }
+    public DeliveryManager DeliveryMgr { get; private set; }
 
     private void Awake()
     {
@@ -21,6 +22,11 @@ public sealed class Bootstrap : MonoBehaviour
         StartCoroutine(LoadGameSceneAsync());
     }
 
+    private void Update()
+    {
+        DeliveryMgr.OnUpdate();
+    }
+
     private void OnDestroy()
     {
         InputMgr.OnDestroy();
@@ -30,6 +36,7 @@ public sealed class Bootstrap : MonoBehaviour
     {
         EventMgr = new EventManager();
         InputMgr = new InputManager();
+        DeliveryMgr = new DeliveryManager();
     }
 
     private IEnumerator LoadGameSceneAsync()
