@@ -17,6 +17,11 @@ public sealed class DeliveryManager
         _receiptSOList = Resources.Load<ListReceiptSO>(LIST_RECEIPT_SO_PATH);
     }
 
+    public List<ReceiptSO> GetListWaitingReceiptSO()
+    {
+        return _waitingListReceiptSO;
+    }
+
     public void OnUpdate()
     {
         _spawnReceiptTimer += Time.deltaTime;
@@ -29,7 +34,8 @@ public sealed class DeliveryManager
             {
                 ReceiptSO waitingReceiptSO = _receiptSOList.ReceiptSOList[Random.Range(0, _receiptSOList.ReceiptSOList.Length)];
                 _waitingListReceiptSO.Add(waitingReceiptSO);
-                Debug.Log("==== " + waitingReceiptSO.ReceiptName);
+
+                Bootstrap.Instance.EventMgr.SpawnReceipt?.Invoke();
             }
         }
     }
@@ -62,14 +68,12 @@ public sealed class DeliveryManager
 
                 if (isPlateContentMatchesReceipt)
                 {
-                    Debug.Log("==== Player delivered the correct receipt!!!");
-
                     _waitingListReceiptSO.RemoveAt(i);
+                    Bootstrap.Instance.EventMgr.CompleteReceipt?.Invoke();
+
                     return;
                 }
             }
         }
-
-        Debug.Log("==== Icorrect receipt!!!");
     }
 }

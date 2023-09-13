@@ -10,4 +10,6 @@ public sealed class EventManager
     public Action RemovePlate;
     public Action<int, KitchenObjectSO> AddIngredientSuccess;
     public Action<float, int> UpdateCounterProgress;
+    public Action SpawnReceipt;
+    public Action CompleteReceipt;
 }
