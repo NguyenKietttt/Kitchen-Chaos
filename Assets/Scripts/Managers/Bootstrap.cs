@@ -10,6 +10,9 @@ public sealed class Bootstrap : MonoBehaviour
     public InputManager InputMgr { get; private set; }
     public DeliveryManager DeliveryMgr { get; private set; }
 
+    [Header("Internal Ref")]
+    [SerializeField] private SFXManager _sfxMgr;
+
     private void Awake()
     {
         if (Instance == null)
@@ -36,6 +39,9 @@ public sealed class Bootstrap : MonoBehaviour
     {
         EventMgr = new EventManager();
         InputMgr = new InputManager();
+
+        _sfxMgr.Init();
+
         DeliveryMgr = new DeliveryManager();
     }
 

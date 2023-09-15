@@ -12,4 +12,8 @@ public sealed class EventManager
     public Action<float, int> UpdateCounterProgress;
     public Action SpawnReceipt;
     public Action CompleteReceipt;
+
+    // Sounds
+    public Action DeliverReceiptSuccess;
+    public Action DeliverReceiptFailed;
 }

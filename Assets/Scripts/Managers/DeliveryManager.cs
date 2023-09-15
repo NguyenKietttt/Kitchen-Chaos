@@ -69,11 +69,15 @@ public sealed class DeliveryManager
                 if (isPlateContentMatchesReceipt)
                 {
                     _waitingListReceiptSO.RemoveAt(i);
+
                     Bootstrap.Instance.EventMgr.CompleteReceipt?.Invoke();
+                    Bootstrap.Instance.EventMgr.DeliverReceiptSuccess?.Invoke();
 
                     return;
                 }
             }
         }
+
+        Bootstrap.Instance.EventMgr.DeliverReceiptFailed?.Invoke();
     }
 }
