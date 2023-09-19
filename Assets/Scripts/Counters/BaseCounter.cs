@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class BaseCounter : MonoBehaviour, IKitchenObjParent
 {
+    public static event Action ObjectPlaced;
+
     [Header("Internal Ref")]
     [SerializeField] private GameObject _selectedVisualObj;
     [SerializeField] private Transform _spawnPoint;
@@ -35,6 +38,11 @@ public class BaseCounter : MonoBehaviour, IKitchenObjParent
     public void SetKitchenObj(KitchenObject newKitchenObj)
     {
         _curKitchenObj = newKitchenObj;
+
+        if (newKitchenObj != null)
+        {
+            ObjectPlaced?.Invoke();
+        }
     }
 
     public bool HasKitchenObj()

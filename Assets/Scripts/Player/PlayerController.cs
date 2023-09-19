@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
@@ -7,6 +8,8 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
     private const int MOVING_SPEED = 7;
     private const int ROTATION_SPEED = 10;
     private const int INTERACTION_DISTANCE = 2;
+
+    public static event Action PickSomething;
 
     [Header("Internal Ref")]
     [SerializeField] private PlayerAnimator _playerAnimator;
@@ -166,6 +169,11 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
     public void SetKitchenObj(KitchenObject newKitchenObj)
     {
         _kitchenObj = newKitchenObj;
+
+        if (newKitchenObj != null)
+        {
+            PickSomething?.Invoke();
+        }
     }
 
     public bool HasKitchenObj()
