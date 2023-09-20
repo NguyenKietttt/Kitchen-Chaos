@@ -9,6 +9,7 @@ public sealed class Bootstrap : MonoBehaviour
     public EventManager EventMgr { get; private set; }
     public InputManager InputMgr { get; private set; }
     public DeliveryManager DeliveryMgr { get; private set; }
+    public SFXManager SFXMgr => _sfxMgr;
 
     [Header("Internal Ref")]
     [SerializeField] private SFXManager _sfxMgr;

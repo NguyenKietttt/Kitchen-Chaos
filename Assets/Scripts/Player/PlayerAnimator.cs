@@ -8,14 +8,14 @@ public sealed class PlayerAnimator : MonoBehaviour
 
     private bool _lastMovingValue;
 
-    public void UpdateWalkingAnim(bool isWalking)
+    public void UpdateWalkingAnim(bool canMove)
     {
-        if (_lastMovingValue == isWalking)
+        if (_lastMovingValue == canMove)
         {
             return;
         }
 
-        _animator.SetBool(IsWalkingParam, isWalking);
-        _lastMovingValue = isWalking;
+        _animator.SetBool(IsWalkingParam, canMove);
+        _lastMovingValue = canMove;
     }
 }

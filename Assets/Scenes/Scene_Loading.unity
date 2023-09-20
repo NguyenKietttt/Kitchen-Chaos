@@ -704,6 +704,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioClipRefsSO: {fileID: 11400000, guid: 8f32c385f6b39e9499f2e18ed1304dbb, type: 2}
+  _playerMovingVolumn: 1
   _chopVolumn: 0.2
   _pickupVolumn: 0.2
   _dropVolumn: 0.2

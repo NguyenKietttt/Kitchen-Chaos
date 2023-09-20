@@ -34,6 +34,11 @@ public sealed class SFXManager : MonoBehaviour
         TrashCounter.ObjectTrashed += OnObjectTrashed;
     }
 
+    public AudioClip GetRandomFootStepAudioClip()
+    {
+        return _audioClipRefsSO.Footstep[Random.Range(0, _audioClipRefsSO.Footstep.Length)];
+    }
+
     private void OnCut()
     {
         PlaySound(_audioClipRefsSO.Chop, Camera.main.transform.position, _chopVolumn);

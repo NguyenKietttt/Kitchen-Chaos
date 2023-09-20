@@ -11,6 +11,8 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 
     public static event Action PickSomething;
 
+    public bool IsMoving { get; private set; }
+
     [Header("Internal Ref")]
     [SerializeField] private PlayerAnimator _playerAnimator;
     [SerializeField] private Transform _kitchenObjHoldPoint;
@@ -31,9 +33,9 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
     private void Update()
     {
         Vector2 input = Bootstrap.Instance.InputMgr.GetInputVectorNormalized();
-        bool isMoving = IsMoving(input);
+        bool canMove = CanMove(input);
 
-        HandleMovement(isMoving, input);
+        HandleMovement(canMove, input);
         HandleCounterSelection(input);
     }
 
@@ -93,9 +95,9 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
         }
     }
 
-    private void HandleMovement(bool isMoving, Vector2 input)
+    private void HandleMovement(bool canMove, Vector2 input)
     {
-        if (isMoving)
+        if (canMove)
         {
             Vector3 moveDir = new(input.x, 0, input.y);
             float moveDistance = MOVING_SPEED * Time.deltaTime;
@@ -111,9 +113,14 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
             }
 
             UpdateRotationByMovingDirection(moveDir);
+            IsMoving = true;
+        }
+        else
+        {
+            IsMoving = false;
         }
 
-        _playerAnimator.UpdateWalkingAnim(isMoving);
+        _playerAnimator.UpdateWalkingAnim(canMove);
     }
 
     private Vector3 TryMoveHugWall(Vector3 moveDir, float moveDistance)
@@ -141,7 +148,7 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
         return !Physics.CapsuleCast(curPos, curPos + (Vector3.up * PLAYER_HEIGHT), PLAYER_RADIUS, moveDir, moveDistance);
     }
 
-    private bool IsMoving(Vector2 input)
+    public bool CanMove(Vector2 input)
     {
         return input != Vector2.zero;
     }
