@@ -2,6 +2,7 @@ using System;
 
 public sealed class EventManager
 {
+    public Action ChangeGameState;
     public Action Interact;
     public Action CuttingInteract;
     public Action<BaseCounter> SelectCounter;

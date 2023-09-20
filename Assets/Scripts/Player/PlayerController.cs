@@ -81,6 +81,11 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 
     private void OnInteractAction()
     {
+        if (!Bootstrap.Instance.GameStateMgr.IsGamePlaying())
+        {
+            return;
+        }
+
         if (_selectedCounter != null)
         {
             _selectedCounter.OnInteract(this);
@@ -89,6 +94,11 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 
     private void OnCuttingInteractAction()
     {
+        if (!Bootstrap.Instance.GameStateMgr.IsGamePlaying())
+        {
+            return;
+        }
+
         if (_selectedCounter != null)
         {
             _selectedCounter.OnCuttingInteract(this);

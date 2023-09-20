@@ -22,9 +22,14 @@ public sealed class DeliveryManager
         return _waitingListReceiptSO;
     }
 
-    public void OnUpdate()
+    public void OnUpdate(float deltaTime)
     {
-        _spawnReceiptTimer += Time.deltaTime;
+        if (!Bootstrap.Instance.GameStateMgr.IsGamePlaying())
+        {
+            return;
+        }
+
+        _spawnReceiptTimer += deltaTime;
 
         if (_spawnReceiptTimer >= SPAWN_RECEIPT_TIMER_MAX)
         {
