@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public sealed class CuttingCounter : BaseCounter
 {
+    public static event Action CutObject;
+
     [Header("Child Internal Ref")]
     [SerializeField] private Animator _animator;
 
@@ -51,6 +54,8 @@ public sealed class CuttingCounter : BaseCounter
         {
             TriggerCutAnim();
             UpdateCounterProgress(++_curCuttingProcess);
+
+            CutObject?.Invoke();
         }
     }
 
