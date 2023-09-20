@@ -704,13 +704,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioClipRefsSO: {fileID: 11400000, guid: 8f32c385f6b39e9499f2e18ed1304dbb, type: 2}
-  _playerMovingVolumn: 1
-  _chopVolumn: 0.2
-  _pickupVolumn: 0.2
-  _dropVolumn: 0.2
-  _trashVolumn: 0.2
-  _deliverySuccessVolumn: 0.3
-  _deliveryFailedVolumn: 0.2
+  _chopVolume: 0.2
+  _pickupVolume: 0.2
+  _dropVolume: 0.2
+  _trashVolume: 0.2
+  _deliverySuccessVolume: 0.3
+  _deliveryFailedVolume: 0.2
 --- !u!1 &1473864527
 GameObject:
   m_ObjectHideFlags: 0
