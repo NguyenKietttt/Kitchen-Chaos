@@ -7,10 +7,13 @@ public sealed class DeliveryManager
     private const float SPAWN_RECEIPT_TIMER_MAX = 4.0f;
     private const int WAITING_RECEIPT_MAX = 4;
 
+    public int AmountSucessfulReceipt => _amountSucessfulReceipt;
+
     private readonly List<ReceiptSO> _waitingListReceiptSO = new();
     private readonly ListReceiptSO _receiptSOList;
 
     private float _spawnReceiptTimer;
+    private int _amountSucessfulReceipt;
 
     public DeliveryManager()
     {
@@ -73,6 +76,7 @@ public sealed class DeliveryManager
 
                 if (isPlateContentMatchesReceipt)
                 {
+                    _amountSucessfulReceipt++;
                     _waitingListReceiptSO.RemoveAt(i);
 
                     Bootstrap.Instance.EventMgr.CompleteReceipt?.Invoke();
