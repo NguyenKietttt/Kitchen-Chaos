@@ -1,11 +1,12 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Tilemaps;
 
 public sealed class Bootstrap : MonoBehaviour
 {
     public static Bootstrap Instance { get; private set; }
+
+    private const int MAIN_MENU_SCENE_INDEX = 1;
 
     public EventManager EventMgr { get; private set; }
     public GameStateManager GameStateMgr { get; private set; }
@@ -25,7 +26,7 @@ public sealed class Bootstrap : MonoBehaviour
         }
 
         InitManagers();
-        StartCoroutine(LoadGameSceneAsync());
+        StartCoroutine(LoadMainMenuSceneAsync());
     }
 
     private void Update()
@@ -52,11 +53,11 @@ public sealed class Bootstrap : MonoBehaviour
         DeliveryMgr = new DeliveryManager();
     }
 
-    private IEnumerator LoadGameSceneAsync()
+    private IEnumerator LoadMainMenuSceneAsync()
     {
         yield return new WaitForSeconds(0.5f);
 
-        AsyncOperation loadOp = SceneManager.LoadSceneAsync(1);
+        AsyncOperation loadOp = SceneManager.LoadSceneAsync(MAIN_MENU_SCENE_INDEX);
         loadOp.allowSceneActivation = false;
 
         Debug.Log("Loading completed! Transitioning");
@@ -65,6 +66,5 @@ public sealed class Bootstrap : MonoBehaviour
         loadOp.allowSceneActivation = true;
 
         yield return new WaitForEndOfFrame();
-        GameStateMgr.Init();
     }
 }
