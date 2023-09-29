@@ -1,11 +1,8 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public sealed class MainMenuUI : MonoBehaviour
 {
-    private const int LOADING_SCENE_INDEX = 2;
-
     [Header("Internal Ref")]
     [SerializeField] private Button _playBtn;
     [SerializeField] private Button _quitBtn;
@@ -24,8 +21,7 @@ public sealed class MainMenuUI : MonoBehaviour
 
     private void OnPlayButtonClicked()
     {
-        SceneManager.LoadScene(LOADING_SCENE_INDEX);
-        Bootstrap.Instance.GameStateMgr.Init();
+        Bootstrap.Instance.SceneLoader.Load(SceneLoader.Scene.Loading);
     }
 
     private void OnQuitButtonClicked()

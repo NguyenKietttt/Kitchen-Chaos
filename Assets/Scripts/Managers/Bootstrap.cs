@@ -1,20 +1,18 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public sealed class Bootstrap : MonoBehaviour
 {
     public static Bootstrap Instance { get; private set; }
 
-    private const int MAIN_MENU_SCENE_INDEX = 1;
-
     public EventManager EventMgr { get; private set; }
     public GameStateManager GameStateMgr { get; private set; }
     public InputManager InputMgr { get; private set; }
     public DeliveryManager DeliveryMgr { get; private set; }
+    public SceneLoader SceneLoader => _sceneLoader;
     public SFXManager SFXMgr => _sfxMgr;
 
     [Header("Internal Ref")]
+    [SerializeField] private SceneLoader _sceneLoader;
     [SerializeField] private SFXManager _sfxMgr;
 
     private void Awake()
@@ -26,7 +24,7 @@ public sealed class Bootstrap : MonoBehaviour
         }
 
         InitManagers();
-        StartCoroutine(LoadMainMenuSceneAsync());
+        _sceneLoader.LoadAsync(SceneLoader.Scene.MainMenu);
     }
 
     private void Update()
@@ -51,20 +49,5 @@ public sealed class Bootstrap : MonoBehaviour
         _sfxMgr.Init();
 
         DeliveryMgr = new DeliveryManager();
-    }
-
-    private IEnumerator LoadMainMenuSceneAsync()
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        AsyncOperation loadOp = SceneManager.LoadSceneAsync(MAIN_MENU_SCENE_INDEX);
-        loadOp.allowSceneActivation = false;
-
-        Debug.Log("Loading completed! Transitioning");
-
-        yield return new WaitForSeconds(0.5f);
-        loadOp.allowSceneActivation = true;
-
-        yield return new WaitForEndOfFrame();
     }
 }
