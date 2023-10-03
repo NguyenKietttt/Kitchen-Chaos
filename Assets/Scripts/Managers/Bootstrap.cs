@@ -38,6 +38,7 @@ public sealed class Bootstrap : MonoBehaviour
     private void OnDestroy()
     {
         InputMgr.OnDestroy();
+        GameStateMgr.OnDestroy();
     }
 
     private void InitManagers()
@@ -45,8 +46,6 @@ public sealed class Bootstrap : MonoBehaviour
         EventMgr = new EventManager();
         GameStateMgr = new GameStateManager();
         InputMgr = new InputManager();
-
-        _sfxMgr.Init();
 
         DeliveryMgr = new DeliveryManager();
     }

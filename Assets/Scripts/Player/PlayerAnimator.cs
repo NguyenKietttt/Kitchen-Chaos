@@ -2,7 +2,7 @@ using UnityEngine;
 
 public sealed class PlayerAnimator : MonoBehaviour
 {
-    private static readonly int IsWalkingParam = Animator.StringToHash("IsWalking");
+    private readonly int IsWalkingParam = Animator.StringToHash("IsWalking");
 
     [SerializeField] private Animator _animator;
 

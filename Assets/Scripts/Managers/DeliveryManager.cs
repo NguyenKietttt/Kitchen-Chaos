@@ -89,4 +89,12 @@ public sealed class DeliveryManager
 
         Bootstrap.Instance.EventMgr.DeliverReceiptFailed?.Invoke();
     }
+
+    public void Reset()
+    {
+        _waitingListReceiptSO.Clear();
+
+        _spawnReceiptTimer = 0;
+        _amountSucessfulReceipt = 0;
+    }
 }

@@ -43,6 +43,8 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
     {
         Bootstrap.Instance.EventMgr.Interact -= OnInteractAction;
         Bootstrap.Instance.EventMgr.CuttingInteract -= OnCuttingInteractAction;
+
+        PickSomething = null;
     }
 
     private void HandleCounterSelection(Vector2 input)

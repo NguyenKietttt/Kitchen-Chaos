@@ -6,7 +6,7 @@ public sealed class GameStateManager
 
     private const float WAITING_TO_START_TIMER_MAX = 1.0f;
     private const float COUNTDOWN_TO_START_TIMER_MAX = 3.0f;
-    private const float GAME_PLAYING_TIMER_MAX = 10.0f;
+    private const float GAME_PLAYING_TIMER_MAX = 60.0f;
 
     private State _curState;
     private float _waitingToStartTimer;
@@ -16,6 +16,7 @@ public sealed class GameStateManager
     public GameStateManager()
     {
         _curState = State.Loading;
+        Bootstrap.Instance.EventMgr.TooglePause += OnTogglePaused;
     }
 
     public void Init()
@@ -60,6 +61,11 @@ public sealed class GameStateManager
         }
     }
 
+    public void OnDestroy()
+    {
+        Bootstrap.Instance.EventMgr.TooglePause -= OnTogglePaused;
+    }
+
     public float GetCountDownToStartTimer()
     {
         return _countdownToStartTimer;
@@ -83,5 +89,33 @@ public sealed class GameStateManager
     public float GetGamePlayingTimerNormalized()
     {
         return _gameplayingTimer / GAME_PLAYING_TIMER_MAX;
+    }
+
+    public void Reset()
+    {
+        _curState = State.Loading;
+
+        _waitingToStartTimer = 0;
+        _countdownToStartTimer = COUNTDOWN_TO_START_TIMER_MAX;
+        _gameplayingTimer = 0;
+    }
+
+    private void OnTogglePaused()
+    {
+        if (_curState is State.Loading)
+        {
+            return;
+        }
+
+        if (Time.timeScale == 1)
+        {
+            Time.timeScale = 0;
+            Bootstrap.Instance.EventMgr.OnPaused?.Invoke();
+        }
+        else
+        {
+            Time.timeScale = 1;
+            Bootstrap.Instance.EventMgr.OnUnPaused?.Invoke();
+        }
     }
 }

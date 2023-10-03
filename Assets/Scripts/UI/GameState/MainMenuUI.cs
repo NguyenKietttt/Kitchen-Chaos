@@ -9,8 +9,14 @@ public sealed class MainMenuUI : MonoBehaviour
 
     private void Awake()
     {
+        Bootstrap.Instance.SFXMgr.Init();
+        Bootstrap.Instance.GameStateMgr.Reset();
+        Bootstrap.Instance.DeliveryMgr.Reset();
+
         _playBtn.onClick.AddListener(OnPlayButtonClicked);
         _quitBtn.onClick.AddListener(OnQuitButtonClicked);
+
+        Time.timeScale = 1.0f;
     }
 
     private void OnDestroy()
