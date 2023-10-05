@@ -10,10 +10,12 @@ public sealed class Bootstrap : MonoBehaviour
     public DeliveryManager DeliveryMgr { get; private set; }
     public SceneLoader SceneLoader => _sceneLoader;
     public SFXManager SFXMgr => _sfxMgr;
+    public MusicManager MusicMgr => _musicMgr;
 
     [Header("Internal Ref")]
     [SerializeField] private SceneLoader _sceneLoader;
     [SerializeField] private SFXManager _sfxMgr;
+    [SerializeField] private MusicManager _musicMgr;
 
     private void Awake()
     {

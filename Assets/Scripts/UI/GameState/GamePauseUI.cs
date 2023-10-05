@@ -5,11 +5,13 @@ public sealed class GamePauseUI : MonoBehaviour
 {
     [Header("Internal Ref")]
     [SerializeField] private Button _resumeBtn;
+    [SerializeField] private Button _optionsBtn;
     [SerializeField] private Button _mainMenuBtn;
 
     private void Start()
     {
         _resumeBtn.onClick.AddListener(OnResumeButtonClicked);
+        _optionsBtn.onClick.AddListener(OnOptionsButtonClicked);
         _mainMenuBtn.onClick.AddListener(OnMainMenuButtonClicked);
 
         Bootstrap.Instance.EventMgr.OnPaused += Show;
@@ -21,6 +23,7 @@ public sealed class GamePauseUI : MonoBehaviour
     private void OnDestroy()
     {
         _resumeBtn.onClick.RemoveAllListeners();
+        _optionsBtn.onClick.RemoveAllListeners();
         _mainMenuBtn.onClick.RemoveAllListeners();
 
         Bootstrap.Instance.EventMgr.OnPaused -= Show;
@@ -40,6 +43,11 @@ public sealed class GamePauseUI : MonoBehaviour
     public void OnResumeButtonClicked()
     {
         Bootstrap.Instance.EventMgr.TooglePause?.Invoke();
+    }
+
+    public void OnOptionsButtonClicked()
+    {
+        Bootstrap.Instance.EventMgr.ClickOptionsBtn?.Invoke();
     }
 
     public void OnMainMenuButtonClicked()

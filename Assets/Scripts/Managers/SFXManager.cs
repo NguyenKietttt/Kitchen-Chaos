@@ -3,6 +3,11 @@ using Victor.Tools;
 
 public sealed class SFXManager : MonoBehaviour
 {
+    private const string SFX_VOLUMN_KEY = "SFX_VOLUMN_KEY";
+    private const float MAX_VOLUMN = 1.0f;
+
+    public float MasterVolumn => _masterVolumn;
+
     [Header("Asset Ref")]
     [SerializeField] private AudioClipRefsSO _audioClipRefsSO;
 
@@ -13,6 +18,8 @@ public sealed class SFXManager : MonoBehaviour
     [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _trashVolume;
     [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _deliverySuccessVolume;
     [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _deliveryFailedVolume;
+
+    private float _masterVolumn = MAX_VOLUMN;
 
     private void OnDestroy()
     {
@@ -32,6 +39,21 @@ public sealed class SFXManager : MonoBehaviour
         PlayerController.PickSomething += OnPickSomething;
         BaseCounter.ObjectPlaced += OnObjectPlaced;
         TrashCounter.ObjectTrashed += OnObjectTrashed;
+
+        _masterVolumn = PlayerPrefs.GetFloat(SFX_VOLUMN_KEY, MAX_VOLUMN);
+    }
+
+    public void ChangeVolumn()
+    {
+        _masterVolumn += 0.1f;
+
+        if (_masterVolumn > MAX_VOLUMN)
+        {
+            _masterVolumn = 0;
+        }
+
+        PlayerPrefs.SetFloat(SFX_VOLUMN_KEY, _masterVolumn);
+        PlayerPrefs.Save();
     }
 
     public AudioClip GetRandomFootStepAudioClip()
@@ -69,8 +91,8 @@ public sealed class SFXManager : MonoBehaviour
         PlaySound(_audioClipRefsSO.DeliveryFail, Camera.main.transform.position, _deliveryFailedVolume);
     }
 
-    private void PlaySound(AudioClip[] audioClips, Vector3 position, float volume = 1)
+    private void PlaySound(AudioClip[] audioClips, Vector3 position, float volumeMultiplier = 1)
     {
-        AudioSource.PlayClipAtPoint(audioClips[Random.Range(0, audioClips.Length)], position, volume);
+        AudioSource.PlayClipAtPoint(audioClips[Random.Range(0, audioClips.Length)], position, volumeMultiplier * _masterVolumn);
     }
 }

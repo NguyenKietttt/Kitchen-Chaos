@@ -155,6 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sceneLoader: {fileID: 1083183393}
   _sfxMgr: {fileID: 1362282216}
+  _musicMgr: {fileID: 564810170}
 --- !u!4 &370449370
 Transform:
   m_ObjectHideFlags: 0
@@ -183,6 +184,7 @@ GameObject:
   m_Component:
   - component: {fileID: 564810168}
   - component: {fileID: 564810169}
+  - component: {fileID: 564810170}
   m_Layer: 0
   m_Name: MusicManager
   m_TagString: Untagged
@@ -301,6 +303,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &564810170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564810167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4352a043764e7d745a79efa9efb00a8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioSrc: {fileID: 564810169}
 --- !u!1 &774099964
 GameObject:
   m_ObjectHideFlags: 0
