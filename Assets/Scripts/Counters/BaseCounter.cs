@@ -19,6 +19,7 @@ public class BaseCounter : MonoBehaviour, IKitchenObjParent
     private void OnDestroy()
     {
         Bootstrap.Instance.EventMgr.SelectCounter -= OnCounterSelected;
+        ObjectPlaced = null;
     }
 
     public virtual void OnInteract(PlayerController playerController) { }

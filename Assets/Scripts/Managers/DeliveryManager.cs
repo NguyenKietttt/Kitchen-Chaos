@@ -7,10 +7,13 @@ public sealed class DeliveryManager
     private const float SPAWN_RECEIPT_TIMER_MAX = 4.0f;
     private const int WAITING_RECEIPT_MAX = 4;
 
+    public int AmountSucessfulReceipt => _amountSucessfulReceipt;
+
     private readonly List<ReceiptSO> _waitingListReceiptSO = new();
     private readonly ListReceiptSO _receiptSOList;
 
     private float _spawnReceiptTimer;
+    private int _amountSucessfulReceipt;
 
     public DeliveryManager()
     {
@@ -22,9 +25,14 @@ public sealed class DeliveryManager
         return _waitingListReceiptSO;
     }
 
-    public void OnUpdate()
+    public void OnUpdate(float deltaTime)
     {
-        _spawnReceiptTimer += Time.deltaTime;
+        if (!Bootstrap.Instance.GameStateMgr.IsGamePlaying())
+        {
+            return;
+        }
+
+        _spawnReceiptTimer += deltaTime;
 
         if (_spawnReceiptTimer >= SPAWN_RECEIPT_TIMER_MAX)
         {
@@ -68,6 +76,7 @@ public sealed class DeliveryManager
 
                 if (isPlateContentMatchesReceipt)
                 {
+                    _amountSucessfulReceipt++;
                     _waitingListReceiptSO.RemoveAt(i);
 
                     Bootstrap.Instance.EventMgr.CompleteReceipt?.Invoke();
@@ -79,5 +88,13 @@ public sealed class DeliveryManager
         }
 
         Bootstrap.Instance.EventMgr.DeliverReceiptFailed?.Invoke();
+    }
+
+    public void Reset()
+    {
+        _waitingListReceiptSO.Clear();
+
+        _spawnReceiptTimer = 0;
+        _amountSucessfulReceipt = 0;
     }
 }

@@ -15,6 +15,11 @@ public sealed class CuttingCounter : BaseCounter
 
     private int _curCuttingProcess;
 
+    private void OnDestroy()
+    {
+        CutObject = null;
+    }
+
     public override void OnInteract(PlayerController playerController)
     {
         if (HasKitchenObj())

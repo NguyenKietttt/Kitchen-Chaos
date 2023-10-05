@@ -1,17 +1,18 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public sealed class Bootstrap : MonoBehaviour
 {
     public static Bootstrap Instance { get; private set; }
 
     public EventManager EventMgr { get; private set; }
+    public GameStateManager GameStateMgr { get; private set; }
     public InputManager InputMgr { get; private set; }
     public DeliveryManager DeliveryMgr { get; private set; }
+    public SceneLoader SceneLoader => _sceneLoader;
     public SFXManager SFXMgr => _sfxMgr;
 
     [Header("Internal Ref")]
+    [SerializeField] private SceneLoader _sceneLoader;
     [SerializeField] private SFXManager _sfxMgr;
 
     private void Awake()
@@ -23,40 +24,29 @@ public sealed class Bootstrap : MonoBehaviour
         }
 
         InitManagers();
-        StartCoroutine(LoadGameSceneAsync());
+        _sceneLoader.LoadAsync(SceneLoader.Scene.MainMenu);
     }
 
     private void Update()
     {
-        DeliveryMgr.OnUpdate();
+        float deltaTime = Time.deltaTime;
+
+        GameStateMgr.OnUpdate(deltaTime);
+        DeliveryMgr.OnUpdate(deltaTime);
     }
 
     private void OnDestroy()
     {
         InputMgr.OnDestroy();
+        GameStateMgr.OnDestroy();
     }
 
     private void InitManagers()
     {
         EventMgr = new EventManager();
+        GameStateMgr = new GameStateManager();
         InputMgr = new InputManager();
 
-        _sfxMgr.Init();
-
         DeliveryMgr = new DeliveryManager();
-    }
-
-    private IEnumerator LoadGameSceneAsync()
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        AsyncOperation loadOp = SceneManager.LoadSceneAsync(1);
-        loadOp.allowSceneActivation = false;
-
-        Debug.Log("Loading completed! Transitioning");
-
-        yield return new WaitForSeconds(0.5f);
-
-        loadOp.allowSceneActivation = true;
     }
 }
