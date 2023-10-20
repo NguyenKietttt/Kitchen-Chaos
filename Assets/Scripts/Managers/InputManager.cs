@@ -11,7 +11,9 @@ public sealed class InputManager
         MoveLeft,
         MoveRight,
         Interact,
-        Cut
+        Cut,
+        GamepadInteract,
+        GamepadCut,
     }
 
     private const string PLAYER_PREFS_BINDING_KEY = "PLAYER_PREFS_BINDING_KEY";
@@ -45,6 +47,8 @@ public sealed class InputManager
             Binding.MoveRight => _playerInputAction.Player.Move.bindings[4].ToDisplayString(),
             Binding.Interact => _playerInputAction.Player.Interact.bindings[0].ToDisplayString(),
             Binding.Cut => _playerInputAction.Player.CuttingInteract.bindings[0].ToDisplayString(),
+            Binding.GamepadInteract => _playerInputAction.Player.Interact.bindings[1].ToDisplayString(),
+            Binding.GamepadCut => _playerInputAction.Player.CuttingInteract.bindings[1].ToDisplayString(),
             _ => string.Empty,
         };
     }
@@ -81,6 +85,14 @@ public sealed class InputManager
             case Binding.Cut:
                 inputAction = _playerInputAction.Player.CuttingInteract;
                 bindingIndex = 0;
+                break;
+            case Binding.GamepadInteract:
+                inputAction = _playerInputAction.Player.Interact;
+                bindingIndex = 1;
+                break;
+            case Binding.GamepadCut:
+                inputAction = _playerInputAction.Player.CuttingInteract;
+                bindingIndex = 1;
                 break;
         }
 

@@ -21,7 +21,9 @@ public sealed class EventManager
     public Action DeliverReceiptSuccess;
     public Action DeliverReceiptFailed;
 
+    // UI
     public Action ClickOptionsBtn;
+    public Action CloseOptionUI;
 
     public void Dispose()
     {

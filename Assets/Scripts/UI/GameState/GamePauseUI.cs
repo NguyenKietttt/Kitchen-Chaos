@@ -15,6 +15,7 @@ public sealed class GamePauseUI : MonoBehaviour
         _mainMenuBtn.onClick.AddListener(OnMainMenuButtonClicked);
 
         Bootstrap.Instance.EventMgr.OnPaused += Show;
+        Bootstrap.Instance.EventMgr.CloseOptionUI += Show;
         Bootstrap.Instance.EventMgr.OnUnPaused += Hide;
 
         Hide();
@@ -27,12 +28,14 @@ public sealed class GamePauseUI : MonoBehaviour
         _mainMenuBtn.onClick.RemoveAllListeners();
 
         Bootstrap.Instance.EventMgr.OnPaused -= Show;
+        Bootstrap.Instance.EventMgr.CloseOptionUI -= Show;
         Bootstrap.Instance.EventMgr.OnUnPaused -= Hide;
     }
 
     private void Show()
     {
         gameObject.SetActive(true);
+        _resumeBtn.Select();
     }
 
     private void Hide()
@@ -48,6 +51,7 @@ public sealed class GamePauseUI : MonoBehaviour
     public void OnOptionsButtonClicked()
     {
         Bootstrap.Instance.EventMgr.ClickOptionsBtn?.Invoke();
+        Hide();
     }
 
     public void OnMainMenuButtonClicked()

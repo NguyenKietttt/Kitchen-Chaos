@@ -4,6 +4,7 @@ using UnityEngine;
 public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 {
     private const float PLAYER_RADIUS = 0.7f;
+    private const float MOVE_OFFSET = 0.5f;
     private const int PLAYER_HEIGHT = 2;
     private const int MOVING_SPEED = 7;
     private const int ROTATION_SPEED = 10;
@@ -139,14 +140,14 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
     {
         Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
 
-        if (moveDirX.x != 0 && CanMove(moveDirX, moveDistance))
+        if ((moveDirX.x <= -MOVE_OFFSET || moveDirX.x >= MOVE_OFFSET) && CanMove(moveDirX, moveDistance))
         {
             return moveDirX;
         }
 
         Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
 
-        if (moveDirZ.z != 0 && CanMove(moveDirZ, moveDistance))
+        if ((moveDirZ.z <= -MOVE_OFFSET || moveDirZ.z >= MOVE_OFFSET) && CanMove(moveDirZ, moveDistance))
         {
             return moveDirZ;
         }
