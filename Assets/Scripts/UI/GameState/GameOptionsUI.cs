@@ -23,6 +23,9 @@ public sealed class GameOptionsUI : MonoBehaviour
     [SerializeField] private Button _moveRightBtn;
     [SerializeField] private Button _interactBtn;
     [SerializeField] private Button _cutBtn;
+    [SerializeField] private Button _interactGamepadBtn;
+    [SerializeField] private Button _cutGamepadBtn;
+
 
     [Space]
 
@@ -32,6 +35,9 @@ public sealed class GameOptionsUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _moveRightTxt;
     [SerializeField] private TextMeshProUGUI _interactTxt;
     [SerializeField] private TextMeshProUGUI _cutTxt;
+    [SerializeField] private TextMeshProUGUI _interactGamepadtTxt;
+    [SerializeField] private TextMeshProUGUI _cutGamepadTxt;
+
 
     [Space]
 
@@ -43,7 +49,7 @@ public sealed class GameOptionsUI : MonoBehaviour
     {
         _sfxVolumnBtn.onClick.AddListener(OnSFXVolumnButtonClicked);
         _musicVolumnBtn.onClick.AddListener(OnMusicVolumnButtonClicked);
-        _closeBtn.onClick.AddListener(Hide);
+        _closeBtn.onClick.AddListener(OnCloseButtonClicked);
 
         _moveUpBtn.onClick.AddListener(() => OnRebindKeyClicked(InputManager.Binding.MoveUp));
         _moveDownBtn.onClick.AddListener(() => OnRebindKeyClicked(InputManager.Binding.MoveDown));
@@ -51,6 +57,8 @@ public sealed class GameOptionsUI : MonoBehaviour
         _moveRightBtn.onClick.AddListener(() => OnRebindKeyClicked(InputManager.Binding.MoveRight));
         _interactBtn.onClick.AddListener(() => OnRebindKeyClicked(InputManager.Binding.Interact));
         _cutBtn.onClick.AddListener(() => OnRebindKeyClicked(InputManager.Binding.Cut));
+        _interactGamepadBtn.onClick.AddListener(() => OnRebindKeyClicked(InputManager.Binding.GamepadInteract));
+        _cutGamepadBtn.onClick.AddListener(() => OnRebindKeyClicked(InputManager.Binding.GamepadCut));
 
         Bootstrap.Instance.EventMgr.OnUnPaused += Hide;
         Bootstrap.Instance.EventMgr.ClickOptionsBtn += OnOptionsButtonClicked;
@@ -72,6 +80,8 @@ public sealed class GameOptionsUI : MonoBehaviour
         _moveRightBtn.onClick.RemoveAllListeners();
         _interactBtn.onClick.RemoveAllListeners();
         _cutBtn.onClick.RemoveAllListeners();
+        _interactGamepadBtn.onClick.RemoveAllListeners();
+        _cutGamepadBtn.onClick.RemoveAllListeners();
 
         _sfxVolumnBtn.onClick.RemoveAllListeners();
         _musicVolumnBtn.onClick.RemoveAllListeners();
@@ -96,6 +106,22 @@ public sealed class GameOptionsUI : MonoBehaviour
     {
         Bootstrap.Instance.MusicMgr.ChangeVolumn();
         UpdateMusicVolume();
+    }
+
+    private void OnCloseButtonClicked()
+    {
+        Hide();
+        Bootstrap.Instance.EventMgr.CloseOptionUI?.Invoke();
+    }
+
+    private void OnRebindKeyClicked(InputManager.Binding binding)
+    {
+        ShowRebindKeyUI();
+        Bootstrap.Instance.InputMgr.RebindBinding(binding, () =>
+        {
+            HideRebindKeyUI();
+            UpdateRebindKeyVisuals();
+        });
     }
 
     private void Show()
@@ -136,16 +162,8 @@ public sealed class GameOptionsUI : MonoBehaviour
         _moveRightTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.MoveRight));
         _interactTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.Interact));
         _cutTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.Cut));
-    }
-
-    private void OnRebindKeyClicked(InputManager.Binding binding)
-    {
-        ShowRebindKeyUI();
-        Bootstrap.Instance.InputMgr.RebindBinding(binding, () =>
-        {
-            HideRebindKeyUI();
-            UpdateRebindKeyVisuals();
-        });
+        _interactGamepadtTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.GamepadInteract));
+        _cutGamepadTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.GamepadCut));
     }
 
     private void ShowRebindKeyUI()

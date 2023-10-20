@@ -17,6 +17,8 @@ public sealed class MainMenuUI : MonoBehaviour
         _quitBtn.onClick.AddListener(OnQuitButtonClicked);
 
         Time.timeScale = 1.0f;
+
+        _playBtn.Select();
     }
 
     private void OnDestroy()
