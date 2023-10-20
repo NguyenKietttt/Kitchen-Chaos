@@ -21,6 +21,8 @@ public sealed class EventManager
     public Action DeliverReceiptSuccess;
     public Action DeliverReceiptFailed;
 
+    public Action ClickOptionsBtn;
+
     public void Dispose()
     {
         Interact = delegate { };
