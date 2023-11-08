@@ -8,6 +8,7 @@ public sealed class EventManager
     public Action TooglePause;
     public Action OnPaused;
     public Action OnUnPaused;
+    public Action RebindingKey;
     public Action<BaseCounter> SelectCounter;
     public Action<StoveCounter.State> ChangeStoveCounterState;
     public Action SpawnPlate;
@@ -31,6 +32,7 @@ public sealed class EventManager
         CuttingInteract = delegate { };
         OnPaused = delegate { };
         OnUnPaused = delegate { };
+        RebindingKey = delegate { };
         SelectCounter = delegate { };
         ChangeStoveCounterState = delegate { };
         SpawnPlate = delegate { };

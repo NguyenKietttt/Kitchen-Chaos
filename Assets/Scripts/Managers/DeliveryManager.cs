@@ -27,7 +27,7 @@ public sealed class DeliveryManager
 
     public void OnUpdate(float deltaTime)
     {
-        if (!Bootstrap.Instance.GameStateMgr.IsGamePlaying())
+        if (!Bootstrap.Instance.GameStateMgr.IsGamePlaying)
         {
             return;
         }
@@ -38,7 +38,7 @@ public sealed class DeliveryManager
         {
             _spawnReceiptTimer = 0;
 
-            if (_waitingListReceiptSO.Count < WAITING_RECEIPT_MAX)
+            if (Bootstrap.Instance.GameStateMgr.IsGamePlaying && _waitingListReceiptSO.Count < WAITING_RECEIPT_MAX)
             {
                 ReceiptSO waitingReceiptSO = _receiptSOList.ReceiptSOList[Random.Range(0, _receiptSOList.ReceiptSOList.Length)];
                 _waitingListReceiptSO.Add(waitingReceiptSO);

@@ -14,7 +14,7 @@ public sealed class GameStartCountDownUI : MonoBehaviour
 
     private void Update()
     {
-        _countDownTxt.SetText(Mathf.Ceil(Bootstrap.Instance.GameStateMgr.GetCountDownToStartTimer()).ToString());
+        _countDownTxt.SetText(Mathf.Ceil(Bootstrap.Instance.GameStateMgr.CountDownToStartTimer).ToString());
     }
 
     private void OnDestroy()
@@ -24,7 +24,7 @@ public sealed class GameStartCountDownUI : MonoBehaviour
 
     private void OnGameStateChanged()
     {
-        if (Bootstrap.Instance.GameStateMgr.IsCounDownToStartActive())
+        if (Bootstrap.Instance.GameStateMgr.IsCounDownToStartActive)
         {
             Show();
         }

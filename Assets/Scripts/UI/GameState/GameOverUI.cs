@@ -19,7 +19,7 @@ public sealed class GameOverUI : MonoBehaviour
 
     private void OnGameStateChanged()
     {
-        if (Bootstrap.Instance.GameStateMgr.IsGameOver())
+        if (Bootstrap.Instance.GameStateMgr.IsGameOver)
         {
             Show();
             _amountReceiptDeliveredTxt.SetText(Bootstrap.Instance.DeliveryMgr.AmountSucessfulReceipt.ToString());
