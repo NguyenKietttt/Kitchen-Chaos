@@ -5801,6 +5801,7 @@ GameObject:
   - component: {fileID: 921997391}
   - component: {fileID: 921997393}
   - component: {fileID: 921997392}
+  - component: {fileID: 921997394}
   m_Layer: 5
   m_Name: Text_CountDown
   m_TagString: Untagged
@@ -5925,6 +5926,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 921997390}
   m_CullTransparentMesh: 1
+--- !u!95 &921997394
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 921997390}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e743f97a75a2e334aa043537f4ae2fbd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &946860234
 GameObject:
   m_ObjectHideFlags: 0
@@ -10725,6 +10747,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1689880928}
   - component: {fileID: 1689880929}
+  - component: {fileID: 1689880931}
+  - component: {fileID: 1689880930}
   m_Layer: 5
   m_Name: UI_GameStartCountDown
   m_TagString: Untagged
@@ -10742,7 +10766,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 921997391}
   m_Father: {fileID: 1244646196}
@@ -10766,6 +10790,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _countDownTxt: {fileID: 921997392}
+  _animator: {fileID: 1689880931}
+--- !u!225 &1689880930
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1689880927}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!95 &1689880931
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1689880927}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1d4438094ba8cbf4eb0f4de217bca070, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1721292119
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,6 +21,7 @@ public sealed class EventManager
     // Sounds
     public Action DeliverReceiptSuccess;
     public Action DeliverReceiptFailed;
+    public Action CountdownPopup;
 
     // UI
     public Action ClickOptionsBtn;

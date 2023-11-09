@@ -18,29 +18,32 @@ public sealed class SFXManager : MonoBehaviour
     [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _trashVolume;
     [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _deliverySuccessVolume;
     [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _deliveryFailedVolume;
+    [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _countdownPopupVolume;
 
     private float _masterVolumn = MAX_VOLUMN;
-
-    private void OnDestroy()
-    {
-        Bootstrap.Instance.EventMgr.DeliverReceiptSuccess -= OnDeliverReceiptSuccess;
-        Bootstrap.Instance.EventMgr.DeliverReceiptFailed -= OnDeliverReceiptFailed;
-        CuttingCounter.CutObject -= OnCut;
-        PlayerController.PickSomething -= OnPickSomething;
-        BaseCounter.ObjectPlaced -= OnObjectPlaced;
-        TrashCounter.ObjectTrashed -= OnObjectTrashed;
-    }
 
     public void Init()
     {
         Bootstrap.Instance.EventMgr.DeliverReceiptSuccess += OnDeliverReceiptSuccess;
         Bootstrap.Instance.EventMgr.DeliverReceiptFailed += OnDeliverReceiptFailed;
+        Bootstrap.Instance.EventMgr.CountdownPopup += OnCoundownPopup;
         CuttingCounter.CutObject += OnCut;
         PlayerController.PickSomething += OnPickSomething;
         BaseCounter.ObjectPlaced += OnObjectPlaced;
         TrashCounter.ObjectTrashed += OnObjectTrashed;
 
         _masterVolumn = PlayerPrefs.GetFloat(SFX_VOLUMN_KEY, MAX_VOLUMN);
+    }
+
+    private void OnDestroy()
+    {
+        Bootstrap.Instance.EventMgr.DeliverReceiptSuccess -= OnDeliverReceiptSuccess;
+        Bootstrap.Instance.EventMgr.DeliverReceiptFailed -= OnDeliverReceiptFailed;
+        Bootstrap.Instance.EventMgr.CountdownPopup -= OnCoundownPopup;
+        CuttingCounter.CutObject -= OnCut;
+        PlayerController.PickSomething -= OnPickSomething;
+        BaseCounter.ObjectPlaced -= OnObjectPlaced;
+        TrashCounter.ObjectTrashed -= OnObjectTrashed;
     }
 
     public void ChangeVolumn()
@@ -59,6 +62,11 @@ public sealed class SFXManager : MonoBehaviour
     public AudioClip GetRandomFootStepAudioClip()
     {
         return _audioClipRefsSO.Footstep[Random.Range(0, _audioClipRefsSO.Footstep.Length)];
+    }
+
+    private void OnCoundownPopup()
+    {
+        PlaySound(_audioClipRefsSO.Warning, Camera.main.transform.position, _countdownPopupVolume);
     }
 
     private void OnCut()
