@@ -4,6 +4,8 @@ public sealed class StoveCounter : BaseCounter
 {
     public enum State { Idle, Frying, Fried, Burned }
 
+    public bool IsFried => _curState is State.Fried;
+
     [Header("Child Asset Ref")]
     [SerializeField] private FryingReceiptSO[] _listFryingReceiptSO;
     [SerializeField] private BurningReceiptSO[] _listBurningReceiptSO;

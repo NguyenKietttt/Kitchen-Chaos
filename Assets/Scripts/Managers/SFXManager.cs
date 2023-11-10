@@ -27,6 +27,7 @@ public sealed class SFXManager : MonoBehaviour
         Bootstrap.Instance.EventMgr.DeliverReceiptSuccess += OnDeliverReceiptSuccess;
         Bootstrap.Instance.EventMgr.DeliverReceiptFailed += OnDeliverReceiptFailed;
         Bootstrap.Instance.EventMgr.CountdownPopup += OnCoundownPopup;
+        Bootstrap.Instance.EventMgr.StoveWarning += OnStoveWarning;
         CuttingCounter.CutObject += OnCut;
         PlayerController.PickSomething += OnPickSomething;
         BaseCounter.ObjectPlaced += OnObjectPlaced;
@@ -40,6 +41,7 @@ public sealed class SFXManager : MonoBehaviour
         Bootstrap.Instance.EventMgr.DeliverReceiptSuccess -= OnDeliverReceiptSuccess;
         Bootstrap.Instance.EventMgr.DeliverReceiptFailed -= OnDeliverReceiptFailed;
         Bootstrap.Instance.EventMgr.CountdownPopup -= OnCoundownPopup;
+        Bootstrap.Instance.EventMgr.StoveWarning -= OnStoveWarning;
         CuttingCounter.CutObject -= OnCut;
         PlayerController.PickSomething -= OnPickSomething;
         BaseCounter.ObjectPlaced -= OnObjectPlaced;
@@ -65,6 +67,11 @@ public sealed class SFXManager : MonoBehaviour
     }
 
     private void OnCoundownPopup()
+    {
+        PlaySound(_audioClipRefsSO.Warning, Camera.main.transform.position, _countdownPopupVolume);
+    }
+
+    private void OnStoveWarning()
     {
         PlaySound(_audioClipRefsSO.Warning, Camera.main.transform.position, _countdownPopupVolume);
     }

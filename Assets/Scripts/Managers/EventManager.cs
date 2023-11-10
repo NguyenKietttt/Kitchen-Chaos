@@ -22,6 +22,7 @@ public sealed class EventManager
     public Action DeliverReceiptSuccess;
     public Action DeliverReceiptFailed;
     public Action CountdownPopup;
+    public Action StoveWarning;
 
     // UI
     public Action ClickOptionsBtn;
