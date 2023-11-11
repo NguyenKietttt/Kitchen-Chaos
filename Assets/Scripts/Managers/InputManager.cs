@@ -106,6 +106,8 @@ public sealed class InputManager
 
                 PlayerPrefs.SetString(PLAYER_PREFS_BINDING_KEY, _playerInputAction.SaveBindingOverridesAsJson());
                 PlayerPrefs.Save();
+
+                Bootstrap.Instance.EventMgr.RebindingKey?.Invoke();
             })
             .Start();
     }

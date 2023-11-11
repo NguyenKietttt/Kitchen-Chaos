@@ -84,7 +84,7 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 
     private void OnInteractAction()
     {
-        if (!Bootstrap.Instance.GameStateMgr.IsGamePlaying())
+        if (!Bootstrap.Instance.GameStateMgr.IsGamePlaying)
         {
             return;
         }
@@ -97,7 +97,7 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 
     private void OnCuttingInteractAction()
     {
-        if (!Bootstrap.Instance.GameStateMgr.IsGamePlaying())
+        if (!Bootstrap.Instance.GameStateMgr.IsGamePlaying)
         {
             return;
         }

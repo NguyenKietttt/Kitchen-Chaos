@@ -19,10 +19,9 @@ public sealed class PlatesCounter : BaseCounter
         {
             _spawnPlateTimer = 0;
 
-            if (_platesSpawnAmount < PLATES_SPAWN_AMOUNT_MAX)
+            if (Bootstrap.Instance.GameStateMgr.IsGamePlaying && _platesSpawnAmount < PLATES_SPAWN_AMOUNT_MAX)
             {
                 _platesSpawnAmount++;
-
                 Bootstrap.Instance.EventMgr.SpawnPlate?.Invoke();
             }
         }
@@ -30,15 +29,12 @@ public sealed class PlatesCounter : BaseCounter
 
     public override void OnInteract(PlayerController playerController)
     {
-        if (!playerController.HasKitchenObj())
+        if (!playerController.HasKitchenObj() && _platesSpawnAmount > 0)
         {
-            if (_platesSpawnAmount > 0)
-            {
-                _platesSpawnAmount--;
+            _platesSpawnAmount--;
 
-                KitchenObject.SpawnKitchenObj(_plateKitchenObjSO, playerController);
-                Bootstrap.Instance.EventMgr.RemovePlate?.Invoke();
-            }
+            KitchenObject.SpawnKitchenObj(_plateKitchenObjSO, playerController);
+            Bootstrap.Instance.EventMgr.RemovePlate?.Invoke();
         }
     }
 }

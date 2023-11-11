@@ -8,6 +8,6 @@ public sealed class GamePlayingClockUI : MonoBehaviour
 
     private void Update()
     {
-        _timerImg.fillAmount = Bootstrap.Instance.GameStateMgr.GetGamePlayingTimerNormalized();
+        _timerImg.fillAmount = Bootstrap.Instance.GameStateMgr.GamePlayingTimerNormalized;
     }
 }

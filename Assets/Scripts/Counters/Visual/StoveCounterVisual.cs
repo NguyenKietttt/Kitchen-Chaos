@@ -2,6 +2,9 @@ using UnityEngine;
 
 public sealed class StoveCounterVisual : MonoBehaviour
 {
+    [Header("External Ref")]
+    [SerializeField] private GameObject _stoveCounterObj;
+
     [Header("Internal Ref")]
     [SerializeField] private GameObject _stoveOnObj;
     [SerializeField] private GameObject _particlesObj;
@@ -16,8 +19,13 @@ public sealed class StoveCounterVisual : MonoBehaviour
         Bootstrap.Instance.EventMgr.ChangeStoveCounterState -= OnStoveCounterStateChanged;
     }
 
-    private void OnStoveCounterStateChanged(StoveCounter.State state)
+    private void OnStoveCounterStateChanged(StoveCounter.State state, int counterInstanceID)
     {
+        if (_stoveCounterObj.GetInstanceID() != counterInstanceID)
+        {
+            return;
+        }
+
         bool isActiveVisual = state is StoveCounter.State.Frying or StoveCounter.State.Fried;
 
         _stoveOnObj.SetActive(isActiveVisual);
