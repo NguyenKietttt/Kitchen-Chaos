@@ -10,7 +10,7 @@ public sealed class EventManager
     public Action OnUnPaused;
     public Action RebindingKey;
     public Action<BaseCounter> SelectCounter;
-    public Action<StoveCounter.State> ChangeStoveCounterState;
+    public Action<StoveCounter.State, int> ChangeStoveCounterState;
     public Action SpawnPlate;
     public Action RemovePlate;
     public Action<int, KitchenObjectSO> AddIngredientSuccess;

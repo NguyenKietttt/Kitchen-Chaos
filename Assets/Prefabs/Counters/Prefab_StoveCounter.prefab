@@ -218,6 +218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd26fc58ff08b74ab186b17eb206495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stoveCounterObj: {fileID: 8429991187470582211}
   _stoveCounter: {fileID: 6390879159441733293}
   _audioSrc: {fileID: 3881933653536065067}
 --- !u!1 &8314437876836601329
@@ -605,6 +606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed378280157608c49ae5964ae8b1df05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stoveCounterObj: {fileID: 8429991187470582211}
   _stoveOnObj: {fileID: 5908908289895002231}
   _particlesObj: {fileID: 1895977425867089918}
 --- !u!4 &7893703585134517691 stripped

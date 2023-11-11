@@ -48,7 +48,7 @@ public sealed class StoveCounter : BaseCounter
                     _curState = State.Fried;
                     _burningReceiptSO = GetBurningReceiptSOWithInput(GetKitchenObj().GetKitchenObjectSO());
 
-                    Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState);
+                    Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
                 }
                 break;
             case State.Fried:
@@ -64,7 +64,7 @@ public sealed class StoveCounter : BaseCounter
 
                     _curState = State.Burned;
 
-                    Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState);
+                    Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
                     Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(0, gameObject.GetInstanceID());
                 }
                 break;
@@ -86,7 +86,7 @@ public sealed class StoveCounter : BaseCounter
 
                         _curState = State.Idle;
 
-                        Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState);
+                        Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
                         Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(0, gameObject.GetInstanceID());
                     }
                 }
@@ -97,7 +97,7 @@ public sealed class StoveCounter : BaseCounter
 
                 _curState = State.Idle;
 
-                Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState);
+                Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
                 Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(0, gameObject.GetInstanceID());
             }
         }
@@ -111,7 +111,7 @@ public sealed class StoveCounter : BaseCounter
                 _fryingTimer = 0;
                 _curState = State.Frying;
 
-                Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState);
+                Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
 
                 float progressNormalized = _fryingTimer / _fryingReceiptSO.FryingTimeMax;
                 Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(progressNormalized, gameObject.GetInstanceID());

@@ -6,6 +6,9 @@ public sealed class StoveCounterSound : MonoBehaviour
     private const float BURN_PROGRESS_AMOUNT = 0.5f;
     private const float WARNING_SOUND_TIMER_MAX = 0.2f;
 
+    [Header("External Ref")]
+    [SerializeField] private GameObject _stoveCounterObj;
+
     [Header("Internal Ref")]
     [SerializeField] private StoveCounter _stoveCounter;
     [SerializeField] private AudioSource _audioSrc;
@@ -41,8 +44,13 @@ public sealed class StoveCounterSound : MonoBehaviour
         Bootstrap.Instance.EventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
     }
 
-    private void OnStoveCounterState(StoveCounter.State state)
+    private void OnStoveCounterState(StoveCounter.State state, int counterInstanceID)
     {
+        if (_stoveCounterObj.GetInstanceID() != counterInstanceID)
+        {
+            return;
+        }
+
         if (state is StoveCounter.State.Frying or StoveCounter.State.Fried)
         {
             _audioSrc.Play();
