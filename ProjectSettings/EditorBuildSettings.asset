@@ -6,15 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Scene_Intro.unity
+    path: Assets/KitchenChaos/Scenes/Scene_Intro.unity
     guid: e8dea19c131fadb4581540d88c524e9d
   - enabled: 1
-    path: Assets/Scenes/Scene_MainMenu.unity
+    path: Assets/KitchenChaos/Scenes/Scene_MainMenu.unity
     guid: e69fb487e94da1043b4ac738d52f5f66
   - enabled: 1
-    path: Assets/Scenes/Scene_Loading.unity
+    path: Assets/KitchenChaos/Scenes/Scene_Loading.unity
     guid: 63b6a507c6f4fb54e859730236537d79
   - enabled: 1
-    path: Assets/Scenes/Scene_Gameplay.unity
+    path: Assets/KitchenChaos/Scenes/Scene_Gameplay.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects: {}
