@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4188621771895345955}
   - component: {fileID: 5110513795547533945}
   m_Layer: 0
-  m_Name: Prefab_PlateIconSingleUI
+  m_Name: Prefab_UI_PlateIconSingle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
