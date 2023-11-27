@@ -24,7 +24,7 @@ public sealed class GameStartCountDownUI : MonoBehaviour
         if (_preCountdownNumber != countdownNumber)
         {
             _preCountdownNumber = countdownNumber;
-            PlayShowingAnimation();
+            PlayShowingSequence();
 
             Bootstrap.Instance.EventMgr.CountdownPopup?.Invoke();
         }
@@ -57,7 +57,7 @@ public sealed class GameStartCountDownUI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void PlayShowingAnimation()
+    private void PlayShowingSequence()
     {
         // Scale
         DOTween.Sequence()
