@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -5,9 +6,7 @@ public sealed class GameStartCountDownUI : MonoBehaviour
 {
     [Header("Internal Ref")]
     [SerializeField] private TextMeshProUGUI _countDownTxt;
-    [SerializeField] private Animator _animator;
-
-    private readonly int _countdownNumberKeyHash = Animator.StringToHash("CountdownNumber_Key");
+    [SerializeField] private CanvasGroup _canvasGroup;
 
     private int _preCountdownNumber;
 
@@ -25,7 +24,7 @@ public sealed class GameStartCountDownUI : MonoBehaviour
         if (_preCountdownNumber != countdownNumber)
         {
             _preCountdownNumber = countdownNumber;
-            _animator.SetTrigger(_countdownNumberKeyHash);
+            PlayShowingAnimation();
 
             Bootstrap.Instance.EventMgr.CountdownPopup?.Invoke();
         }
@@ -56,5 +55,27 @@ public sealed class GameStartCountDownUI : MonoBehaviour
     private void Hide()
     {
         gameObject.SetActive(false);
+    }
+
+    private void PlayShowingAnimation()
+    {
+        // Scale
+        DOTween.Sequence()
+            .AppendCallback(() => transform.localScale = new Vector3(0.6f, 0.6f, 0.6f))
+            .Append(transform.DOScale(new Vector3(1.3f, 1.3f, 1.3f), 0.025f))
+            .Append(transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.075f))
+            .Append(transform.DOScale(Vector3.one, 0.9f));
+
+        // Rotate
+        DOTween.Sequence()
+            .AppendCallback(() => transform.eulerAngles = new Vector3(0.0f, 0.0f, 17.0f))
+            .Append(transform.DORotate(new Vector3(0.0f, 0.0f, -17.0f), 0.025f))
+            .Append(transform.DORotate(Vector3.zero, 0.075f));
+
+        // Fade
+        DOTween.Sequence()
+            .AppendCallback(() => _canvasGroup.alpha = 1.0f)
+            .Append(_canvasGroup.DOFade(1.0f, 0.5f))
+            .Append(_canvasGroup.DOFade(0.0f, 0.5f));
     }
 }
