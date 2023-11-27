@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public sealed class StoveWarningUI : MonoBehaviour
@@ -6,10 +7,15 @@ public sealed class StoveWarningUI : MonoBehaviour
 
     [Header("Internal Ref")]
     [SerializeField] private StoveCounter _stoveCounter;
+    [SerializeField] private CanvasGroup _canvasGroup;
+
+    private Sequence _wariningSequence;
 
     private void Start()
     {
         Bootstrap.Instance.EventMgr.UpdateCounterProgress += OnCounterProgressChanged;
+
+        SetupWarningSequence();
         Hide();
     }
 
@@ -43,5 +49,15 @@ public sealed class StoveWarningUI : MonoBehaviour
     private void Hide()
     {
         gameObject.SetActive(false);
+    }
+
+    private void SetupWarningSequence()
+    {
+        _wariningSequence = DOTween.Sequence()
+            .AppendCallback(() => _canvasGroup.alpha = 0)
+            .Append(_canvasGroup.DOFade(1.0f, 0.1f))
+            .Append(_canvasGroup.DOFade(0.0f, 0.2f));
+
+        _wariningSequence.SetLoops(-1, LoopType.Restart);
     }
 }
