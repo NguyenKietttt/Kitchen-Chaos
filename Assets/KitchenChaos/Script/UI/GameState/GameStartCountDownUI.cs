@@ -69,8 +69,8 @@ public sealed class GameStartCountDownUI : MonoBehaviour
         // Rotate
         DOTween.Sequence()
             .AppendCallback(() => transform.eulerAngles = new Vector3(0.0f, 0.0f, 17.0f))
-            .Append(transform.DORotate(new Vector3(0.0f, 0.0f, -17.0f), 0.025f))
-            .Append(transform.DORotate(Vector3.zero, 0.075f));
+            .Append(transform.DOLocalRotate(new Vector3(0.0f, 0.0f, -17.0f), 0.025f))
+            .Append(transform.DOLocalRotate(Vector3.zero, 0.075f));
 
         // Fade
         DOTween.Sequence()
