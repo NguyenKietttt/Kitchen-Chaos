@@ -864,13 +864,21 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 75585631385021743, guid: ff55d80789df30940b94d2af06cd755a,
         type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 5268674856545339996}
-    - targetCorrespondingSourceObject: {fileID: 75585631385021743, guid: ff55d80789df30940b94d2af06cd755a,
-        type: 3}
-      insertIndex: 6
+      insertIndex: 5
       addedObject: {fileID: 8404098868968932616}
   m_SourcePrefab: {fileID: 100100000, guid: ff55d80789df30940b94d2af06cd755a, type: 3}
+--- !u!114 &619325918148850147 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8306269815563725809, guid: ff55d80789df30940b94d2af06cd755a,
+    type: 3}
+  m_PrefabInstance: {fileID: 8925437128986188306}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1496495709870673239 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8005459692596827973, guid: ff55d80789df30940b94d2af06cd755a,
@@ -883,27 +891,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 8925437128986188306}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &5268674856545339996
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8849869571513792317}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ed27a16a7261f7f48bfdefd97e72986a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &8404098868968932616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -917,4 +904,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stoveCounter: {fileID: 6390879159441733293}
-  _animator: {fileID: 5268674856545339996}
+  _progressBarImg: {fileID: 619325918148850147}
+  _idleColor: {r: 1, g: 0.67058825, b: 0, a: 1}
+  _warningColor: {r: 1, g: 0, b: 0.019607844, a: 1}

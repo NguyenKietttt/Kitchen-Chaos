@@ -1,4 +1,6 @@
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public sealed class ProgressBarFlashingUI : MonoBehaviour
 {
@@ -6,14 +8,20 @@ public sealed class ProgressBarFlashingUI : MonoBehaviour
 
     [Header("Internal Ref")]
     [SerializeField] private StoveCounter _stoveCounter;
-    [SerializeField] private Animator _animator;
+    [SerializeField] private Image _progressBarImg;
 
-    private readonly int _isFlashingHashKey = Animator.StringToHash("IsFlashing");
+    [Header("Property")]
+    [SerializeField] private Color _idleColor;
+    [SerializeField] private Color _warningColor;
+
+    private Sequence _flashingSequence;
 
     private void Start()
     {
         Bootstrap.Instance.EventMgr.UpdateCounterProgress += OnCounterProgressChanged;
-        _animator.SetBool(_isFlashingHashKey, false);
+
+        PrepareFlashingSequence();
+        ResetProgressBarColor();
     }
 
     private void OnDestroy()
@@ -28,6 +36,35 @@ public sealed class ProgressBarFlashingUI : MonoBehaviour
             return;
         }
 
-        _animator.SetBool(_isFlashingHashKey, _stoveCounter.IsFried && progressNormalized >= BURN_PROGRESS_AMOUNT);
+        if (_stoveCounter.IsFried && progressNormalized >= BURN_PROGRESS_AMOUNT)
+        {
+            if (!_flashingSequence.IsPlaying())
+            {
+                PlayFlashingSequence();
+            }
+        }
+        else
+        {
+            ResetProgressBarColor();
+        }
+    }
+
+    private void PlayFlashingSequence()
+    {
+        _flashingSequence.Restart();
+    }
+
+    private void ResetProgressBarColor()
+    {
+        _flashingSequence.Pause();
+        _progressBarImg.color = _idleColor;
+    }
+
+    private void PrepareFlashingSequence()
+    {
+        _flashingSequence = DOTween.Sequence()
+            .Append(_progressBarImg.DOColor(_warningColor, 0.1f))
+            .Append(_progressBarImg.DOColor(_idleColor, 0.1f))
+            .SetLoops(-1, LoopType.Restart);
     }
 }
