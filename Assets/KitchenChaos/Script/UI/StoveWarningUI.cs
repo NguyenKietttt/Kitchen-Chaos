@@ -9,7 +9,7 @@ public sealed class StoveWarningUI : MonoBehaviour
     [SerializeField] private StoveCounter _stoveCounter;
     [SerializeField] private CanvasGroup _canvasGroup;
 
-    private Sequence _wariningSequence;
+    private Sequence _warningSequence;
 
     private void Start()
     {
@@ -53,11 +53,11 @@ public sealed class StoveWarningUI : MonoBehaviour
 
     private void SetupWarningSequence()
     {
-        _wariningSequence = DOTween.Sequence()
+        _warningSequence = DOTween.Sequence()
             .AppendCallback(() => _canvasGroup.alpha = 0)
             .Append(_canvasGroup.DOFade(1.0f, 0.1f))
             .Append(_canvasGroup.DOFade(0.0f, 0.2f));
 
-        _wariningSequence.SetLoops(-1, LoopType.Restart);
+        _warningSequence.SetLoops(-1, LoopType.Restart);
     }
 }
