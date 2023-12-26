@@ -8,18 +8,11 @@ public sealed class SceneLoader : MonoBehaviour
     public enum Scene
     {
         Intro = 0,
-        MainMenu = 1,
-        Loading = 2,
-        Gameplay = 3
+        Gameplay = 1
     }
 
     private readonly WaitForSeconds _waitForHalfSecond = new(0.5f);
     private readonly WaitForEndOfFrame _waitForEndFrame = new();
-
-    public void Load(Scene scene)
-    {
-        SceneManager.LoadScene((int)scene);
-    }
 
     public void LoadAsync(Scene scene, Action onLoaded = null)
     {
@@ -33,11 +26,10 @@ public sealed class SceneLoader : MonoBehaviour
         AsyncOperation loadOp = SceneManager.LoadSceneAsync((int)scene);
         loadOp.allowSceneActivation = false;
 
-        Debug.Log($"{scene} is loaded! Transitioning");
-
         yield return _waitForHalfSecond;
         loadOp.allowSceneActivation = true;
 
+        yield return _waitForEndFrame;
         yield return _waitForEndFrame;
 
         onLoaded?.Invoke();

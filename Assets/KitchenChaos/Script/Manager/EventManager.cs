@@ -2,7 +2,7 @@ using System;
 
 public sealed class EventManager
 {
-    public Action ChangeGameState;
+    public Action<GameState> ChangeGameState;
     public Action Interact;
     public Action CuttingInteract;
     public Action TooglePause;
@@ -27,21 +27,4 @@ public sealed class EventManager
     // UI
     public Action ClickOptionsBtn;
     public Action CloseOptionUI;
-
-    public void Dispose()
-    {
-        Interact = delegate { };
-        CuttingInteract = delegate { };
-        OnPaused = delegate { };
-        OnUnPaused = delegate { };
-        RebindingKey = delegate { };
-        SelectCounter = delegate { };
-        ChangeStoveCounterState = delegate { };
-        SpawnPlate = delegate { };
-        RemovePlate = delegate { };
-        AddIngredientSuccess = delegate { };
-        UpdateCounterProgress = delegate { };
-        SpawnReceipt = delegate { };
-        CompleteReceipt = delegate { };
-    }
 }

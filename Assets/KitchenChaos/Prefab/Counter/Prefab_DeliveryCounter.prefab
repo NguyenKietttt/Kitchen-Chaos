@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8993008458002632941}
   - component: {fileID: 8134025796266367818}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Container_DeliveryResult
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ GameObject:
   - component: {fileID: 4926940087595554877}
   - component: {fileID: 2372491102640335951}
   - component: {fileID: 5757891926042499990}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Image_BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 2071717282030767329}
   - component: {fileID: 6283107269007008149}
   - component: {fileID: 843329526360199791}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text_Message
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -410,7 +410,7 @@ GameObject:
   - component: {fileID: 6115460808877270914}
   - component: {fileID: 4941028266061092829}
   - component: {fileID: 6385124355924473763}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Image_Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -488,7 +488,7 @@ GameObject:
   - component: {fileID: 4795393274121065304}
   - component: {fileID: 8043632368699101135}
   - component: {fileID: 3182092032849148727}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: UI_Canvas_DeliveryResult
   m_TagString: Untagged
   m_Icon: {fileID: 0}

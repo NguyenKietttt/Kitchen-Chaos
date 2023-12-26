@@ -748,6 +748,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ProgressBarUI
       objectReference: {fileID: 0}
+    - target: {fileID: 2704930403479778928, guid: ff55d80789df30940b94d2af06cd755a,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5249517254759517669, guid: ff55d80789df30940b94d2af06cd755a,
         type: 3}
       propertyPath: _progressCounterObj

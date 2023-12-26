@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public sealed class PlatesCounter : BaseCounter
@@ -8,8 +9,14 @@ public sealed class PlatesCounter : BaseCounter
     [Header("Child Asset Ref")]
     [SerializeField] private KitchenObjectSO _plateKitchenObjSO;
 
+    private GameState _curState;
     private float _spawnPlateTimer;
     private int _platesSpawnAmount;
+
+    private void OnEnable()
+    {
+        Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
+    }
 
     private void Update()
     {
@@ -19,12 +26,17 @@ public sealed class PlatesCounter : BaseCounter
         {
             _spawnPlateTimer = 0;
 
-            if (Bootstrap.Instance.GameStateMgr.IsGamePlaying && _platesSpawnAmount < PLATES_SPAWN_AMOUNT_MAX)
+            if (_curState is GameState.GamePlaying && _platesSpawnAmount < PLATES_SPAWN_AMOUNT_MAX)
             {
                 _platesSpawnAmount++;
                 Bootstrap.Instance.EventMgr.SpawnPlate?.Invoke();
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
     }
 
     public override void OnInteract(PlayerController playerController)
@@ -36,5 +48,10 @@ public sealed class PlatesCounter : BaseCounter
             KitchenObject.SpawnKitchenObj(_plateKitchenObjSO, playerController);
             Bootstrap.Instance.EventMgr.RemovePlate?.Invoke();
         }
+    }
+
+    private void OnGameStateChanged(GameState state)
+    {
+        _curState = state;
     }
 }

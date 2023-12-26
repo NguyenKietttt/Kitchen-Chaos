@@ -1,32 +1,46 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public sealed class GameOverUI : MonoBehaviour
 {
     [Header("Internal Ref")]
     [SerializeField] private TextMeshProUGUI _amountReceiptDeliveredTxt;
+    [SerializeField] private Button _mainMenuBtn;
+
+    private void Awake()
+    {
+        Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
+        _mainMenuBtn.onClick.AddListener(() => OnMainMenuBtnClicked());
+    }
 
     private void Start()
     {
-        Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
         Hide();
     }
 
     private void OnDestroy()
     {
+        _mainMenuBtn.onClick.RemoveAllListeners();
         Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
     }
 
-    private void OnGameStateChanged()
+    private void OnMainMenuBtnClicked()
     {
-        if (Bootstrap.Instance.GameStateMgr.IsGameOver)
+        Bootstrap.Instance.GameStateMgr.ChangeState(GameState.MainMenu);
+    }
+
+    private void OnGameStateChanged(GameState state)
+    {
+        switch (state)
         {
-            Show();
-            _amountReceiptDeliveredTxt.SetText(Bootstrap.Instance.DeliveryMgr.AmountSucessfulReceipt.ToString());
-        }
-        else
-        {
-            Hide();
+            case GameState.GameOver:
+                _amountReceiptDeliveredTxt.SetText(Bootstrap.Instance.DeliveryMgr.AmountSucessfulReceipt.ToString());
+                Show();
+                break;
+            default:
+                Hide();
+                break;
         }
     }
 

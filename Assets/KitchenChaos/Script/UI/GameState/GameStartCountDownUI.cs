@@ -35,9 +35,9 @@ public sealed class GameStartCountDownUI : MonoBehaviour
         Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
     }
 
-    private void OnGameStateChanged()
+    private void OnGameStateChanged(GameState state)
     {
-        if (Bootstrap.Instance.GameStateMgr.IsCounDownToStartActive)
+        if (state is GameState.CountDownToStart)
         {
             Show();
         }

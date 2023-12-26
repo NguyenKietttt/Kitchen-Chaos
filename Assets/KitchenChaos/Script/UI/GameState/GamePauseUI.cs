@@ -8,7 +8,7 @@ public sealed class GamePauseUI : MonoBehaviour
     [SerializeField] private Button _optionsBtn;
     [SerializeField] private Button _mainMenuBtn;
 
-    private void Start()
+    private void Awake()
     {
         _resumeBtn.onClick.AddListener(OnResumeButtonClicked);
         _optionsBtn.onClick.AddListener(OnOptionsButtonClicked);
@@ -43,20 +43,19 @@ public sealed class GamePauseUI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void OnResumeButtonClicked()
+    private void OnResumeButtonClicked()
     {
         Bootstrap.Instance.EventMgr.TooglePause?.Invoke();
     }
 
-    public void OnOptionsButtonClicked()
+    private void OnOptionsButtonClicked()
     {
         Bootstrap.Instance.EventMgr.ClickOptionsBtn?.Invoke();
         Hide();
     }
 
-    public void OnMainMenuButtonClicked()
+    private void OnMainMenuButtonClicked()
     {
-        Bootstrap.Instance.EventMgr.Dispose();
-        Bootstrap.Instance.SceneLoader.Load(SceneLoader.Scene.MainMenu);
+        Bootstrap.Instance.GameStateMgr.ChangeState(GameState.MainMenu);
     }
 }

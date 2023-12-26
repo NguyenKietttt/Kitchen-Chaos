@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5014360271195571533}
   - component: {fileID: 5249517254759517669}
   - component: {fileID: 3224738902453812281}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Prefab_UI_ProgressBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &5014360271195571533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 3949124906188891399}
   - component: {fileID: 2599677637894844691}
   - component: {fileID: 4620544107226801486}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -234,7 +234,7 @@ GameObject:
   - component: {fileID: 5360846543186160683}
   - component: {fileID: 2599486391436987577}
   - component: {fileID: 8306269815563725809}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}

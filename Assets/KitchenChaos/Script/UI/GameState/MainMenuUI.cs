@@ -9,15 +9,12 @@ public sealed class MainMenuUI : MonoBehaviour
 
     private void Awake()
     {
-        Bootstrap.Instance.SFXMgr.Init();
-        Bootstrap.Instance.GameStateMgr.Reset();
-        Bootstrap.Instance.DeliveryMgr.Reset();
-
         _playBtn.onClick.AddListener(OnPlayButtonClicked);
         _quitBtn.onClick.AddListener(OnQuitButtonClicked);
+    }
 
-        Time.timeScale = 1.0f;
-
+    private void Start()
+    {
         _playBtn.Select();
     }
 
@@ -29,7 +26,7 @@ public sealed class MainMenuUI : MonoBehaviour
 
     private void OnPlayButtonClicked()
     {
-        Bootstrap.Instance.SceneLoader.Load(SceneLoader.Scene.Loading);
+        Bootstrap.Instance.GameStateMgr.ChangeState(GameState.WaitingToStart);
     }
 
     private void OnQuitButtonClicked()

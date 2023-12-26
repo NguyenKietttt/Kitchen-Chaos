@@ -8,7 +8,6 @@ public sealed class Bootstrap : MonoBehaviour
     public GameStateManager GameStateMgr { get; private set; }
     public InputManager InputMgr { get; private set; }
     public DeliveryManager DeliveryMgr { get; private set; }
-    public SceneLoader SceneLoader => _sceneLoader;
     public SFXManager SFXMgr => _sfxMgr;
     public MusicManager MusicMgr => _musicMgr;
 
@@ -29,7 +28,7 @@ public sealed class Bootstrap : MonoBehaviour
         }
 
         InitManagers();
-        _sceneLoader.LoadAsync(SceneLoader.Scene.MainMenu);
+        _sceneLoader.LoadAsync(SceneLoader.Scene.Gameplay, () => GameStateMgr.Init());
     }
 
     private void Update()
@@ -42,6 +41,7 @@ public sealed class Bootstrap : MonoBehaviour
 
     private void OnDestroy()
     {
+        DeliveryMgr.OnDestroy();
         InputMgr.OnDestroy();
         GameStateMgr.OnDestroy();
     }
@@ -53,5 +53,6 @@ public sealed class Bootstrap : MonoBehaviour
         InputMgr = new InputManager();
 
         DeliveryMgr = new DeliveryManager(_receiptSOList);
+        SFXMgr.Init();
     }
 }

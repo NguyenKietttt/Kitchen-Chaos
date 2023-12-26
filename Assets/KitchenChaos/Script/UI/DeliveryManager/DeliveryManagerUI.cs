@@ -32,16 +32,12 @@ public sealed class DeliveryManagerUI : MonoBehaviour
     {
         ClearPreviousVisual();
 
-        List<ReceiptSO> listWaitingReceiptSO = Bootstrap.Instance.DeliveryMgr.GetListWaitingReceiptSO();
-
-        for (int i = 0; i < listWaitingReceiptSO.Count; i++)
+        IEnumerable<ReceiptSO> listWaitingReceiptSO = Bootstrap.Instance.DeliveryMgr.ListWaitingReceiptSO;
+        foreach (ReceiptSO receiptSO in listWaitingReceiptSO)
         {
-            ReceiptSO receiptSO = listWaitingReceiptSO[i];
-
             DeliveryManagerSingleUI waitingReceipUI = Instantiate(_receiptTemplateUI, _container);
-            waitingReceipUI.SetReceiptName(listWaitingReceiptSO[i].ReceiptName);
+            waitingReceipUI.SetReceiptName(receiptSO.ReceiptName);
             waitingReceipUI.SetIngredientIcons(receiptSO.ListKitchenObjSO);
-
             waitingReceipUI.gameObject.SetActive(true);
         }
     }
