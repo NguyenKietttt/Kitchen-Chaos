@@ -829,5 +829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5769b4efdbfbac4aa8da31c3a9e10e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: 4
+  _type: 2
   _amountReceiptDeliveredTxt: {fileID: 4531046545432170782}
   _mainMenuBtn: {fileID: 5212304311619757027}

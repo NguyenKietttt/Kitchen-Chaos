@@ -1,46 +1,43 @@
+using UISystem;
 using UnityEngine;
 using UnityEngine.UI;
 
-public sealed class GamePauseUI : MonoBehaviour
+public sealed class GamePauseUI : BaseScreen
 {
     [Header("Internal Ref")]
     [SerializeField] private Button _resumeBtn;
     [SerializeField] private Button _optionsBtn;
     [SerializeField] private Button _mainMenuBtn;
 
-    private void Awake()
+    public override void OnPush(object[] datas = null)
     {
         _resumeBtn.onClick.AddListener(OnResumeButtonClicked);
         _optionsBtn.onClick.AddListener(OnOptionsButtonClicked);
         _mainMenuBtn.onClick.AddListener(OnMainMenuButtonClicked);
 
-        Bootstrap.Instance.EventMgr.OnPaused += Show;
-        Bootstrap.Instance.EventMgr.CloseOptionUI += Show;
-        Bootstrap.Instance.EventMgr.OnUnPaused += Hide;
-
-        Hide();
+        Time.timeScale = 0;
     }
 
-    private void OnDestroy()
+    public override void OnFocus()
+    {
+        gameObject.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public override void OnFocusLost()
+    {
+        gameObject.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    public override void OnPop()
     {
         _resumeBtn.onClick.RemoveAllListeners();
         _optionsBtn.onClick.RemoveAllListeners();
         _mainMenuBtn.onClick.RemoveAllListeners();
 
-        Bootstrap.Instance.EventMgr.OnPaused -= Show;
-        Bootstrap.Instance.EventMgr.CloseOptionUI -= Show;
-        Bootstrap.Instance.EventMgr.OnUnPaused -= Hide;
-    }
-
-    private void Show()
-    {
-        gameObject.SetActive(true);
-        _resumeBtn.Select();
-    }
-
-    private void Hide()
-    {
-        gameObject.SetActive(false);
+        Destroy(gameObject);
+        Time.timeScale = 1;
     }
 
     private void OnResumeButtonClicked()
@@ -50,8 +47,7 @@ public sealed class GamePauseUI : MonoBehaviour
 
     private void OnOptionsButtonClicked()
     {
-        Bootstrap.Instance.EventMgr.ClickOptionsBtn?.Invoke();
-        Hide();
+        Bootstrap.Instance.UIManager.Push(ScreenID.Option);
     }
 
     private void OnMainMenuButtonClicked()

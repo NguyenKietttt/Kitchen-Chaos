@@ -1025,6 +1025,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 676ccf759adf21d4d935e486449f7a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: 5
+  _type: 2
   _resumeBtn: {fileID: 5822873668393703268}
   _optionsBtn: {fileID: 319552997167573585}
   _mainMenuBtn: {fileID: 3562546857238215054}

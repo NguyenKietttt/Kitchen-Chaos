@@ -6,8 +6,6 @@ public sealed class EventManager
     public Action Interact;
     public Action CuttingInteract;
     public Action TooglePause;
-    public Action OnPaused;
-    public Action OnUnPaused;
     public Action RebindingKey;
     public Action<BaseCounter> SelectCounter;
     public Action<StoveCounter.State, int> ChangeStoveCounterState;
@@ -23,8 +21,4 @@ public sealed class EventManager
     public Action DeliverReceiptFailed;
     public Action CountdownPopup;
     public Action StoveWarning;
-
-    // UI
-    public Action ClickOptionsBtn;
-    public Action CloseOptionUI;
 }

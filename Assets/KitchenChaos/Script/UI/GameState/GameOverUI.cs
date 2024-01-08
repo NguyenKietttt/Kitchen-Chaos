@@ -1,28 +1,26 @@
 using TMPro;
+using UISystem;
 using UnityEngine;
 using UnityEngine.UI;
 
-public sealed class GameOverUI : MonoBehaviour
+public sealed class GameOverUI : BaseScreen
 {
     [Header("Internal Ref")]
     [SerializeField] private TextMeshProUGUI _amountReceiptDeliveredTxt;
     [SerializeField] private Button _mainMenuBtn;
 
-    private void Awake()
+    public override void OnPush(object[] datas = null)
     {
         Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
         _mainMenuBtn.onClick.AddListener(() => OnMainMenuBtnClicked());
     }
 
-    private void Start()
-    {
-        Hide();
-    }
-
-    private void OnDestroy()
+    public override void OnPop()
     {
         _mainMenuBtn.onClick.RemoveAllListeners();
         Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
+
+        Destroy(gameObject);
     }
 
     private void OnMainMenuBtnClicked()

@@ -10,12 +10,19 @@ public sealed class Bootstrap : MonoBehaviour
     public DeliveryManager DeliveryMgr { get; private set; }
     public SFXManager SFXMgr => _sfxMgr;
     public MusicManager MusicMgr => _musicMgr;
+    public UISystem.UIManager UIManager => _uiManager;
+
+    public GameObject PlayerPrefab => _playerPrefab;
+    public GameObject LevelOnePrefab => _levelOnePrefab;
 
     [Header("Asset Ref")]
     [SerializeField] private ListReceiptSO _receiptSOList;
+    [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] private GameObject _levelOnePrefab;
 
     [Header("Internal Ref")]
     [SerializeField] private SceneLoader _sceneLoader;
+    [SerializeField] private UISystem.UIManager _uiManager;
     [SerializeField] private SFXManager _sfxMgr;
     [SerializeField] private MusicManager _musicMgr;
 
@@ -49,6 +56,7 @@ public sealed class Bootstrap : MonoBehaviour
     private void InitManagers()
     {
         EventMgr = new EventManager();
+        _uiManager.Init();
         GameStateMgr = new GameStateManager();
         InputMgr = new InputManager();
 

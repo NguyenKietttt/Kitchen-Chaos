@@ -1245,6 +1245,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 296db74c4bee344429ec7a12de28b87e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: 2
+  _type: 2
   _keyboardMoveUpTxt: {fileID: 569677802629255121}
   _keyboardMoveDownTxt: {fileID: 6141177773590803161}
   _keyboardMoveLeftTxt: {fileID: 3828013250163008090}

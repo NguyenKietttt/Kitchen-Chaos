@@ -35,7 +35,10 @@ public sealed class PlatesCounterVisual : MonoBehaviour
 
     private void OnPlateRemoved()
     {
-        GameObject plateVisual = _plateVisuals.Pop();
-        Destroy(plateVisual);
+        if (_plateVisuals.Count > 0)
+        {
+            GameObject plateVisual = _plateVisuals.Pop();
+            Destroy(plateVisual);
+        }
     }
 }

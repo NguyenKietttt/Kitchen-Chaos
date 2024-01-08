@@ -103,5 +103,12 @@ public sealed class DeliveryManager
     private void OnGameStateChanged(GameState state)
     {
         _curState = state;
+
+        switch (_curState)
+        {
+            case GameState.MainMenu:
+                Reset();
+                break;
+        }
     }
 }

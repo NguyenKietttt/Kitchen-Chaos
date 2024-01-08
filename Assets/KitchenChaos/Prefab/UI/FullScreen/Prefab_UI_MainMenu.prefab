@@ -260,6 +260,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5527a4d1b18a75e40b3695914fdf0a90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: 1
+  _type: 1
+  _decorationPrefab: {fileID: 8646346530436437262, guid: 623af6590675a404c9fbdc8aff06f9c8,
+    type: 3}
   _playBtn: {fileID: 9079108318016524309}
   _quitBtn: {fileID: 305982972924213034}
 --- !u!1 &3208441339756239552

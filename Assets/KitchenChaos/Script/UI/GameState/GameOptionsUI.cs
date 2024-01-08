@@ -1,9 +1,10 @@
 using System.Text;
 using TMPro;
+using UISystem;
 using UnityEngine;
 using UnityEngine.UI;
 
-public sealed class GameOptionsUI : MonoBehaviour
+public sealed class GameOptionsUI : BaseScreen
 {
     [Header("Internal Ref")]
     [SerializeField] private Button _sfxVolumnBtn;
@@ -26,7 +27,6 @@ public sealed class GameOptionsUI : MonoBehaviour
     [SerializeField] private Button _interactGamepadBtn;
     [SerializeField] private Button _cutGamepadBtn;
 
-
     [Space]
 
     [SerializeField] private TextMeshProUGUI _moveUpTxt;
@@ -38,14 +38,9 @@ public sealed class GameOptionsUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _interactGamepadtTxt;
     [SerializeField] private TextMeshProUGUI _cutGamepadTxt;
 
-
-    [Space]
-
-    [SerializeField] private GameObject _rebindKeyUI;
-
     private readonly StringBuilder _stringBuilder = new();
 
-    private void Start()
+    public override void OnPush(object[] datas = null)
     {
         _sfxVolumnBtn.onClick.AddListener(OnSFXVolumnButtonClicked);
         _musicVolumnBtn.onClick.AddListener(OnMusicVolumnButtonClicked);
@@ -60,19 +55,24 @@ public sealed class GameOptionsUI : MonoBehaviour
         _interactGamepadBtn.onClick.AddListener(() => OnRebindKeyClicked(InputManager.Binding.GamepadInteract));
         _cutGamepadBtn.onClick.AddListener(() => OnRebindKeyClicked(InputManager.Binding.GamepadCut));
 
-        Bootstrap.Instance.EventMgr.OnUnPaused += Hide;
-        Bootstrap.Instance.EventMgr.ClickOptionsBtn += OnOptionsButtonClicked;
-
         UpdateSFXVolumeText();
         UpdateMusicVolume();
-
         UpdateRebindKeyVisuals();
 
-        HideRebindKeyUI();
-        Hide();
+        Time.timeScale = 0;
     }
 
-    private void OnDestroy()
+    public override void OnFocus()
+    {
+        Time.timeScale = 0;
+    }
+
+    public override void OnFocusLost()
+    {
+        Time.timeScale = 1;
+    }
+
+    public override void OnPop()
     {
         _moveUpBtn.onClick.RemoveAllListeners();
         _moveDownBtn.onClick.RemoveAllListeners();
@@ -87,13 +87,8 @@ public sealed class GameOptionsUI : MonoBehaviour
         _musicVolumnBtn.onClick.RemoveAllListeners();
         _closeBtn.onClick.RemoveAllListeners();
 
-        Bootstrap.Instance.EventMgr.OnUnPaused -= Hide;
-        Bootstrap.Instance.EventMgr.ClickOptionsBtn -= OnOptionsButtonClicked;
-    }
-
-    private void OnOptionsButtonClicked()
-    {
-        Show();
+        Destroy(gameObject);
+        Time.timeScale = 1;
     }
 
     private void OnSFXVolumnButtonClicked()
@@ -110,28 +105,17 @@ public sealed class GameOptionsUI : MonoBehaviour
 
     private void OnCloseButtonClicked()
     {
-        Hide();
-        Bootstrap.Instance.EventMgr.CloseOptionUI?.Invoke();
+        Bootstrap.Instance.UIManager.Pop();
     }
 
     private void OnRebindKeyClicked(InputManager.Binding binding)
     {
-        ShowRebindKeyUI();
+        Bootstrap.Instance.UIManager.Push(ScreenID.RebindKey);
         Bootstrap.Instance.InputMgr.RebindBinding(binding, () =>
         {
-            HideRebindKeyUI();
+            Bootstrap.Instance.UIManager.Pop();
             UpdateRebindKeyVisuals();
         });
-    }
-
-    private void Show()
-    {
-        gameObject.SetActive(true);
-    }
-
-    private void Hide()
-    {
-        gameObject.SetActive(false);
     }
 
     private void UpdateSFXVolumeText()
@@ -164,15 +148,5 @@ public sealed class GameOptionsUI : MonoBehaviour
         _cutTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.Cut));
         _interactGamepadtTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.GamepadInteract));
         _cutGamepadTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.GamepadCut));
-    }
-
-    private void ShowRebindKeyUI()
-    {
-        _rebindKeyUI.SetActive(true);
-    }
-
-    private void HideRebindKeyUI()
-    {
-        _rebindKeyUI.SetActive(false);
     }
 }

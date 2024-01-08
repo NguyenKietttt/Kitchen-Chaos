@@ -1,7 +1,8 @@
 using TMPro;
+using UISystem;
 using UnityEngine;
 
-public sealed class TutorialUI : MonoBehaviour
+public sealed class TutorialUI : BaseScreen
 {
     [Header("Internal Ref")]
     [SerializeField] private TextMeshProUGUI _keyboardMoveUpTxt;
@@ -13,40 +14,38 @@ public sealed class TutorialUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _gamepadInteractTxt;
     [SerializeField] private TextMeshProUGUI _gamepadCutTxt;
 
-    private void OnEnable()
+    public override void OnPush(object[] datas = null)
     {
         Bootstrap.Instance.EventMgr.RebindingKey += UpdateVisual;
         Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
-    }
 
-    private void Start()
-    {
-        Show();
         UpdateVisual();
     }
 
-    private void OnDisable()
+    public override void OnFocus()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public override void OnFocusLost()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public override void OnPop()
     {
         Bootstrap.Instance.EventMgr.RebindingKey -= UpdateVisual;
         Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
+
+        Destroy(gameObject);
     }
 
     private void OnGameStateChanged(GameState state)
     {
         if (state is GameState.CountDownToStart)
         {
-            Hide();
+            Bootstrap.Instance.UIManager.Pop();
         }
-    }
-
-    private void Show()
-    {
-        gameObject.SetActive(true);
-    }
-
-    private void Hide()
-    {
-        gameObject.SetActive(false);
     }
 
     private void UpdateVisual()

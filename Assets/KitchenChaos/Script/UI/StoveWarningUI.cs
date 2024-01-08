@@ -21,6 +21,7 @@ public sealed class StoveWarningUI : MonoBehaviour
 
     private void OnDestroy()
     {
+        DOTween.Clear(true);
         Bootstrap.Instance.EventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
     }
 
