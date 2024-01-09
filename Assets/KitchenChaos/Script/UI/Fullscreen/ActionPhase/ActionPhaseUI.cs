@@ -1,6 +1,6 @@
 using UISystem;
 
-public sealed class UIActionPhase : BaseScreen
+public sealed class ActionPhaseUI : BaseScreen
 {
     public override void OnPop()
     {

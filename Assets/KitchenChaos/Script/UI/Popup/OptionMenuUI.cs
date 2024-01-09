@@ -4,7 +4,7 @@ using UISystem;
 using UnityEngine;
 using UnityEngine.UI;
 
-public sealed class GameOptionsUI : BaseScreen
+public sealed class OptionMenuUI : BaseScreen
 {
     [Header("Internal Ref")]
     [SerializeField] private Button _sfxVolumnBtn;

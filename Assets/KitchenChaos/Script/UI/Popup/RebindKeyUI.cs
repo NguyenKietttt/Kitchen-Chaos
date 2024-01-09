@@ -1,6 +1,6 @@
 using UISystem;
 
-public sealed class PopupRebindKey : BaseScreen
+public sealed class RebindKeyUI : BaseScreen
 {
     public override void OnPop()
     {

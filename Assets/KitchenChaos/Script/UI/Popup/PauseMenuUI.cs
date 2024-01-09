@@ -2,7 +2,7 @@ using UISystem;
 using UnityEngine;
 using UnityEngine.UI;
 
-public sealed class GamePauseUI : BaseScreen
+public sealed class PauseMenuUI : BaseScreen
 {
     [Header("Internal Ref")]
     [SerializeField] private Button _resumeBtn;
