@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 6744099818437586694}
   - component: {fileID: 1375510964316810113}
   m_Layer: 5
-  m_Name: UI_Popup_RebindKey
+  m_Name: Prefab_RebindKeyUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

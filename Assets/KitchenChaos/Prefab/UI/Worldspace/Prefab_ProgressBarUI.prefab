@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5249517254759517669}
   - component: {fileID: 3224738902453812281}
   m_Layer: 7
-  m_Name: Prefab_UI_ProgressBar
+  m_Name: Prefab_ProgressBarUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

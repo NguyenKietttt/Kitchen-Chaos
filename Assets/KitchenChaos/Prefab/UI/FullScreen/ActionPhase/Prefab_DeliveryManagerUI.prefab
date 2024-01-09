@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 6539027490690780807}
   - component: {fileID: 1616759603430718858}
   m_Layer: 5
-  m_Name: Prefab_UI_DeliveryManager
+  m_Name: Prefab_DeliveryManagerUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

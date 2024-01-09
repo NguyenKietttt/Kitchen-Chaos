@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1882367837041153964}
   m_Layer: 0
-  m_Name: Prefab_UI_Intro_Decorations
+  m_Name: Prefab_MainMenuUI_Decorations
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

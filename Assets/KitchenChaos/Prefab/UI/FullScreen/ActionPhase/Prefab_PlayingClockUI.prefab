@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 375438649067752606}
   - component: {fileID: 8525055133995442928}
   m_Layer: 5
-  m_Name: Prefab_UI_PlayingClock
+  m_Name: Prefab_PlayingClockUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

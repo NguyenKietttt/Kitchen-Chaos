@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 5709406812296606308}
   - component: {fileID: 1137242096142686925}
   m_Layer: 5
-  m_Name: Prefab_UI_MainMenu
+  m_Name: Prefab_MainMenuUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

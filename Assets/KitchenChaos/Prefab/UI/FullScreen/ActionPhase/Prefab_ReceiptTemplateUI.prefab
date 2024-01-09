@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 7258703401698130610}
   - component: {fileID: 9019576269419297743}
   m_Layer: 5
-  m_Name: Prefab_UI_ReceiptTemplate
+  m_Name: Prefab_ReceiptTemplateUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
