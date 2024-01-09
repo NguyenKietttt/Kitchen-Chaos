@@ -58,6 +58,9 @@ public class BaseCounter : MonoBehaviour, IKitchenObjParent
 
     private void OnCounterSelected(BaseCounter selectedCounter)
     {
-        _selectedVisualObj.SetActive(selectedCounter == this);
+        if (_selectedVisualObj != null)
+        {
+            _selectedVisualObj.SetActive(selectedCounter == this);
+        }
     }
 }

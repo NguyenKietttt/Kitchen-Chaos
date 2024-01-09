@@ -12,7 +12,7 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 
     public static event Action PickSomething;
 
-    public bool IsMoving { get; private set; }
+    public bool IsMoving => _isMoving;
 
     [Header("Internal Ref")]
     [SerializeField] private PlayerAnimator _playerAnimator;
@@ -23,10 +23,13 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 
     private BaseCounter _selectedCounter;
     private KitchenObject _kitchenObj;
+    private GameState _curState;
     private Vector3 _lastInteractionDir;
+    private bool _isMoving;
 
-    private void Start()
+    private void OnEnable()
     {
+        Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
         Bootstrap.Instance.EventMgr.Interact += OnInteractAction;
         Bootstrap.Instance.EventMgr.CuttingInteract += OnCuttingInteractAction;
     }
@@ -40,8 +43,9 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
         HandleCounterSelection(input);
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
+        Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
         Bootstrap.Instance.EventMgr.Interact -= OnInteractAction;
         Bootstrap.Instance.EventMgr.CuttingInteract -= OnCuttingInteractAction;
 
@@ -84,7 +88,7 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 
     private void OnInteractAction()
     {
-        if (!Bootstrap.Instance.GameStateMgr.IsGamePlaying)
+        if (_curState is not GameState.GamePlaying)
         {
             return;
         }
@@ -97,7 +101,7 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
 
     private void OnCuttingInteractAction()
     {
-        if (!Bootstrap.Instance.GameStateMgr.IsGamePlaying)
+        if (_curState is not GameState.GamePlaying)
         {
             return;
         }
@@ -126,11 +130,11 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
             }
 
             UpdateRotationByMovingDirection(moveDir);
-            IsMoving = true;
+            _isMoving = true;
         }
         else
         {
-            IsMoving = false;
+            _isMoving = false;
         }
 
         _playerAnimator.UpdateWalkingAnim(canMove);
@@ -204,5 +208,10 @@ public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
     public void ClearKitchenObj()
     {
         _kitchenObj = null;
+    }
+
+    private void OnGameStateChanged(GameState state)
+    {
+        _curState = state;
     }
 }

@@ -6,27 +6,30 @@ public sealed class DeliveryManager
     private const float SPAWN_RECEIPT_TIMER_MAX = 4.0f;
     private const int WAITING_RECEIPT_MAX = 4;
 
+    public IEnumerable<ReceiptSO> ListWaitingReceiptSO => _waitingListReceiptSO.AsReadOnly();
     public int AmountSucessfulReceipt => _amountSucessfulReceipt;
 
     private readonly List<ReceiptSO> _waitingListReceiptSO = new();
     private readonly ListReceiptSO _receiptSOList;
 
+    private GameState _curState;
     private float _spawnReceiptTimer;
     private int _amountSucessfulReceipt;
 
     public DeliveryManager(ListReceiptSO listReceiptSO)
     {
         _receiptSOList = listReceiptSO;
+        Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
     }
 
-    public List<ReceiptSO> GetListWaitingReceiptSO()
+    public void OnDestroy()
     {
-        return _waitingListReceiptSO;
+        Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
     }
 
     public void OnUpdate(float deltaTime)
     {
-        if (!Bootstrap.Instance.GameStateMgr.IsGamePlaying)
+        if (_curState is not GameState.GamePlaying)
         {
             return;
         }
@@ -37,7 +40,7 @@ public sealed class DeliveryManager
         {
             _spawnReceiptTimer = 0;
 
-            if (Bootstrap.Instance.GameStateMgr.IsGamePlaying && _waitingListReceiptSO.Count < WAITING_RECEIPT_MAX)
+            if (_curState is GameState.GamePlaying && _waitingListReceiptSO.Count < WAITING_RECEIPT_MAX)
             {
                 ReceiptSO waitingReceiptSO = _receiptSOList.ReceiptSOList[Random.Range(0, _receiptSOList.ReceiptSOList.Length)];
                 _waitingListReceiptSO.Add(waitingReceiptSO);
@@ -95,5 +98,17 @@ public sealed class DeliveryManager
 
         _spawnReceiptTimer = 0;
         _amountSucessfulReceipt = 0;
+    }
+
+    private void OnGameStateChanged(GameState state)
+    {
+        _curState = state;
+
+        switch (_curState)
+        {
+            case GameState.MainMenu:
+                Reset();
+                break;
+        }
     }
 }

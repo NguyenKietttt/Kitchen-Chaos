@@ -2,12 +2,10 @@ using System;
 
 public sealed class EventManager
 {
-    public Action ChangeGameState;
+    public Action<GameState> ChangeGameState;
     public Action Interact;
     public Action CuttingInteract;
     public Action TooglePause;
-    public Action OnPaused;
-    public Action OnUnPaused;
     public Action RebindingKey;
     public Action<BaseCounter> SelectCounter;
     public Action<StoveCounter.State, int> ChangeStoveCounterState;
@@ -23,25 +21,4 @@ public sealed class EventManager
     public Action DeliverReceiptFailed;
     public Action CountdownPopup;
     public Action StoveWarning;
-
-    // UI
-    public Action ClickOptionsBtn;
-    public Action CloseOptionUI;
-
-    public void Dispose()
-    {
-        Interact = delegate { };
-        CuttingInteract = delegate { };
-        OnPaused = delegate { };
-        OnUnPaused = delegate { };
-        RebindingKey = delegate { };
-        SelectCounter = delegate { };
-        ChangeStoveCounterState = delegate { };
-        SpawnPlate = delegate { };
-        RemovePlate = delegate { };
-        AddIngredientSuccess = delegate { };
-        UpdateCounterProgress = delegate { };
-        SpawnReceipt = delegate { };
-        CompleteReceipt = delegate { };
-    }
 }

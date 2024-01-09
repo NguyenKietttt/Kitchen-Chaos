@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8993008458002632941}
   - component: {fileID: 8134025796266367818}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Container_DeliveryResult
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,7 +31,6 @@ RectTransform:
   m_Children:
   - {fileID: 3853588293788938725}
   m_Father: {fileID: 3570308830958074367}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -64,7 +63,7 @@ GameObject:
   - component: {fileID: 4926940087595554877}
   - component: {fileID: 2372491102640335951}
   - component: {fileID: 5757891926042499990}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Image_BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,7 +83,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3853588293788938725}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -185,13 +183,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2904264862964980788}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: -0.007, y: 1.27, z: 0.033}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3570308830958074367}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
 --- !u!33 &3456144940884575477
 MeshFilter:
@@ -276,7 +274,7 @@ GameObject:
   - component: {fileID: 2071717282030767329}
   - component: {fileID: 6283107269007008149}
   - component: {fileID: 843329526360199791}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text_Message
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -296,7 +294,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3853588293788938725}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -413,7 +410,7 @@ GameObject:
   - component: {fileID: 6115460808877270914}
   - component: {fileID: 4941028266061092829}
   - component: {fileID: 6385124355924473763}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Image_Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -433,7 +430,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3853588293788938725}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -490,10 +486,9 @@ GameObject:
   - component: {fileID: 2625480385492636540}
   - component: {fileID: 7926365293425718401}
   - component: {fileID: 4795393274121065304}
-  - component: {fileID: 6082462906246129364}
   - component: {fileID: 8043632368699101135}
   - component: {fileID: 3182092032849148727}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: UI_Canvas_DeliveryResult
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -516,7 +511,6 @@ RectTransform:
   - {fileID: 6115460808877270914}
   - {fileID: 2071717282030767329}
   m_Father: {fileID: 8993008458002632941}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -586,27 +580,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!95 &6082462906246129364
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7345935696708074860}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f7a4989ac67a86d45a745cc4b4d21068, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!225 &8043632368699101135
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -633,10 +606,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _successSprite: {fileID: 21300000, guid: 6c562ac6d3e47ff4794df31886c6d864, type: 3}
   _failedSprite: {fileID: 21300000, guid: 0d6e1281049dccc4189bf308b2ccf331, type: 3}
-  _animator: {fileID: 6082462906246129364}
   _backgroundImg: {fileID: 4926940087595554877}
   _iconImg: {fileID: 6385124355924473763}
   _messageTxt: {fileID: 843329526360199791}
+  _canvasGroup: {fileID: 8043632368699101135}
   _successColor: {r: 0.32156864, g: 0.6784314, b: 0.21568628, a: 1}
   _failedColor: {r: 0.75686276, g: 0.11764706, b: 0.11764706, a: 1}
 --- !u!1001 &3847862807334099521
