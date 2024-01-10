@@ -3,11 +3,11 @@ using UnityEngine;
 
 public sealed class PlateIconUI : MonoBehaviour
 {
-    [Header("External Ref")]
-    [SerializeField] private PlateKitchenObject _plateKitchenObj;
+    [Header("Asset Ref")]
+    [SerializeField] private PlateIconSingleUI _plateIconSingleUI;
 
     [Header("Internal Ref")]
-    [SerializeField] private PlateIconSingleUI _plateIconSingleUI;
+    [SerializeField] private PlateKitchenObject _plateKitchenObj;
 
     private void Start()
     {

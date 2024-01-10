@@ -1193,7 +1193,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8705157798330044312}
-  - component: {fileID: 9107520746364964932}
+  - component: {fileID: 6483217932460779110}
   m_Layer: 5
   m_Name: Prefab_TutorialUI
   m_TagString: Untagged
@@ -1233,7 +1233,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &9107520746364964932
+--- !u!114 &6483217932460779110
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1242,7 +1242,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3256975207802259147}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 296db74c4bee344429ec7a12de28b87e, type: 3}
+  m_Script: {fileID: 11500000, guid: 2c580e2c42b21f742ba7d7aad5aeda73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 2
@@ -1253,7 +1253,7 @@ MonoBehaviour:
   _keyboardMoveRightTxt: {fileID: 4059145173904552588}
   _keyboardInteractTxt: {fileID: 1199946732397196022}
   _keyboardCutTxt: {fileID: 5073034141613248852}
-  _gamepadInteractTxt: {fileID: 7976999570998939866}
+  _gamepadInteractTxt: {fileID: 8358544696108319702}
   _gamepadCutTxt: {fileID: 7976999570998939866}
 --- !u!1 &3620915284704301610
 GameObject:

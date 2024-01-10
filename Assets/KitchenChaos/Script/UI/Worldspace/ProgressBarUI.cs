@@ -3,8 +3,10 @@ using UnityEngine.UI;
 
 public sealed class ProgressBarUI : MonoBehaviour
 {
-    [Header("Internal Ref")]
+    [Header("External Ref")]
     [SerializeField] private GameObject _progressCounterObj;
+
+    [Header("Internal Ref")]
     [SerializeField] private Image _progressImg;
 
     private void Start()

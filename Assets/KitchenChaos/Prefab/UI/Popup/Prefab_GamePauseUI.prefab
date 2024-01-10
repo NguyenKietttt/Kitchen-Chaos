@@ -981,7 +981,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7002516205318242095}
-  - component: {fileID: 8955191014252174340}
+  - component: {fileID: 7008835101248913638}
   m_Layer: 5
   m_Name: Prefab_GamePauseUI
   m_TagString: Untagged
@@ -1013,7 +1013,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8955191014252174340
+--- !u!114 &7008835101248913638
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1022,7 +1022,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7987901174936445736}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 676ccf759adf21d4d935e486449f7a04, type: 3}
+  m_Script: {fileID: 11500000, guid: 999b447627ee06e4ab3250f3bf4b7b4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 5
