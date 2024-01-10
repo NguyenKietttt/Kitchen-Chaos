@@ -71,7 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6539027490690780807}
-  - component: {fileID: 1616759603430718858}
+  - component: {fileID: 2840034231783750954}
   m_Layer: 5
   m_Name: Prefab_DeliveryManagerUI
   m_TagString: Untagged
@@ -100,7 +100,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1616759603430718858
+--- !u!114 &2840034231783750954
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,10 +109,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2924851880233944385}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b960dce739b9cd848a93e611cbc42f24, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ad565a0b17a46e49a588a516a3f7948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _receiptTemplateUI: {fileID: 9019576269419297743, guid: 3ea44683b22e96640845b645f35affb2,
+  _receiptTemplateUI: {fileID: 1293695588463609135, guid: 2502e4e9451b02140bdc2079aae9c18d,
     type: 3}
   _container: {fileID: 7552409217178787324}
 --- !u!1 &4141347884932211499

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 375438649067752606}
-  - component: {fileID: 8525055133995442928}
+  - component: {fileID: 5514590315443841360}
   m_Layer: 5
   m_Name: Prefab_PlayingClockUI
   m_TagString: Untagged
@@ -38,7 +38,7 @@ RectTransform:
   m_AnchoredPosition: {x: -100, y: -100}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8525055133995442928
+--- !u!114 &5514590315443841360
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2360116455876295345}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94d2f436dc7b9b24db38e43930714782, type: 3}
+  m_Script: {fileID: 11500000, guid: edab9139339e6bf499e6df7f0e6c1a13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _timerImg: {fileID: 7042504467789408487}

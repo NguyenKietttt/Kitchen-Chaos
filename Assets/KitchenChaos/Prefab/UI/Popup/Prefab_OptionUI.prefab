@@ -1279,7 +1279,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 485211325691149642}
-  - component: {fileID: 4536526453556302147}
+  - component: {fileID: 3041728181833644183}
   m_Layer: 5
   m_Name: Prefab_OptionUI
   m_TagString: Untagged
@@ -1325,7 +1325,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4536526453556302147
+--- !u!114 &3041728181833644183
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1334,7 +1334,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2836036891889716989}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 163c2654096025f428c161a79f720412, type: 3}
+  m_Script: {fileID: 11500000, guid: 1994cbdd54ea69d4096d1842ce56a779, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 6
@@ -1360,7 +1360,6 @@ MonoBehaviour:
   _cutTxt: {fileID: 6084317549973676995}
   _interactGamepadtTxt: {fileID: 457341251478802424}
   _cutGamepadTxt: {fileID: 867489962905689600}
-  _rebindKeyUI: {fileID: 0}
 --- !u!1 &2873612753551690947
 GameObject:
   m_ObjectHideFlags: 0

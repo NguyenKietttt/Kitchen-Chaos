@@ -487,7 +487,7 @@ GameObject:
   - component: {fileID: 7926365293425718401}
   - component: {fileID: 4795393274121065304}
   - component: {fileID: 8043632368699101135}
-  - component: {fileID: 3182092032849148727}
+  - component: {fileID: 7187231114259834288}
   m_Layer: 7
   m_Name: UI_Canvas_DeliveryResult
   m_TagString: Untagged
@@ -592,7 +592,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &3182092032849148727
+--- !u!114 &7187231114259834288
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -601,7 +601,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7345935696708074860}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b71a54ed8305ea42a43a986d4928bbb, type: 3}
+  m_Script: {fileID: 11500000, guid: 9dc9ea416d74678478ffea85e4a29fa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _successSprite: {fileID: 21300000, guid: 6c562ac6d3e47ff4794df31886c6d864, type: 3}
@@ -611,7 +611,7 @@ MonoBehaviour:
   _messageTxt: {fileID: 843329526360199791}
   _canvasGroup: {fileID: 8043632368699101135}
   _successColor: {r: 0.32156864, g: 0.6784314, b: 0.21568628, a: 1}
-  _failedColor: {r: 0.75686276, g: 0.11764706, b: 0.11764706, a: 1}
+  _failedColor: {r: 1, g: 0.15294118, b: 0.07058824, a: 1}
 --- !u!1001 &3847862807334099521
 PrefabInstance:
   m_ObjectHideFlags: 0

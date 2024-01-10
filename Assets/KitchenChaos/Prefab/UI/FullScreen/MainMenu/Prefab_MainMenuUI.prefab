@@ -218,7 +218,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5709406812296606308}
-  - component: {fileID: 1137242096142686925}
+  - component: {fileID: 2434128306193734905}
   m_Layer: 5
   m_Name: Prefab_MainMenuUI
   m_TagString: Untagged
@@ -248,7 +248,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1137242096142686925
+--- !u!114 &2434128306193734905
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -257,12 +257,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2750158233564024706}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5527a4d1b18a75e40b3695914fdf0a90, type: 3}
+  m_Script: {fileID: 11500000, guid: c37e79ccba2e10b4d9b1b883b4dad889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 1
   _type: 1
-  _decorationPrefab: {fileID: 8646346530436437262, guid: 623af6590675a404c9fbdc8aff06f9c8,
+  _decorationPrefab: {fileID: 8646346530436437262, guid: 342f1308b286422458a7816686050442,
     type: 3}
   _playBtn: {fileID: 9079108318016524309}
   _quitBtn: {fileID: 305982972924213034}
