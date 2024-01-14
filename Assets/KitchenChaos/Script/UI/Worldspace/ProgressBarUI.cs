@@ -1,48 +1,51 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public sealed class ProgressBarUI : MonoBehaviour
+namespace KitchenChaos
 {
-    [Header("External Ref")]
-    [SerializeField] private GameObject _progressCounterObj;
-
-    [Header("Internal Ref")]
-    [SerializeField] private Image _progressImg;
-
-    private void Start()
+    public sealed class ProgressBarUI : MonoBehaviour
     {
-        Bootstrap.Instance.EventMgr.UpdateCounterProgress += OnCounterProgressChanged;
+        [Header("External Ref")]
+        [SerializeField] private GameObject _progressCounterObj;
 
-        _progressImg.fillAmount = 0;
-        ToggleProgressBar(false);
-    }
+        [Header("Internal Ref")]
+        [SerializeField] private Image _progressImg;
 
-    private void OnDestroy()
-    {
-        Bootstrap.Instance.EventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
-    }
-
-    private void OnCounterProgressChanged(float progressNormalized, int counterInstanceID)
-    {
-        if (counterInstanceID != _progressCounterObj.GetInstanceID())
+        private void Start()
         {
-            return;
-        }
+            Bootstrap.Instance.EventMgr.UpdateCounterProgress += OnCounterProgressChanged;
 
-        _progressImg.fillAmount = progressNormalized;
-
-        if (progressNormalized <= 0 || progressNormalized >= 1)
-        {
+            _progressImg.fillAmount = 0;
             ToggleProgressBar(false);
         }
-        else
-        {
-            ToggleProgressBar(true);
-        }
-    }
 
-    private void ToggleProgressBar(bool isEnabled)
-    {
-        gameObject.SetActive(isEnabled);
+        private void OnDestroy()
+        {
+            Bootstrap.Instance.EventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
+        }
+
+        private void OnCounterProgressChanged(float progressNormalized, int counterInstanceID)
+        {
+            if (counterInstanceID != _progressCounterObj.GetInstanceID())
+            {
+                return;
+            }
+
+            _progressImg.fillAmount = progressNormalized;
+
+            if (progressNormalized <= 0 || progressNormalized >= 1)
+            {
+                ToggleProgressBar(false);
+            }
+            else
+            {
+                ToggleProgressBar(true);
+            }
+        }
+
+        private void ToggleProgressBar(bool isEnabled)
+        {
+            gameObject.SetActive(isEnabled);
+        }
     }
 }

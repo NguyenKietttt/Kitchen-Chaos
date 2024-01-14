@@ -1,15 +1,16 @@
-using UnityEngine;
-
-public sealed class DeliveryCounter : BaseCounter
+namespace KitchenChaos
 {
-    public override void OnInteract(PlayerController playerController)
+    public sealed class DeliveryCounter : BaseCounter
     {
-        if (playerController.HasKitchenObj())
+        public override void OnInteract(PlayerController playerController)
         {
-            if (playerController.GetKitchenObj().TryGetPlate(out PlateKitchenObject plateKitchenObj))
+            if (playerController.HasKitchenObj())
             {
-                Bootstrap.Instance.DeliveryMgr.DeliveryReceipt(plateKitchenObj);
-                playerController.GetKitchenObj().DestroySelf();
+                if (playerController.GetKitchenObj().TryGetPlate(out PlateKitchenObject plateKitchenObj))
+                {
+                    Bootstrap.Instance.DeliveryMgr.DeliveryReceipt(plateKitchenObj);
+                    playerController.GetKitchenObj().DestroySelf();
+                }
             }
         }
     }

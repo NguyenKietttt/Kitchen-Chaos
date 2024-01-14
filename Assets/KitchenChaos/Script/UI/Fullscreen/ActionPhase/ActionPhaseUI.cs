@@ -1,9 +1,12 @@
 using UISystem;
 
-public sealed class ActionPhaseUI : BaseScreen
+namespace KitchenChaos
 {
-    public override void OnPop()
+    public sealed class ActionPhaseUI : BaseScreen
     {
-        Destroy(gameObject);
+        public override void OnPop()
+        {
+            Destroy(gameObject);
+        }
     }
 }

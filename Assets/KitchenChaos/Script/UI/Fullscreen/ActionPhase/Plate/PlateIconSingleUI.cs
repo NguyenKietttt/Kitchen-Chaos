@@ -1,13 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public sealed class PlateIconSingleUI : MonoBehaviour
+namespace KitchenChaos
 {
-    [Header("Internal Ref")]
-    [SerializeField] private Image _iconImg;
-
-    public void SetIcon(KitchenObjectSO kitchenObjectSO)
+    public sealed class PlateIconSingleUI : MonoBehaviour
     {
-        _iconImg.sprite = kitchenObjectSO.Sprite;
+        [Header("Internal Ref")]
+        [SerializeField] private Image _iconImg;
+
+        public void SetIcon(KitchenObjectSO kitchenObjectSO)
+        {
+            _iconImg.sprite = kitchenObjectSO.Sprite;
+        }
     }
 }

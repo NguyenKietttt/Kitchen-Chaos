@@ -1,64 +1,67 @@
 using DG.Tweening;
 using UnityEngine;
 
-public sealed class StoveWarningUI : MonoBehaviour
+namespace KitchenChaos
 {
-    private const float BURN_PROGRESS_AMOUNT = 0.5f;
-
-    [Header("Internal Ref")]
-    [SerializeField] private StoveCounter _stoveCounter;
-    [SerializeField] private CanvasGroup _canvasGroup;
-
-    private Sequence _warningSequence;
-
-    private void Start()
+    public sealed class StoveWarningUI : MonoBehaviour
     {
-        Bootstrap.Instance.EventMgr.UpdateCounterProgress += OnCounterProgressChanged;
+        private const float BURN_PROGRESS_AMOUNT = 0.5f;
 
-        SetupWarningSequence();
-        Hide();
-    }
+        [Header("Internal Ref")]
+        [SerializeField] private StoveCounter _stoveCounter;
+        [SerializeField] private CanvasGroup _canvasGroup;
 
-    private void OnDestroy()
-    {
-        DOTween.Clear(true);
-        Bootstrap.Instance.EventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
-    }
+        private Sequence _warningSequence;
 
-    private void OnCounterProgressChanged(float progressNormalized, int counterInstanceID)
-    {
-        if (counterInstanceID != _stoveCounter.gameObject.GetInstanceID())
+        private void Start()
         {
-            return;
-        }
+            Bootstrap.Instance.EventMgr.UpdateCounterProgress += OnCounterProgressChanged;
 
-        if (_stoveCounter.IsFried && progressNormalized >= BURN_PROGRESS_AMOUNT)
-        {
-            Show();
-        }
-        else
-        {
+            SetupWarningSequence();
             Hide();
         }
-    }
 
-    private void Show()
-    {
-        gameObject.SetActive(true);
-    }
+        private void OnDestroy()
+        {
+            DOTween.Clear(true);
+            Bootstrap.Instance.EventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
+        }
 
-    private void Hide()
-    {
-        gameObject.SetActive(false);
-    }
+        private void OnCounterProgressChanged(float progressNormalized, int counterInstanceID)
+        {
+            if (counterInstanceID != _stoveCounter.gameObject.GetInstanceID())
+            {
+                return;
+            }
 
-    private void SetupWarningSequence()
-    {
-        _warningSequence = DOTween.Sequence()
-            .AppendCallback(() => _canvasGroup.alpha = 0)
-            .Append(_canvasGroup.DOFade(1.0f, 0.1f))
-            .Append(_canvasGroup.DOFade(0.0f, 0.2f));
+            if (_stoveCounter.IsFried && progressNormalized >= BURN_PROGRESS_AMOUNT)
+            {
+                Show();
+            }
+            else
+            {
+                Hide();
+            }
+        }
 
-        _warningSequence.SetLoops(-1, LoopType.Restart);
+        private void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
+        private void Hide()
+        {
+            gameObject.SetActive(false);
+        }
+
+        private void SetupWarningSequence()
+        {
+            _warningSequence = DOTween.Sequence()
+                .AppendCallback(() => _canvasGroup.alpha = 0)
+                .Append(_canvasGroup.DOFade(1.0f, 0.1f))
+                .Append(_canvasGroup.DOFade(0.0f, 0.2f));
+
+            _warningSequence.SetLoops(-1, LoopType.Restart);
+        }
     }
 }

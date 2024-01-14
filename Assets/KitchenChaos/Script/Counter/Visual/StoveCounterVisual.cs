@@ -1,34 +1,37 @@
 using UnityEngine;
 
-public sealed class StoveCounterVisual : MonoBehaviour
+namespace KitchenChaos
 {
-    [Header("External Ref")]
-    [SerializeField] private GameObject _stoveCounterObj;
-
-    [Header("Internal Ref")]
-    [SerializeField] private GameObject _stoveOnObj;
-    [SerializeField] private GameObject _particlesObj;
-
-    private void Start()
+    public sealed class StoveCounterVisual : MonoBehaviour
     {
-        Bootstrap.Instance.EventMgr.ChangeStoveCounterState += OnStoveCounterStateChanged;
-    }
+        [Header("External Ref")]
+        [SerializeField] private GameObject _stoveCounterObj;
 
-    private void OnDestroy()
-    {
-        Bootstrap.Instance.EventMgr.ChangeStoveCounterState -= OnStoveCounterStateChanged;
-    }
+        [Header("Internal Ref")]
+        [SerializeField] private GameObject _stoveOnObj;
+        [SerializeField] private GameObject _particlesObj;
 
-    private void OnStoveCounterStateChanged(StoveCounter.State state, int counterInstanceID)
-    {
-        if (_stoveCounterObj.GetInstanceID() != counterInstanceID)
+        private void Start()
         {
-            return;
+            Bootstrap.Instance.EventMgr.ChangeStoveCounterState += OnStoveCounterStateChanged;
         }
 
-        bool isActiveVisual = state is StoveCounter.State.Frying or StoveCounter.State.Fried;
+        private void OnDestroy()
+        {
+            Bootstrap.Instance.EventMgr.ChangeStoveCounterState -= OnStoveCounterStateChanged;
+        }
 
-        _stoveOnObj.SetActive(isActiveVisual);
-        _particlesObj.SetActive(isActiveVisual);
+        private void OnStoveCounterStateChanged(StoveCounter.State state, int counterInstanceID)
+        {
+            if (_stoveCounterObj.GetInstanceID() != counterInstanceID)
+            {
+                return;
+            }
+
+            bool isActiveVisual = state is StoveCounter.State.Frying or StoveCounter.State.Fried;
+
+            _stoveOnObj.SetActive(isActiveVisual);
+            _particlesObj.SetActive(isActiveVisual);
+        }
     }
 }

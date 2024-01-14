@@ -1,20 +1,23 @@
 using System;
 
-public sealed class TrashCounter : BaseCounter
+namespace KitchenChaos
 {
-    public static event Action ObjectTrashed;
-
-    private void OnDestroy()
+    public sealed class TrashCounter : BaseCounter
     {
-        ObjectTrashed = null;
-    }
+        public static event Action ObjectTrashed;
 
-    public override void OnInteract(PlayerController playerController)
-    {
-        if (playerController.HasKitchenObj())
+        private void OnDestroy()
         {
-            playerController.GetKitchenObj().DestroySelf();
-            ObjectTrashed?.Invoke();
+            ObjectTrashed = null;
+        }
+
+        public override void OnInteract(PlayerController playerController)
+        {
+            if (playerController.HasKitchenObj())
+            {
+                playerController.GetKitchenObj().DestroySelf();
+                ObjectTrashed?.Invoke();
+            }
         }
     }
 }

@@ -1,8 +1,11 @@
-public enum GameState
+namespace KitchenChaos
 {
-    MainMenu,
-    WaitingToStart,
-    CountDownToStart,
-    GamePlaying,
-    GameOver
+    public enum GameState
+    {
+        MainMenu,
+        WaitingToStart,
+        CountDownToStart,
+        GamePlaying,
+        GameOver
+    }
 }

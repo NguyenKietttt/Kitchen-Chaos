@@ -1,66 +1,69 @@
 using UnityEngine;
 
-public sealed class Bootstrap : MonoBehaviour
+namespace KitchenChaos
 {
-    public static Bootstrap Instance { get; private set; }
-
-    public EventManager EventMgr { get; private set; }
-    public GameStateManager GameStateMgr { get; private set; }
-    public InputManager InputMgr { get; private set; }
-    public DeliveryManager DeliveryMgr { get; private set; }
-    public SFXManager SFXMgr => _sfxMgr;
-    public MusicManager MusicMgr => _musicMgr;
-    public UISystem.UIManager UIManager => _uiManager;
-
-    public GameObject PlayerPrefab => _playerPrefab;
-    public GameObject LevelOnePrefab => _levelOnePrefab;
-
-    [Header("Asset Ref")]
-    [SerializeField] private ListReceiptSO _receiptSOList;
-    [SerializeField] private GameObject _playerPrefab;
-    [SerializeField] private GameObject _levelOnePrefab;
-
-    [Header("Internal Ref")]
-    [SerializeField] private SceneLoader _sceneLoader;
-    [SerializeField] private UISystem.UIManager _uiManager;
-    [SerializeField] private SFXManager _sfxMgr;
-    [SerializeField] private MusicManager _musicMgr;
-
-    private void Awake()
+    public sealed class Bootstrap : MonoBehaviour
     {
-        if (Instance == null)
+        public static Bootstrap Instance { get; private set; }
+
+        public EventManager EventMgr { get; private set; }
+        public GameStateManager GameStateMgr { get; private set; }
+        public InputManager InputMgr { get; private set; }
+        public DeliveryManager DeliveryMgr { get; private set; }
+        public SFXManager SFXMgr => _sfxMgr;
+        public MusicManager MusicMgr => _musicMgr;
+        public UISystem.UIManager UIManager => _uiManager;
+
+        public GameObject PlayerPrefab => _playerPrefab;
+        public GameObject LevelOnePrefab => _levelOnePrefab;
+
+        [Header("Asset Ref")]
+        [SerializeField] private ListReceiptSO _receiptSOList;
+        [SerializeField] private GameObject _playerPrefab;
+        [SerializeField] private GameObject _levelOnePrefab;
+
+        [Header("Internal Ref")]
+        [SerializeField] private SceneLoader _sceneLoader;
+        [SerializeField] private UISystem.UIManager _uiManager;
+        [SerializeField] private SFXManager _sfxMgr;
+        [SerializeField] private MusicManager _musicMgr;
+
+        private void Awake()
         {
-            Instance = this;
-            DontDestroyOnLoad(this);
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(this);
+            }
+
+            InitManagers();
+            _sceneLoader.LoadAsync(SceneLoader.Scene.Gameplay, () => GameStateMgr.Init());
         }
 
-        InitManagers();
-        _sceneLoader.LoadAsync(SceneLoader.Scene.Gameplay, () => GameStateMgr.Init());
-    }
+        private void Update()
+        {
+            float deltaTime = Time.deltaTime;
 
-    private void Update()
-    {
-        float deltaTime = Time.deltaTime;
+            GameStateMgr.OnUpdate(deltaTime);
+            DeliveryMgr.OnUpdate(deltaTime);
+        }
 
-        GameStateMgr.OnUpdate(deltaTime);
-        DeliveryMgr.OnUpdate(deltaTime);
-    }
+        private void OnDestroy()
+        {
+            DeliveryMgr.OnDestroy();
+            InputMgr.OnDestroy();
+            GameStateMgr.OnDestroy();
+        }
 
-    private void OnDestroy()
-    {
-        DeliveryMgr.OnDestroy();
-        InputMgr.OnDestroy();
-        GameStateMgr.OnDestroy();
-    }
+        private void InitManagers()
+        {
+            EventMgr = new EventManager();
+            _uiManager.Init();
+            GameStateMgr = new GameStateManager();
+            InputMgr = new InputManager();
 
-    private void InitManagers()
-    {
-        EventMgr = new EventManager();
-        _uiManager.Init();
-        GameStateMgr = new GameStateManager();
-        InputMgr = new InputManager();
-
-        DeliveryMgr = new DeliveryManager(_receiptSOList);
-        SFXMgr.Init();
+            DeliveryMgr = new DeliveryManager(_receiptSOList);
+            SFXMgr.Init();
+        }
     }
 }

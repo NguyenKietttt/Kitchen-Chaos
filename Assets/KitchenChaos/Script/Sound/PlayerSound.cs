@@ -1,28 +1,31 @@
 using UnityEngine;
 
-public sealed class PlayerSound : MonoBehaviour
+namespace KitchenChaos
 {
-    private const float FOOTSTEP_TIMER_MAX = 0.1f;
-
-    [Header("External Ref")]
-    [SerializeField] private PlayerController _playerController;
-
-    [Header("Internal Ref")]
-    [SerializeField] private AudioSource _audioSrc;
-
-    private float _footstepTimer;
-
-    private void Update()
+    public sealed class PlayerSound : MonoBehaviour
     {
-        _footstepTimer += Time.deltaTime;
+        private const float FOOTSTEP_TIMER_MAX = 0.1f;
 
-        if (_footstepTimer >= FOOTSTEP_TIMER_MAX)
+        [Header("External Ref")]
+        [SerializeField] private PlayerController _playerController;
+
+        [Header("Internal Ref")]
+        [SerializeField] private AudioSource _audioSrc;
+
+        private float _footstepTimer;
+
+        private void Update()
         {
-            _footstepTimer = 0;
+            _footstepTimer += Time.deltaTime;
 
-            if (_playerController.IsMoving)
+            if (_footstepTimer >= FOOTSTEP_TIMER_MAX)
             {
-                _audioSrc.PlayOneShot(Bootstrap.Instance.SFXMgr.GetRandomFootStepAudioClip());
+                _footstepTimer = 0;
+
+                if (_playerController.IsMoving)
+                {
+                    _audioSrc.PlayOneShot(Bootstrap.Instance.SFXMgr.GetRandomFootStepAudioClip());
+                }
             }
         }
     }

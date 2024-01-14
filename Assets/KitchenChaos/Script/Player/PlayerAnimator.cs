@@ -1,21 +1,24 @@
 using UnityEngine;
 
-public sealed class PlayerAnimator : MonoBehaviour
+namespace KitchenChaos
 {
-    private readonly int IsWalkingParam = Animator.StringToHash("IsWalking");
-
-    [SerializeField] private Animator _animator;
-
-    private bool _lastMovingValue;
-
-    public void UpdateWalkingAnim(bool canMove)
+    public sealed class PlayerAnimator : MonoBehaviour
     {
-        if (_lastMovingValue == canMove)
-        {
-            return;
-        }
+        private readonly int IsWalkingParam = Animator.StringToHash("IsWalking");
 
-        _animator.SetBool(IsWalkingParam, canMove);
-        _lastMovingValue = canMove;
+        [SerializeField] private Animator _animator;
+
+        private bool _lastMovingValue;
+
+        public void UpdateWalkingAnim(bool canMove)
+        {
+            if (_lastMovingValue == canMove)
+            {
+                return;
+            }
+
+            _animator.SetBool(IsWalkingParam, canMove);
+            _lastMovingValue = canMove;
+        }
     }
 }

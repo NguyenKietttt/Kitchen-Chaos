@@ -1,9 +1,12 @@
 using UISystem;
 
-public sealed class RebindKeyUI : BaseScreen
+namespace KitchenChaos
 {
-    public override void OnPop()
+    public sealed class RebindKeyUI : BaseScreen
     {
-        Destroy(gameObject);
+        public override void OnPop()
+        {
+            Destroy(gameObject);
+        }
     }
 }

@@ -2,45 +2,48 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public sealed class DeliveryManagerSingleUI : MonoBehaviour
+namespace KitchenChaos
 {
-    [Header("Asset Ref")]
-    [SerializeField] private Image _ingredientImage;
-
-    [Header("Internal Ref")]
-    [SerializeField] private TextMeshProUGUI _receiptNameText;
-    [SerializeField] private Transform _ingredientContainer;
-
-    private void Awake()
+    public sealed class DeliveryManagerSingleUI : MonoBehaviour
     {
-        _ingredientImage.gameObject.SetActive(false);
-    }
+        [Header("Asset Ref")]
+        [SerializeField] private Image _ingredientImage;
 
-    public void SetReceiptName(string name)
-    {
-        _receiptNameText.SetText(name);
-    }
+        [Header("Internal Ref")]
+        [SerializeField] private TextMeshProUGUI _receiptNameText;
+        [SerializeField] private Transform _ingredientContainer;
 
-    public void SetIngredientIcons(KitchenObjectSO[] listKitchenObjSO)
-    {
-        ClearPreviousIngredientICons();
-
-        for (int i = 0; i < listKitchenObjSO.Length; i++)
+        private void Awake()
         {
-            KitchenObjectSO kitchenObjSO = listKitchenObjSO[i];
-
-            Image ingredientIcon = Instantiate(_ingredientImage, _ingredientContainer);
-            ingredientIcon.sprite = kitchenObjSO.Sprite;
-
-            ingredientIcon.gameObject.SetActive(true);
+            _ingredientImage.gameObject.SetActive(false);
         }
-    }
 
-    private void ClearPreviousIngredientICons()
-    {
-        foreach (Transform child in _ingredientContainer)
+        public void SetReceiptName(string name)
         {
-            Destroy(child.gameObject);
+            _receiptNameText.SetText(name);
+        }
+
+        public void SetIngredientIcons(KitchenObjectSO[] listKitchenObjSO)
+        {
+            ClearPreviousIngredientICons();
+
+            for (int i = 0; i < listKitchenObjSO.Length; i++)
+            {
+                KitchenObjectSO kitchenObjSO = listKitchenObjSO[i];
+
+                Image ingredientIcon = Instantiate(_ingredientImage, _ingredientContainer);
+                ingredientIcon.sprite = kitchenObjSO.Sprite;
+
+                ingredientIcon.gameObject.SetActive(true);
+            }
+        }
+
+        private void ClearPreviousIngredientICons()
+        {
+            foreach (Transform child in _ingredientContainer)
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
 }

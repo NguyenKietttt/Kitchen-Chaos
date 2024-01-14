@@ -1,13 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public sealed class GamePlayingClockUI : MonoBehaviour
+namespace KitchenChaos
 {
-    [Header("Internal Ref")]
-    [SerializeField] private Image _timerImg;
-
-    private void Update()
+    public sealed class GamePlayingClockUI : MonoBehaviour
     {
-        _timerImg.fillAmount = Bootstrap.Instance.GameStateMgr.GamePlayingTimerNormalized;
+        [Header("Internal Ref")]
+        [SerializeField] private Image _timerImg;
+
+        private void Update()
+        {
+            _timerImg.fillAmount = Bootstrap.Instance.GameStateMgr.GamePlayingTimerNormalized;
+        }
     }
 }
