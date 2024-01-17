@@ -5,6 +5,9 @@ namespace KitchenChaos
 {
     public sealed class ProgressBarUI : MonoBehaviour
     {
+        private const int MAX_PROGRESS = 1;
+        private const int MIN_PROGRESS = 0;
+
         [Header("External Ref")]
         [SerializeField] private GameObject _progressCounterObj;
 
@@ -15,7 +18,7 @@ namespace KitchenChaos
         {
             Bootstrap.Instance.EventMgr.UpdateCounterProgress += OnCounterProgressChanged;
 
-            _progressImg.fillAmount = 0;
+            _progressImg.fillAmount = MIN_PROGRESS;
             ToggleProgressBar(false);
         }
 
@@ -33,7 +36,7 @@ namespace KitchenChaos
 
             _progressImg.fillAmount = progressNormalized;
 
-            if (progressNormalized <= 0 || progressNormalized >= 1)
+            if (progressNormalized <= MIN_PROGRESS || progressNormalized >= MAX_PROGRESS)
             {
                 ToggleProgressBar(false);
             }

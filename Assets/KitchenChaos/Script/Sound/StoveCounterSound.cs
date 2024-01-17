@@ -6,6 +6,7 @@ namespace KitchenChaos
     {
         private const float BURN_PROGRESS_AMOUNT = 0.5f;
         private const float WARNING_SOUND_TIMER_MAX = 0.2f;
+        private const float WARNING_SOUND_TIMER_MIN = 0.0f;
 
         [Header("External Ref")]
         [SerializeField] private GameObject _stoveCounterObj;
@@ -32,7 +33,7 @@ namespace KitchenChaos
             }
 
             _warningSoundTimer -= Time.deltaTime;
-            if (_warningSoundTimer <= 0)
+            if (_warningSoundTimer <= WARNING_SOUND_TIMER_MIN)
             {
                 _warningSoundTimer = WARNING_SOUND_TIMER_MAX;
                 Bootstrap.Instance.EventMgr.StoveWarning?.Invoke();

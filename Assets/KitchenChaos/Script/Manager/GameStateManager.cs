@@ -5,7 +5,9 @@ namespace KitchenChaos
     public sealed class GameStateManager
     {
         private const float COUNTDOWN_TO_START_TIMER_MAX = 3.0f;
+        private const float COUNTDOWN_TO_START_TIMER_MIN = 0.0f;
         private const float GAME_PLAYING_TIMER_MAX = 60.0f;
+        private const float GAME_PLAYING_TIMER_MIN = 0.0f;
 
         public float GamePlayingTimerNormalized => _gameplayingTimer / GAME_PLAYING_TIMER_MAX;
         public float CountDownToStartTimer => _countdownToStartTimer;
@@ -33,7 +35,7 @@ namespace KitchenChaos
             {
                 case GameState.CountDownToStart:
                     _countdownToStartTimer -= deltaTime;
-                    if (_countdownToStartTimer < 0)
+                    if (_countdownToStartTimer < COUNTDOWN_TO_START_TIMER_MIN)
                     {
                         ChangeState(GameState.GamePlaying);
                     }
@@ -62,7 +64,7 @@ namespace KitchenChaos
             {
                 case GameState.MainMenu:
                     _countdownToStartTimer = COUNTDOWN_TO_START_TIMER_MAX;
-                    _gameplayingTimer = 0;
+                    _gameplayingTimer = GAME_PLAYING_TIMER_MIN;
 
                     if (_playerObj != null)
                     {
@@ -91,7 +93,7 @@ namespace KitchenChaos
                     _countdownToStartTimer = COUNTDOWN_TO_START_TIMER_MAX;
                     break;
                 case GameState.GameOver:
-                    _gameplayingTimer = 0;
+                    _gameplayingTimer = GAME_PLAYING_TIMER_MIN;
                     Bootstrap.Instance.UIManager.Push(UISystem.ScreenID.GameOver);
                     break;
             }

@@ -8,6 +8,8 @@ namespace KitchenChaos
 {
     public sealed class OptionMenuUI : BaseScreen
     {
+        private const int ROUND_TO_ONE_MULTIPLICAND = 10;
+
         [Header("Internal Ref")]
         [SerializeField] private Button _sfxVolumnBtn;
         [SerializeField] private Button _musicVolumnBtn;
@@ -123,9 +125,9 @@ namespace KitchenChaos
         private void UpdateSFXVolumeText()
         {
             _stringBuilder
-                        .Clear()
-                        .Append("Sound Effects: ")
-                        .Append(Mathf.Ceil(Bootstrap.Instance.SFXMgr.MasterVolumn * 10));
+                .Clear()
+                .Append("Sound Effects: ")
+                .Append(Mathf.Ceil(Bootstrap.Instance.SFXMgr.MasterVolumn * ROUND_TO_ONE_MULTIPLICAND));
 
             _sfxVolumnTxt.SetText(_stringBuilder);
         }
@@ -135,7 +137,7 @@ namespace KitchenChaos
             _stringBuilder
                .Clear()
                .Append("Music: ")
-               .Append(Mathf.Ceil(Bootstrap.Instance.MusicMgr.MasterVolumn * 10));
+               .Append(Mathf.Ceil(Bootstrap.Instance.MusicMgr.MasterVolumn * ROUND_TO_ONE_MULTIPLICAND));
 
             _musicVolumnTxt.SetText(_stringBuilder);
         }

@@ -8,6 +8,7 @@ namespace KitchenChaos
         private const float PLAYER_RADIUS = 0.7f;
         private const float MOVE_OFFSET = 0.5f;
         private const int PLAYER_HEIGHT = 2;
+        private const float PLAYER_HEIGHT_OFFSET = 0.5f;
         private const int MOVING_SPEED = 7;
         private const int ROTATION_SPEED = 10;
         private const int INTERACTION_DISTANCE = 2;
@@ -57,7 +58,7 @@ namespace KitchenChaos
         private void HandleCounterSelection(Vector2 input)
         {
             Vector3 curPos = transform.position;
-            Vector3 playerPos = new(curPos.x, PLAYER_HEIGHT * 0.5f, curPos.z);
+            Vector3 playerPos = new(curPos.x, PLAYER_HEIGHT * PLAYER_HEIGHT_OFFSET, curPos.z);
             Vector3 moveDir = new(input.x, 0, input.y);
 
             if (moveDir != Vector3.zero)

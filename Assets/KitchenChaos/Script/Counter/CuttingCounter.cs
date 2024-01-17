@@ -7,6 +7,8 @@ namespace KitchenChaos
     {
         public static event Action CutObject;
 
+        private const int MIN_PROGRESS = 0;
+
         [Header("Child Internal Ref")]
         [SerializeField] private Animator _animator;
 
@@ -39,8 +41,8 @@ namespace KitchenChaos
                 }
                 else
                 {
-                    _curCuttingProcess = 0;
-                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(0, gameObject.GetInstanceID());
+                    _curCuttingProcess = MIN_PROGRESS;
+                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(MIN_PROGRESS, gameObject.GetInstanceID());
 
                     GetKitchenObj().SetCurKitchenObjParent(playerController);
                 }
@@ -50,7 +52,7 @@ namespace KitchenChaos
                 if (playerController.HasKitchenObj() && HasReceiptWithInput(playerController.GetKitchenObj().GetKitchenObjectSO()))
                 {
                     playerController.GetKitchenObj().SetCurKitchenObjParent(this);
-                    UpdateCounterProgress(0);
+                    UpdateCounterProgress(MIN_PROGRESS);
                 }
             }
         }

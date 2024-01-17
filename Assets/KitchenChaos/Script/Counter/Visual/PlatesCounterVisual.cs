@@ -6,6 +6,7 @@ namespace KitchenChaos
     public sealed class PlatesCounterVisual : MonoBehaviour
     {
         private const float PLATE_OFFSET_Y = 0.1f;
+        private const int PLATE_VISUAL_COUNT_MIN = 0;
 
         [Header("Asset Ref")]
         [SerializeField] private GameObject _plateVisualPrefab;
@@ -37,7 +38,7 @@ namespace KitchenChaos
 
         private void OnPlateRemoved()
         {
-            if (_plateVisuals.Count > 0)
+            if (_plateVisuals.Count > PLATE_VISUAL_COUNT_MIN)
             {
                 GameObject plateVisual = _plateVisuals.Pop();
                 Destroy(plateVisual);

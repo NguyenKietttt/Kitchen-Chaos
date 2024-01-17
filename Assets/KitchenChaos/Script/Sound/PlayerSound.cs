@@ -5,6 +5,7 @@ namespace KitchenChaos
     public sealed class PlayerSound : MonoBehaviour
     {
         private const float FOOTSTEP_TIMER_MAX = 0.1f;
+        private const float FOOTSTEP_TIMER_MIN = 0.0f;
 
         [Header("External Ref")]
         [SerializeField] private PlayerController _playerController;
@@ -20,7 +21,7 @@ namespace KitchenChaos
 
             if (_footstepTimer >= FOOTSTEP_TIMER_MAX)
             {
-                _footstepTimer = 0;
+                _footstepTimer = FOOTSTEP_TIMER_MIN;
 
                 if (_playerController.IsMoving)
                 {

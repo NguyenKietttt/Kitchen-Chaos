@@ -6,7 +6,9 @@ namespace KitchenChaos
     public sealed class DeliveryManager
     {
         private const float SPAWN_RECEIPT_TIMER_MAX = 4.0f;
+        private const float SPAWN_RECEIPT_TIMER_MIN = 0.0f;
         private const int WAITING_RECEIPT_MAX = 4;
+        private const int DEFAULT_AMOUNT_SUCCESSFUL_RECEIPT = 0;
 
         public IEnumerable<ReceiptSO> ListWaitingReceiptSO => _waitingListReceiptSO.AsReadOnly();
         public int AmountSucessfulReceipt => _amountSucessfulReceipt;
@@ -40,7 +42,7 @@ namespace KitchenChaos
 
             if (_spawnReceiptTimer >= SPAWN_RECEIPT_TIMER_MAX)
             {
-                _spawnReceiptTimer = 0;
+                _spawnReceiptTimer = SPAWN_RECEIPT_TIMER_MIN;
 
                 if (_curState is GameState.GamePlaying && _waitingListReceiptSO.Count < WAITING_RECEIPT_MAX)
                 {
@@ -98,8 +100,8 @@ namespace KitchenChaos
         {
             _waitingListReceiptSO.Clear();
 
-            _spawnReceiptTimer = 0;
-            _amountSucessfulReceipt = 0;
+            _spawnReceiptTimer = SPAWN_RECEIPT_TIMER_MIN;
+            _amountSucessfulReceipt = DEFAULT_AMOUNT_SUCCESSFUL_RECEIPT;
         }
 
         private void OnGameStateChanged(GameState state)

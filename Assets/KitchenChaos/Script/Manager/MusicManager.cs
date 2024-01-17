@@ -7,7 +7,9 @@ namespace KitchenChaos
         private const string MUSIC_VOLUMN_KEY = "MUSIC_VOLUMN_KEY";
 
         private const float MAX_VOLUMN = 1.0f;
+        private const float MIN_VOLUME = 0.0f;
         private const float DEFAULT_VOLUMN = 0.5f;
+        private const float VOLUME_STEP = 0.1f;
 
         public float MasterVolumn => _masterVolumn;
 
@@ -24,11 +26,11 @@ namespace KitchenChaos
 
         public void ChangeVolumn()
         {
-            _masterVolumn += 0.1f;
+            _masterVolumn += VOLUME_STEP;
 
             if (_masterVolumn > MAX_VOLUMN)
             {
-                _masterVolumn = 0;
+                _masterVolumn = MIN_VOLUME;
             }
 
             _audioSrc.volume = _masterVolumn;

@@ -6,6 +6,10 @@ namespace KitchenChaos
     {
         public enum State { Idle, Frying, Fried, Burned }
 
+        private const float BURNING_TIME_MIN = 0.0f;
+        private const float FRYING_TIME_MIN = 0.0f;
+        private const float PROGRESS_MIN = 0.0f;
+
         public bool IsFried => _curState is State.Fried;
 
         [Header("Child Asset Ref")]
@@ -46,7 +50,7 @@ namespace KitchenChaos
                         GetKitchenObj().DestroySelf();
                         KitchenObject.SpawnKitchenObj(_fryingReceiptSO.Output, this);
 
-                        _burningTimer = 0;
+                        _burningTimer = BURNING_TIME_MIN;
                         _curState = State.Fried;
                         _burningReceiptSO = GetBurningReceiptSOWithInput(GetKitchenObj().GetKitchenObjectSO());
 
@@ -67,7 +71,7 @@ namespace KitchenChaos
                         _curState = State.Burned;
 
                         Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
-                        Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(0, gameObject.GetInstanceID());
+                        Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(PROGRESS_MIN, gameObject.GetInstanceID());
                     }
                     break;
             }
@@ -89,7 +93,7 @@ namespace KitchenChaos
                             _curState = State.Idle;
 
                             Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
-                            Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(0, gameObject.GetInstanceID());
+                            Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(PROGRESS_MIN, gameObject.GetInstanceID());
                         }
                     }
                 }
@@ -100,7 +104,7 @@ namespace KitchenChaos
                     _curState = State.Idle;
 
                     Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
-                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(0, gameObject.GetInstanceID());
+                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(PROGRESS_MIN, gameObject.GetInstanceID());
                 }
             }
             else
@@ -110,7 +114,7 @@ namespace KitchenChaos
                     playerController.GetKitchenObj().SetCurKitchenObjParent(this);
                     _fryingReceiptSO = GetFryingReceiptSOWithInput(GetKitchenObj().GetKitchenObjectSO());
 
-                    _fryingTimer = 0;
+                    _fryingTimer = FRYING_TIME_MIN;
                     _curState = State.Frying;
 
                     Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
