@@ -53,7 +53,7 @@ namespace KitchenChaos
 
         private void HideProgressBar()
         {
-            gameObject.SetActive(true);
+            gameObject.SetActive(false);
         }
     }
 }
