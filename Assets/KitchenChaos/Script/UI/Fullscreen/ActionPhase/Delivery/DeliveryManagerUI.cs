@@ -13,7 +13,7 @@ namespace KitchenChaos
 
         private void Awake()
         {
-            _receiptTemplateUI.gameObject.SetActive(false);
+            _receiptTemplateUI.Hide();
         }
 
         private void Start()
@@ -40,7 +40,7 @@ namespace KitchenChaos
                 DeliveryManagerSingleUI waitingReceipUI = Instantiate(_receiptTemplateUI, _container);
                 waitingReceipUI.SetReceiptName(receiptSO.ReceiptName);
                 waitingReceipUI.SetIngredientIcons(receiptSO.ListKitchenObjSO);
-                waitingReceipUI.gameObject.SetActive(true);
+                waitingReceipUI.Show();
             }
         }
 

@@ -26,12 +26,12 @@ namespace KitchenChaos
 
         public override void OnFocus()
         {
-            gameObject.SetActive(true);
+            Show();
         }
 
         public override void OnFocusLost()
         {
-            gameObject.SetActive(false);
+            Hide();
         }
 
         public override void OnPop()
@@ -61,6 +61,16 @@ namespace KitchenChaos
 
             _gamepadInteractTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.GamepadInteract));
             _gamepadCutTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.GamepadCut));
+        }
+
+        private void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
+        private void Hide()
+        {
+            gameObject.SetActive(false);
         }
     }
 }

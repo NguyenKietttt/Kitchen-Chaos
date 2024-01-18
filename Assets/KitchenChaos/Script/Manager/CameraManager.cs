@@ -36,12 +36,6 @@ namespace KitchenChaos
                 case GameState.WaitingToStart:
                     ChangeCamera(CameraState.Gameplay);
                     break;
-                case GameState.CountDownToStart:
-                    break;
-                case GameState.GamePlaying:
-                    break;
-                case GameState.GameOver:
-                    break;
             }
         }
 

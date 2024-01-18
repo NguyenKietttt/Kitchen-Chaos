@@ -19,7 +19,7 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.UpdateCounterProgress += OnCounterProgressChanged;
 
             _progressImg.fillAmount = MIN_PROGRESS;
-            ToggleProgressBar(false);
+            HideProgressBar();
         }
 
         private void OnDestroy()
@@ -38,17 +38,22 @@ namespace KitchenChaos
 
             if (progressNormalized <= MIN_PROGRESS || progressNormalized >= MAX_PROGRESS)
             {
-                ToggleProgressBar(false);
+                HideProgressBar();
             }
             else
             {
-                ToggleProgressBar(true);
+                ShowProgressBar();
             }
         }
 
-        private void ToggleProgressBar(bool isEnabled)
+        private void ShowProgressBar()
         {
-            gameObject.SetActive(isEnabled);
+            gameObject.SetActive(true);
+        }
+
+        private void HideProgressBar()
+        {
+            gameObject.SetActive(true);
         }
     }
 }

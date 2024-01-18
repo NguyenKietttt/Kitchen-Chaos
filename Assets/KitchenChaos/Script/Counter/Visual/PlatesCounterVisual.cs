@@ -40,8 +40,7 @@ namespace KitchenChaos
         {
             if (_plateVisuals.Count > PLATE_VISUAL_COUNT_MIN)
             {
-                GameObject plateVisual = _plateVisuals.Pop();
-                Destroy(plateVisual);
+                Destroy(_plateVisuals.Pop());
             }
         }
     }

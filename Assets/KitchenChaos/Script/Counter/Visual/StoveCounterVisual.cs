@@ -29,7 +29,6 @@ namespace KitchenChaos
             }
 
             bool isActiveVisual = state is StoveCounter.State.Frying or StoveCounter.State.Fried;
-
             _stoveOnObj.SetActive(isActiveVisual);
             _particlesObj.SetActive(isActiveVisual);
         }

@@ -29,14 +29,12 @@ namespace KitchenChaos
 
         public override void OnFocus()
         {
-            gameObject.SetActive(true);
-            _decorationObj.SetActive(true);
+            Show();
         }
 
         public override void OnFocusLost()
         {
-            gameObject.SetActive(false);
-            _decorationObj.SetActive(false);
+            Hide();
         }
 
         public override void OnPop()
@@ -60,6 +58,18 @@ namespace KitchenChaos
 #else
             Application.Quit();
 #endif
+        }
+
+        private void Show()
+        {
+            gameObject.SetActive(true);
+            _decorationObj.SetActive(true);
+        }
+
+        private void Hide()
+        {
+            gameObject.SetActive(false);
+            _decorationObj.SetActive(false);
         }
     }
 }

@@ -18,11 +18,9 @@ namespace KitchenChaos
         private void Update()
         {
             _footstepTimer += Time.deltaTime;
-
             if (_footstepTimer >= FOOTSTEP_TIMER_MAX)
             {
                 _footstepTimer = FOOTSTEP_TIMER_MIN;
-
                 if (_playerController.IsMoving)
                 {
                     _audioSrc.PlayOneShot(Bootstrap.Instance.SFXMgr.GetRandomFootStepAudioClip());

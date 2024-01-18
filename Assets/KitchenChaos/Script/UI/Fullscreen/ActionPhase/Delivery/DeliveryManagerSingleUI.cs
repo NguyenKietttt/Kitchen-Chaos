@@ -18,6 +18,16 @@ namespace KitchenChaos
             _ingredientImage.gameObject.SetActive(false);
         }
 
+        public void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
+        }
+
         public void SetReceiptName(string name)
         {
             _receiptNameText.SetText(name);
@@ -27,13 +37,10 @@ namespace KitchenChaos
         {
             ClearPreviousIngredientICons();
 
-            for (int i = 0; i < listKitchenObjSO.Length; i++)
+            foreach (KitchenObjectSO kitchenObjSO in listKitchenObjSO)
             {
-                KitchenObjectSO kitchenObjSO = listKitchenObjSO[i];
-
                 Image ingredientIcon = Instantiate(_ingredientImage, _ingredientContainer);
                 ingredientIcon.sprite = kitchenObjSO.Sprite;
-
                 ingredientIcon.gameObject.SetActive(true);
             }
         }

@@ -35,45 +35,53 @@ namespace KitchenChaos
                 return;
             }
 
-            float progressNormalized;
-
             switch (_curState)
             {
                 case State.Frying:
-                    _fryingTimer += Time.deltaTime;
-
-                    progressNormalized = _fryingTimer / _fryingReceiptSO.FryingTimeMax;
-                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(progressNormalized, gameObject.GetInstanceID());
-
-                    if (_fryingTimer >= _fryingReceiptSO.FryingTimeMax)
-                    {
-                        GetKitchenObj().DestroySelf();
-                        KitchenObject.SpawnKitchenObj(_fryingReceiptSO.Output, this);
-
-                        _burningTimer = BURNING_TIME_MIN;
-                        _curState = State.Fried;
-                        _burningReceiptSO = GetBurningReceiptSOWithInput(GetKitchenObj().GetKitchenObjectSO());
-
-                        Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
-                    }
+                    OnFryingState();
                     break;
                 case State.Fried:
-                    _burningTimer += Time.deltaTime;
-
-                    progressNormalized = _burningTimer / _burningReceiptSO.BurningTimeMax;
-                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(progressNormalized, gameObject.GetInstanceID());
-
-                    if (_burningTimer >= _burningReceiptSO.BurningTimeMax)
-                    {
-                        GetKitchenObj().DestroySelf();
-                        KitchenObject.SpawnKitchenObj(_burningReceiptSO.Output, this);
-
-                        _curState = State.Burned;
-
-                        Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
-                        Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(PROGRESS_MIN, gameObject.GetInstanceID());
-                    }
+                    OnFriedState();
                     break;
+            }
+        }
+
+        private void OnFryingState()
+        {
+            _fryingTimer += Time.deltaTime;
+
+            float progressNormalized = _fryingTimer / _fryingReceiptSO.FryingTimeMax;
+            Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(progressNormalized, gameObject.GetInstanceID());
+
+            if (_fryingTimer >= _fryingReceiptSO.FryingTimeMax)
+            {
+                GetKitchenObj().DestroySelf();
+                KitchenObject.SpawnKitchenObj(_fryingReceiptSO.Output, this);
+
+                _burningTimer = BURNING_TIME_MIN;
+                _curState = State.Fried;
+                _burningReceiptSO = GetBurningReceiptSOWithInput(GetKitchenObj().GetKitchenObjectSO());
+
+                Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
+            }
+        }
+
+        private void OnFriedState()
+        {
+            _burningTimer += Time.deltaTime;
+
+            float progressNormalized = _burningTimer / _burningReceiptSO.BurningTimeMax;
+            Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(progressNormalized, gameObject.GetInstanceID());
+
+            if (_burningTimer >= _burningReceiptSO.BurningTimeMax)
+            {
+                GetKitchenObj().DestroySelf();
+                KitchenObject.SpawnKitchenObj(_burningReceiptSO.Output, this);
+
+                _curState = State.Burned;
+
+                Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
+                Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(PROGRESS_MIN, gameObject.GetInstanceID());
             }
         }
 

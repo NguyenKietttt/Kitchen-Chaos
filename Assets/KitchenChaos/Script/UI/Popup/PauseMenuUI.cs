@@ -22,13 +22,13 @@ namespace KitchenChaos
 
         public override void OnFocus()
         {
-            gameObject.SetActive(true);
+            Show();
             Time.timeScale = 0;
         }
 
         public override void OnFocusLost()
         {
-            gameObject.SetActive(false);
+            Hide();
             Time.timeScale = 1;
         }
 
@@ -55,6 +55,16 @@ namespace KitchenChaos
         private void OnMainMenuButtonClicked()
         {
             Bootstrap.Instance.GameStateMgr.ChangeState(GameState.MainMenu);
+        }
+
+        private void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
+        private void Hide()
+        {
+            gameObject.SetActive(false);
         }
     }
 }

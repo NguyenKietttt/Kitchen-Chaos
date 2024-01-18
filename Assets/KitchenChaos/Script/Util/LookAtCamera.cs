@@ -4,7 +4,13 @@ namespace KitchenChaos
 {
     public sealed class LookAtCamera : MonoBehaviour
     {
-        private enum Mode { LookAt, LookAtInverted, CameraForward, CameraForwardInverted }
+        private enum Mode
+        {
+            LookAt,
+            LookAtInverted,
+            CameraForward,
+            CameraForwardInverted
+        }
 
         [Header("Property")]
         [SerializeField] private Mode _mode;

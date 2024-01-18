@@ -41,7 +41,6 @@ namespace KitchenChaos
             for (int i = 0; i < _listKitchenObjSOGameObj.Length; i++)
             {
                 KitchenObjSO_GameObj kitchenObjSOGameObj = _listKitchenObjSOGameObj[i];
-
                 if (kitchenObjSOGameObj.KitchenObjSO == kitchenObjSO)
                 {
                     kitchenObjSOGameObj.GameObj.SetActive(true);
