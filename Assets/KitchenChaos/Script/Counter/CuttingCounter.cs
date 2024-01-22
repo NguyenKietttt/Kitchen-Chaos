@@ -5,8 +5,6 @@ namespace KitchenChaos
 {
     public sealed class CuttingCounter : BaseCounter
     {
-        public static event Action CutObject;
-
         private const int MIN_PROGRESS = 0;
 
         [Header("Child Internal Ref")]
@@ -18,11 +16,6 @@ namespace KitchenChaos
         private readonly int _cutAnimKeyHash = Animator.StringToHash("Cut");
 
         private int _curCuttingProcess;
-
-        private void OnDestroy()
-        {
-            CutObject = null;
-        }
 
         public override void OnInteract(PlayerController playerController)
         {
@@ -64,7 +57,7 @@ namespace KitchenChaos
                 TriggerCutAnim();
                 UpdateCounterProgress(++_curCuttingProcess);
 
-                CutObject?.Invoke();
+                Bootstrap.Instance.EventMgr.InteractWithCutCounter?.Invoke();
             }
         }
 
@@ -74,7 +67,7 @@ namespace KitchenChaos
             CuttingReceiptSO outputCuttingReceiptSO = GetCuttingReceiptSOWithInput(GetKitchenObj().GetKitchenObjectSO());
             float progressNormalized = (float)_curCuttingProcess / outputCuttingReceiptSO.CuttingProcessMax;
 
-            Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(progressNormalized, gameObject.GetInstanceID());
+            Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), progressNormalized);
 
             SpawnOutputCuttingKitchenObj(outputCuttingReceiptSO);
         }

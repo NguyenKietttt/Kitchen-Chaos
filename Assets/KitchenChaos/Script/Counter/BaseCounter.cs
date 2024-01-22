@@ -1,11 +1,11 @@
 using System;
+using Codice.Client.BaseCommands.Config;
 using UnityEngine;
 
 namespace KitchenChaos
 {
     public class BaseCounter : MonoBehaviour, IKitchenObjParent
     {
-        public static event Action ObjectPlaced;
 
         [Header("Internal Ref")]
         [SerializeField] private GameObject _selectedVisualObj;
@@ -21,7 +21,6 @@ namespace KitchenChaos
         private void OnDestroy()
         {
             Bootstrap.Instance.EventMgr.SelectCounter -= OnCounterSelected;
-            ObjectPlaced = null;
         }
 
         public virtual void OnInteract(PlayerController playerController) { }
@@ -44,7 +43,7 @@ namespace KitchenChaos
 
             if (newKitchenObj != null)
             {
-                ObjectPlaced?.Invoke();
+                Bootstrap.Instance.EventMgr.PlaceObject?.Invoke();
             }
         }
 
@@ -58,11 +57,11 @@ namespace KitchenChaos
             _curKitchenObj = null;
         }
 
-        private void OnCounterSelected(BaseCounter selectedCounter)
+        private void OnCounterSelected(int senderID)
         {
             if (_selectedVisualObj != null)
             {
-                _selectedVisualObj.SetActive(selectedCounter == this);
+                _selectedVisualObj.SetActive(gameObject.GetInstanceID() == senderID);
             }
         }
     }

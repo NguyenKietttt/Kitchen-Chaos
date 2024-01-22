@@ -21,9 +21,9 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.ChangeStoveCounterState -= OnStoveCounterStateChanged;
         }
 
-        private void OnStoveCounterStateChanged(StoveCounter.State state, int counterInstanceID)
+        private void OnStoveCounterStateChanged(int senderID, StoveCounter.State state)
         {
-            if (_stoveCounterObj.GetInstanceID() != counterInstanceID)
+            if (_stoveCounterObj.GetInstanceID() != senderID)
             {
                 return;
             }

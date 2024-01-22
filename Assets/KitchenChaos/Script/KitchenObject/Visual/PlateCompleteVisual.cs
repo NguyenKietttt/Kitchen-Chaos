@@ -31,9 +31,9 @@ namespace KitchenChaos
             }
         }
 
-        private void OnAddIngredientSucces(int plateID, KitchenObjectSO kitchenObjSO)
+        private void OnAddIngredientSucces(int senderID, KitchenObjectSO kitchenObjSO)
         {
-            if (plateID != _plateKitchenObj.GetInstanceID())
+            if (senderID != _plateKitchenObj.GetInstanceID())
             {
                 return;
             }

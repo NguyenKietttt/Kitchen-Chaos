@@ -51,7 +51,7 @@ namespace KitchenChaos
             _fryingTimer += Time.deltaTime;
 
             float progressNormalized = _fryingTimer / _fryingReceiptSO.FryingTimeMax;
-            Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(progressNormalized, gameObject.GetInstanceID());
+            Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), progressNormalized);
 
             if (_fryingTimer >= _fryingReceiptSO.FryingTimeMax)
             {
@@ -62,7 +62,7 @@ namespace KitchenChaos
                 _curState = State.Fried;
                 _burningReceiptSO = GetBurningReceiptSOWithInput(GetKitchenObj().GetKitchenObjectSO());
 
-                Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
+                Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
             }
         }
 
@@ -71,7 +71,7 @@ namespace KitchenChaos
             _burningTimer += Time.deltaTime;
 
             float progressNormalized = _burningTimer / _burningReceiptSO.BurningTimeMax;
-            Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(progressNormalized, gameObject.GetInstanceID());
+            Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), progressNormalized);
 
             if (_burningTimer >= _burningReceiptSO.BurningTimeMax)
             {
@@ -80,8 +80,8 @@ namespace KitchenChaos
 
                 _curState = State.Burned;
 
-                Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
-                Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(PROGRESS_MIN, gameObject.GetInstanceID());
+                Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
+                Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), PROGRESS_MIN);
             }
         }
 
@@ -100,8 +100,8 @@ namespace KitchenChaos
 
                             _curState = State.Idle;
 
-                            Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
-                            Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(PROGRESS_MIN, gameObject.GetInstanceID());
+                            Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
+                            Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), PROGRESS_MIN);
                         }
                     }
                 }
@@ -111,8 +111,8 @@ namespace KitchenChaos
 
                     _curState = State.Idle;
 
-                    Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
-                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(PROGRESS_MIN, gameObject.GetInstanceID());
+                    Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
+                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), PROGRESS_MIN);
                 }
             }
             else
@@ -125,10 +125,10 @@ namespace KitchenChaos
                     _fryingTimer = FRYING_TIME_MIN;
                     _curState = State.Frying;
 
-                    Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(_curState, gameObject.GetInstanceID());
+                    Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
 
                     float progressNormalized = _fryingTimer / _fryingReceiptSO.FryingTimeMax;
-                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(progressNormalized, gameObject.GetInstanceID());
+                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), progressNormalized);
                 }
             }
         }

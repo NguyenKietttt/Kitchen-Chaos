@@ -31,9 +31,9 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
         }
 
-        private void OnCounterProgressChanged(float progressNormalized, int counterInstanceID)
+        private void OnCounterProgressChanged(int senderID, float progressNormalized)
         {
-            if (counterInstanceID != _stoveCounter.gameObject.GetInstanceID())
+            if (senderID != _stoveCounter.gameObject.GetInstanceID())
             {
                 return;
             }

@@ -32,10 +32,10 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.DeliverReceiptFailed += OnDeliverReceiptFailed;
             Bootstrap.Instance.EventMgr.CountdownPopup += OnCoundownPopup;
             Bootstrap.Instance.EventMgr.StoveWarning += OnStoveWarning;
-            CuttingCounter.CutObject += OnCut;
-            PlayerController.PickSomething += OnPickSomething;
-            BaseCounter.ObjectPlaced += OnObjectPlaced;
-            TrashCounter.ObjectTrashed += OnObjectTrashed;
+            Bootstrap.Instance.EventMgr.InteractWithCutCounter += OnInteractWithCutCounter;
+            Bootstrap.Instance.EventMgr.PickSomething += OnPickSomething;
+            Bootstrap.Instance.EventMgr.PlaceObject += OnObjectPlaced;
+            Bootstrap.Instance.EventMgr.InteractWithTrashCounter += OnInteractWithTrashCounter;
 
             _masterVolumn = PlayerPrefs.GetFloat(SFX_VOLUMN_KEY, MAX_VOLUMN);
         }
@@ -46,10 +46,10 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.DeliverReceiptFailed -= OnDeliverReceiptFailed;
             Bootstrap.Instance.EventMgr.CountdownPopup -= OnCoundownPopup;
             Bootstrap.Instance.EventMgr.StoveWarning -= OnStoveWarning;
-            CuttingCounter.CutObject -= OnCut;
-            PlayerController.PickSomething -= OnPickSomething;
-            BaseCounter.ObjectPlaced -= OnObjectPlaced;
-            TrashCounter.ObjectTrashed -= OnObjectTrashed;
+            Bootstrap.Instance.EventMgr.InteractWithCutCounter -= OnInteractWithCutCounter;
+            Bootstrap.Instance.EventMgr.PickSomething -= OnPickSomething;
+            Bootstrap.Instance.EventMgr.PlaceObject -= OnObjectPlaced;
+            Bootstrap.Instance.EventMgr.InteractWithTrashCounter -= OnInteractWithTrashCounter;
         }
 
         public void ChangeVolumn()
@@ -80,7 +80,7 @@ namespace KitchenChaos
             PlaySound(_audioClipRefsSO.Warning, Camera.main.transform.position, _countdownPopupVolume);
         }
 
-        private void OnCut()
+        private void OnInteractWithCutCounter()
         {
             PlaySound(_audioClipRefsSO.Chop, Camera.main.transform.position, _chopVolume);
         }
@@ -95,7 +95,7 @@ namespace KitchenChaos
             PlaySound(_audioClipRefsSO.ObjectDrop, Camera.main.transform.position, _dropVolume);
         }
 
-        private void OnObjectTrashed()
+        private void OnInteractWithTrashCounter()
         {
             PlaySound(_audioClipRefsSO.Trash, Camera.main.transform.position, _trashVolume);
         }

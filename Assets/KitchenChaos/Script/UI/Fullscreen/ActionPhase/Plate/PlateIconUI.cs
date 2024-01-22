@@ -21,9 +21,9 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.AddIngredientSuccess -= UpdateVisual;
         }
 
-        private void UpdateVisual(int plateID, KitchenObjectSO kitchenObjSO)
+        private void UpdateVisual(int senderID, KitchenObjectSO kitchenObjSO)
         {
-            if (plateID != _plateKitchenObj.GetInstanceID())
+            if (senderID != _plateKitchenObj.GetInstanceID())
             {
                 return;
             }

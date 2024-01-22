@@ -27,9 +27,9 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
         }
 
-        private void OnCounterProgressChanged(float progressNormalized, int counterInstanceID)
+        private void OnCounterProgressChanged(int senderID, float progressNormalized)
         {
-            if (counterInstanceID != _progressCounterObj.GetInstanceID())
+            if (senderID != _progressCounterObj.GetInstanceID())
             {
                 return;
             }

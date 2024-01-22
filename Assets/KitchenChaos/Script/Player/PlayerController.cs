@@ -13,8 +13,6 @@ namespace KitchenChaos
         private const int ROTATION_SPEED = 10;
         private const int INTERACTION_DISTANCE = 2;
 
-        public static event Action PickSomething;
-
         public bool IsMoving => _isMoving;
 
         [Header("Internal Ref")]
@@ -51,8 +49,6 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
             Bootstrap.Instance.EventMgr.Interact -= OnInteractAction;
             Bootstrap.Instance.EventMgr.CuttingInteract -= OnCuttingInteractAction;
-
-            PickSomething = null;
         }
 
         private void HandleCounterSelection(Vector2 input)
@@ -73,19 +69,19 @@ namespace KitchenChaos
                     if (_selectedCounter == null || _selectedCounter != baseCounter)
                     {
                         _selectedCounter = baseCounter;
-                        Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(_selectedCounter);
+                        Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(_selectedCounter.gameObject.GetInstanceID());
                     }
                 }
                 else
                 {
                     _selectedCounter = null;
-                    Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(null);
+                    Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(int.MinValue);
                 }
             }
             else
             {
                 _selectedCounter = null;
-                Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(null);
+                Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(int.MinValue);
             }
         }
 
@@ -199,7 +195,7 @@ namespace KitchenChaos
 
             if (newKitchenObj != null)
             {
-                PickSomething?.Invoke();
+                Bootstrap.Instance.EventMgr.PickSomething?.Invoke();
             }
         }
 
