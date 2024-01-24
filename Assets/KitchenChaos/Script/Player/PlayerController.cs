@@ -13,6 +13,9 @@ namespace KitchenChaos
         private const int ROTATION_SPEED = 10;
         private const int INTERACTION_DISTANCE = 2;
 
+        public Transform SpawnPoint => _kitchenObjHoldPoint;
+        public KitchenObject KitchenObj => _kitchenObj;
+        public bool HasKitchenObj => _kitchenObj != null;
         public bool IsMoving => _isMoving;
 
         [Header("Internal Ref")]
@@ -37,7 +40,7 @@ namespace KitchenChaos
 
         private void Update()
         {
-            Vector2 input = Bootstrap.Instance.InputMgr.GetInputVectorNormalized();
+            Vector2 input = Bootstrap.Instance.InputMgr.InputVectorNormalized;
             bool canMove = CanMove(input);
 
             HandleMovement(canMove, input);
@@ -179,16 +182,6 @@ namespace KitchenChaos
             transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * ROTATION_SPEED);
         }
 
-        public Transform GetSpawnPoint()
-        {
-            return _kitchenObjHoldPoint;
-        }
-
-        public KitchenObject GetKitchenObj()
-        {
-            return _kitchenObj;
-        }
-
         public void SetKitchenObj(KitchenObject newKitchenObj)
         {
             _kitchenObj = newKitchenObj;
@@ -197,11 +190,6 @@ namespace KitchenChaos
             {
                 Bootstrap.Instance.EventMgr.PickSomething?.Invoke();
             }
-        }
-
-        public bool HasKitchenObj()
-        {
-            return _kitchenObj != null;
         }
 
         public void ClearKitchenObj()

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace KitchenChaos
 {
     [Serializable]
-    public struct KitchenObjSO_GameObj
+    public sealed class KitchenObjSOToGameObj
     {
         public KitchenObjectSO KitchenObjSO => _kitchenObjSO;
         public GameObject GameObj => _gameObj;

@@ -7,17 +7,12 @@ namespace KitchenChaos
     {
         public enum CameraState { None, MainMenu, Gameplay }
 
-        public static CameraManager Instance => _instance;
-        private static CameraManager _instance;
-
         [Header("External Ref")]
         [SerializeField] private CinemachineVirtualCamera _mainMenuVirutalCam;
         [SerializeField] private CinemachineVirtualCamera _gameplayVirutalCam;
 
         private void Awake()
         {
-            _instance = this;
-
             Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
         }
 

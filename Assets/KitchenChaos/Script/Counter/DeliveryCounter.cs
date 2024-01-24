@@ -4,12 +4,12 @@ namespace KitchenChaos
     {
         public override void OnInteract(PlayerController playerController)
         {
-            if (playerController.HasKitchenObj())
+            if (playerController.HasKitchenObj)
             {
-                if (playerController.GetKitchenObj().TryGetPlate(out PlateKitchenObject plateKitchenObj))
+                if (playerController.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
                 {
                     Bootstrap.Instance.DeliveryMgr.DeliveryReceipt(plateKitchenObj);
-                    playerController.GetKitchenObj().DestroySelf();
+                    playerController.KitchenObj.DestroySelf();
                 }
             }
         }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace KitchenChaos
@@ -10,19 +11,19 @@ namespace KitchenChaos
         private const int WAITING_RECEIPT_MAX = 4;
         private const int DEFAULT_AMOUNT_SUCCESSFUL_RECEIPT = 0;
 
-        public IEnumerable<ReceiptSO> ListWaitingReceiptSO => _waitingListReceiptSO.AsReadOnly();
+        public IReadOnlyList<DishReceiptSO> WaitingReceiptsSO => _waitingReceiptsSO.AsReadOnly();
         public int AmountSucessfulReceipt => _amountSucessfulReceipt;
 
-        private readonly List<ReceiptSO> _waitingListReceiptSO = new();
-        private readonly ListReceiptSO _receiptSOList;
+        private readonly List<DishReceiptSO> _waitingReceiptsSO = new();
+        private readonly DishReceiptsSO _dishReceiptsS0;
 
         private GameState _curState;
         private float _spawnReceiptTimer;
         private int _amountSucessfulReceipt;
 
-        public DeliveryManager(ListReceiptSO listReceiptSO)
+        public DeliveryManager(DishReceiptsSO dishReceiptsSO)
         {
-            _receiptSOList = listReceiptSO;
+            _dishReceiptsS0 = dishReceiptsSO;
             Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
         }
 
@@ -44,10 +45,10 @@ namespace KitchenChaos
             {
                 _spawnReceiptTimer = SPAWN_RECEIPT_TIMER_MIN;
 
-                if (_curState is GameState.GamePlaying && _waitingListReceiptSO.Count < WAITING_RECEIPT_MAX)
+                if (_curState is GameState.GamePlaying && _waitingReceiptsSO.Count < WAITING_RECEIPT_MAX)
                 {
-                    ReceiptSO waitingReceiptSO = _receiptSOList.ReceiptSOList[Random.Range(0, _receiptSOList.ReceiptSOList.Length)];
-                    _waitingListReceiptSO.Add(waitingReceiptSO);
+                    DishReceiptSO waitingReceiptSO = _dishReceiptsS0.Receipts[Random.Range(0, _dishReceiptsS0.Receipts.Count)];
+                    _waitingReceiptsSO.Add(waitingReceiptSO);
 
                     Bootstrap.Instance.EventMgr.SpawnReceipt?.Invoke();
                 }
@@ -56,20 +57,20 @@ namespace KitchenChaos
 
         public void DeliveryReceipt(PlateKitchenObject plateKitchenObj)
         {
-            for (int i = 0; i < _waitingListReceiptSO.Count; i++)
+            for (int i = 0; i < _waitingReceiptsSO.Count; i++)
             {
-                ReceiptSO waitingReceiptSO = _waitingListReceiptSO[i];
-                HashSet<KitchenObjectSO> listPlateKichenObjSO = plateKitchenObj.GetListKitchenObjectSO();
+                DishReceiptSO waitingReceiptSO = _waitingReceiptsSO[i];
+                IReadOnlyCollection<KitchenObjectSO> kitchenObjHashSet = plateKitchenObj.KitchenObjHashSet;
 
-                if (waitingReceiptSO.ListKitchenObjSO.Length == listPlateKichenObjSO.Count)
+                if (waitingReceiptSO.KitchenObjsSO.Count == kitchenObjHashSet.Count)
                 {
                     bool isPlateContentMatchesReceipt = true;
 
-                    foreach (KitchenObjectSO receiptKitchenObjSO in waitingReceiptSO.ListKitchenObjSO)
+                    foreach (KitchenObjectSO receiptKitchenObjSO in waitingReceiptSO.KitchenObjsSO)
                     {
                         bool isIngredientFound = false;
 
-                        if (listPlateKichenObjSO.Contains(receiptKitchenObjSO))
+                        if (kitchenObjHashSet.Contains(receiptKitchenObjSO))
                         {
                             isIngredientFound = true;
                         }
@@ -83,7 +84,7 @@ namespace KitchenChaos
                     if (isPlateContentMatchesReceipt)
                     {
                         _amountSucessfulReceipt++;
-                        _waitingListReceiptSO.RemoveAt(i);
+                        _waitingReceiptsSO.RemoveAt(i);
 
                         Bootstrap.Instance.EventMgr.CompleteReceipt?.Invoke();
                         Bootstrap.Instance.EventMgr.DeliverReceiptSuccess?.Invoke();
@@ -98,7 +99,7 @@ namespace KitchenChaos
 
         public void Reset()
         {
-            _waitingListReceiptSO.Clear();
+            _waitingReceiptsSO.Clear();
 
             _spawnReceiptTimer = SPAWN_RECEIPT_TIMER_MIN;
             _amountSucessfulReceipt = DEFAULT_AMOUNT_SUCCESSFUL_RECEIPT;

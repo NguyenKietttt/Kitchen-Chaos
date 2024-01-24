@@ -4,7 +4,7 @@ namespace KitchenChaos
 {
     public class KitchenObject : MonoBehaviour
     {
-        [Header("SO")]
+        [Header("Asset Ref")]
         [SerializeField] private KitchenObjectSO _kitchenObjectS0;
 
         private IKitchenObjParent _curKitchenObjParent;
@@ -28,13 +28,13 @@ namespace KitchenChaos
             _curKitchenObjParent?.SetKitchenObj(null);
             _curKitchenObjParent = newKitchenObjParent;
 
-            if (_curKitchenObjParent.HasKitchenObj())
+            if (_curKitchenObjParent.HasKitchenObj)
             {
                 Debug.Log("IKitchenObjParent already has a KitchenObj!");
             }
 
             _curKitchenObjParent.SetKitchenObj(this);
-            transform.parent = newKitchenObjParent.GetSpawnPoint();
+            transform.parent = newKitchenObjParent.SpawnPoint;
             transform.localPosition = Vector3.zero;
         }
 

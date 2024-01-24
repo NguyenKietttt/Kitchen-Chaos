@@ -4,13 +4,13 @@ namespace KitchenChaos
     {
         public override void OnInteract(PlayerController playerController)
         {
-            if (HasKitchenObj())
+            if (HasKitchenObj)
             {
-                if (playerController.HasKitchenObj())
+                if (playerController.HasKitchenObj)
                 {
-                    if (playerController.GetKitchenObj().TryGetPlate(out PlateKitchenObject plateKitchenObj))
+                    if (playerController.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
                     {
-                        KitchenObject kitchenObj = GetKitchenObj();
+                        KitchenObject kitchenObj = KitchenObj;
                         if (plateKitchenObj.TryAddIngredient(kitchenObj.GetKitchenObjectSO()))
                         {
                             kitchenObj.DestroySelf();
@@ -18,25 +18,25 @@ namespace KitchenChaos
                     }
                     else
                     {
-                        if (GetKitchenObj().TryGetPlate(out plateKitchenObj))
+                        if (KitchenObj.TryGetPlate(out plateKitchenObj))
                         {
-                            if (plateKitchenObj.TryAddIngredient(playerController.GetKitchenObj().GetKitchenObjectSO()))
+                            if (plateKitchenObj.TryAddIngredient(playerController.KitchenObj.GetKitchenObjectSO()))
                             {
-                                playerController.GetKitchenObj().DestroySelf();
+                                playerController.KitchenObj.DestroySelf();
                             }
                         }
                     }
                 }
                 else
                 {
-                    GetKitchenObj().SetCurKitchenObjParent(playerController);
+                    KitchenObj.SetCurKitchenObjParent(playerController);
                 }
             }
             else
             {
-                if (playerController.HasKitchenObj())
+                if (playerController.HasKitchenObj)
                 {
-                    playerController.GetKitchenObj().SetCurKitchenObjParent(this);
+                    playerController.KitchenObj.SetCurKitchenObjParent(this);
                 }
             }
         }

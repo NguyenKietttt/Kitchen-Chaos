@@ -1,38 +1,44 @@
+using UISystem;
 using UnityEngine;
 
 namespace KitchenChaos
 {
     public sealed class Bootstrap : MonoBehaviour
     {
-        public static Bootstrap Instance { get; private set; }
+        public static Bootstrap Instance => _instance;
+        private static Bootstrap _instance;
 
-        public EventManager EventMgr { get; private set; }
-        public GameStateManager GameStateMgr { get; private set; }
-        public InputManager InputMgr { get; private set; }
-        public DeliveryManager DeliveryMgr { get; private set; }
+        public EventManager EventMgr => _eventMgr;
+        public GameStateManager GameStateMgr => _gameStateMgr;
+        public InputManager InputMgr => _inputMgr;
+        public DeliveryManager DeliveryMgr => _deliveryMgr;
         public SFXManager SFXMgr => _sfxMgr;
         public MusicManager MusicMgr => _musicMgr;
-        public UISystem.UIManager UIManager => _uiManager;
-
+        public UIManager UIManager => _uiManager;
         public GameObject PlayerPrefab => _playerPrefab;
         public GameObject LevelOnePrefab => _levelOnePrefab;
 
         [Header("Asset Ref")]
-        [SerializeField] private ListReceiptSO _receiptSOList;
+        [SerializeField] private DishReceiptsSO _dishReceiptsSO;
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private GameObject _levelOnePrefab;
 
         [Header("Internal Ref")]
         [SerializeField] private SceneLoader _sceneLoader;
-        [SerializeField] private UISystem.UIManager _uiManager;
+        [SerializeField] private UIManager _uiManager;
         [SerializeField] private SFXManager _sfxMgr;
         [SerializeField] private MusicManager _musicMgr;
 
+        private EventManager _eventMgr;
+        private GameStateManager _gameStateMgr;
+        private InputManager _inputMgr;
+        private DeliveryManager _deliveryMgr;
+
         private void Awake()
         {
-            if (Instance == null)
+            if (_instance == null)
             {
-                Instance = this;
+                _instance = this;
                 DontDestroyOnLoad(this);
             }
 
@@ -57,13 +63,12 @@ namespace KitchenChaos
 
         private void InitManagers()
         {
-            EventMgr = new EventManager();
+            _eventMgr = new EventManager();
             _uiManager.Init();
-            GameStateMgr = new GameStateManager();
-            InputMgr = new InputManager();
-
-            DeliveryMgr = new DeliveryManager(_receiptSOList);
-            SFXMgr.Init();
+            _gameStateMgr = new GameStateManager();
+            _inputMgr = new InputManager();
+            _deliveryMgr = new DeliveryManager(_dishReceiptsSO);
+            _sfxMgr.Init();
         }
     }
 }

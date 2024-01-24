@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UISystem
 {
-    [CreateAssetMenu(fileName = "SO_ScreenPrefab", menuName = "ScriptableObject/UI System/Screen Prefab Ref")]
+    [CreateAssetMenu(fileName = "SO_ScreenPrefab", menuName = "Scriptable Object/UI System/Screen Prefab Ref")]
     public sealed class ScreenPrefabSO : ScriptableObject
     {
         [SerializeField] private BaseScreen[] _screenPrefabs;

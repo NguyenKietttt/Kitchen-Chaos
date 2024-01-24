@@ -20,6 +20,8 @@ namespace KitchenChaos
 
         private const string PLAYER_PREFS_BINDING_KEY = "PLAYER_PREFS_BINDING_KEY";
 
+        public Vector2 InputVectorNormalized => _playerInputAction.Player.Move.ReadValue<Vector2>();
+
         private PlayerInputAction _playerInputAction;
 
         public InputManager()
@@ -32,11 +34,6 @@ namespace KitchenChaos
         {
             UnsubscribeEvents();
             _playerInputAction.Dispose();
-        }
-
-        public Vector2 GetInputVectorNormalized()
-        {
-            return _playerInputAction.Player.Move.ReadValue<Vector2>();
         }
 
         public string GetBidingText(Binding binding)

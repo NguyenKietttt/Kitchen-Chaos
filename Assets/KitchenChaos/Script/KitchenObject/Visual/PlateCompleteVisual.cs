@@ -4,12 +4,11 @@ namespace KitchenChaos
 {
     public sealed class PlateCompleteVisual : MonoBehaviour
     {
+        [Header("Asset Ref")]
+        [SerializeField] private KitchenObjSOToGameObj[] _KitchenObjSOToGameObjs;
+
         [Header("External Ref")]
         [SerializeField] private PlateKitchenObject _plateKitchenObj;
-
-        [Header("Mix Ref")]
-        [SerializeField]
-        private KitchenObjSO_GameObj[] _listKitchenObjSOGameObj;
 
         private void Start()
         {
@@ -25,9 +24,9 @@ namespace KitchenChaos
 
         private void DeactiveCompleteVisual()
         {
-            for (int i = 0; i < _listKitchenObjSOGameObj.Length; i++)
+            for (int i = 0; i < _KitchenObjSOToGameObjs.Length; i++)
             {
-                _listKitchenObjSOGameObj[i].GameObj.SetActive(false);
+                _KitchenObjSOToGameObjs[i].GameObj.SetActive(false);
             }
         }
 
@@ -38,9 +37,9 @@ namespace KitchenChaos
                 return;
             }
 
-            for (int i = 0; i < _listKitchenObjSOGameObj.Length; i++)
+            for (int i = 0; i < _KitchenObjSOToGameObjs.Length; i++)
             {
-                KitchenObjSO_GameObj kitchenObjSOGameObj = _listKitchenObjSOGameObj[i];
+                KitchenObjSOToGameObj kitchenObjSOGameObj = _KitchenObjSOToGameObjs[i];
                 if (kitchenObjSOGameObj.KitchenObjSO == kitchenObjSO)
                 {
                     kitchenObjSOGameObj.GameObj.SetActive(true);

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Victor.Tools;
 
@@ -13,7 +14,7 @@ namespace KitchenChaos
         public float MasterVolumn => _masterVolumn;
 
         [Header("Asset Ref")]
-        [SerializeField] private AudioClipRefsSO _audioClipRefsSO;
+        [SerializeField] private SFXClipsSO _sfxClipsSO;
 
         [Header("Property")]
         [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _chopVolume;
@@ -67,52 +68,54 @@ namespace KitchenChaos
 
         public AudioClip GetRandomFootStepAudioClip()
         {
-            return _audioClipRefsSO.Footstep[Random.Range(0, _audioClipRefsSO.Footstep.Length)];
+            return _sfxClipsSO.Footstep[Random.Range(0, _sfxClipsSO.Footstep.Count)];
         }
 
         private void OnCoundownPopup()
         {
-            PlaySound(_audioClipRefsSO.Warning, Camera.main.transform.position, _countdownPopupVolume);
+            PlaySound(_sfxClipsSO.Warning, Camera.main.transform.position, _countdownPopupVolume);
         }
 
         private void OnStoveWarning()
         {
-            PlaySound(_audioClipRefsSO.Warning, Camera.main.transform.position, _countdownPopupVolume);
+            PlaySound(_sfxClipsSO.Warning, Camera.main.transform.position, _countdownPopupVolume);
         }
 
         private void OnInteractWithCutCounter()
         {
-            PlaySound(_audioClipRefsSO.Chop, Camera.main.transform.position, _chopVolume);
+            PlaySound(_sfxClipsSO.Chop, Camera.main.transform.position, _chopVolume);
         }
 
         private void OnPickSomething()
         {
-            PlaySound(_audioClipRefsSO.ObjectPickup, Camera.main.transform.position, _pickupVolume);
+            PlaySound(_sfxClipsSO.ObjectPickup, Camera.main.transform.position, _pickupVolume);
         }
 
         private void OnObjectPlaced()
         {
-            PlaySound(_audioClipRefsSO.ObjectDrop, Camera.main.transform.position, _dropVolume);
+            PlaySound(_sfxClipsSO.ObjectDrop, Camera.main.transform.position, _dropVolume);
         }
 
         private void OnInteractWithTrashCounter()
         {
-            PlaySound(_audioClipRefsSO.Trash, Camera.main.transform.position, _trashVolume);
+            PlaySound(_sfxClipsSO.Trash, Camera.main.transform.position, _trashVolume);
         }
 
         private void OnDeliverReceiptSuccess()
         {
-            PlaySound(_audioClipRefsSO.DeliverySuccess, Camera.main.transform.position, _deliverySuccessVolume);
+            PlaySound(_sfxClipsSO.DeliverySuccess, Camera.main.transform.position, _deliverySuccessVolume);
         }
 
         private void OnDeliverReceiptFailed()
         {
-            PlaySound(_audioClipRefsSO.DeliveryFail, Camera.main.transform.position, _deliveryFailedVolume);
+            PlaySound(_sfxClipsSO.DeliveryFail, Camera.main.transform.position, _deliveryFailedVolume);
         }
 
-        private void PlaySound(AudioClip[] audioClips, Vector3 position, float volumeMultiplier = 1)
+        private void PlaySound(IReadOnlyList<AudioClip> audioClips, Vector3 position, float volumeMultiplier = 1)
         {
-            AudioSource.PlayClipAtPoint(audioClips[Random.Range(0, audioClips.Length)], position, volumeMultiplier * _masterVolumn);
+            int index = Random.Range(0, audioClips.Count);
+            float finalVolumn = volumeMultiplier * _masterVolumn;
+            AudioSource.PlayClipAtPoint(audioClips[index], position, finalVolumn);
         }
     }
 }

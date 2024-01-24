@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace KitchenChaos
 {
-    [CreateAssetMenu(fileName = "NewCuttingReceiptSO", menuName = "ScriptableObject/CuttingReceipt")]
+    [CreateAssetMenu(fileName = "NewCuttingReceiptSO", menuName = "Scriptable Object/Cutting Receipt")]
     public sealed class CuttingReceiptSO : ScriptableObject
     {
         public KitchenObjectSO Input => _input;

@@ -13,8 +13,8 @@ namespace KitchenChaos
         public bool IsFried => _curState is State.Fried;
 
         [Header("Child Asset Ref")]
-        [SerializeField] private FryingReceiptSO[] _listFryingReceiptSO;
-        [SerializeField] private BurningReceiptSO[] _listBurningReceiptSO;
+        [SerializeField] private FryingReceiptSO[] _fryingReceipts;
+        [SerializeField] private BurningReceiptSO[] _burningReceipts;
 
         private FryingReceiptSO _fryingReceiptSO;
         private BurningReceiptSO _burningReceiptSO;
@@ -30,7 +30,7 @@ namespace KitchenChaos
 
         private void Update()
         {
-            if (!HasKitchenObj())
+            if (!HasKitchenObj)
             {
                 return;
             }
@@ -55,12 +55,12 @@ namespace KitchenChaos
 
             if (_fryingTimer >= _fryingReceiptSO.FryingTimeMax)
             {
-                GetKitchenObj().DestroySelf();
+                KitchenObj.DestroySelf();
                 KitchenObject.SpawnKitchenObj(_fryingReceiptSO.Output, this);
 
                 _burningTimer = BURNING_TIME_MIN;
                 _curState = State.Fried;
-                _burningReceiptSO = GetBurningReceiptSOWithInput(GetKitchenObj().GetKitchenObjectSO());
+                _burningReceiptSO = GetBurningReceiptSOWithInput(KitchenObj.GetKitchenObjectSO());
 
                 Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
             }
@@ -75,7 +75,7 @@ namespace KitchenChaos
 
             if (_burningTimer >= _burningReceiptSO.BurningTimeMax)
             {
-                GetKitchenObj().DestroySelf();
+                KitchenObj.DestroySelf();
                 KitchenObject.SpawnKitchenObj(_burningReceiptSO.Output, this);
 
                 _curState = State.Burned;
@@ -87,13 +87,13 @@ namespace KitchenChaos
 
         public override void OnInteract(PlayerController playerController)
         {
-            if (HasKitchenObj())
+            if (HasKitchenObj)
             {
-                if (playerController.HasKitchenObj())
+                if (playerController.HasKitchenObj)
                 {
-                    if (playerController.GetKitchenObj().TryGetPlate(out PlateKitchenObject plateKitchenObj))
+                    if (playerController.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
                     {
-                        KitchenObject kitchenObj = GetKitchenObj();
+                        KitchenObject kitchenObj = KitchenObj;
                         if (plateKitchenObj.TryAddIngredient(kitchenObj.GetKitchenObjectSO()))
                         {
                             kitchenObj.DestroySelf();
@@ -107,7 +107,7 @@ namespace KitchenChaos
                 }
                 else
                 {
-                    GetKitchenObj().SetCurKitchenObjParent(playerController);
+                    KitchenObj.SetCurKitchenObjParent(playerController);
 
                     _curState = State.Idle;
 
@@ -117,10 +117,10 @@ namespace KitchenChaos
             }
             else
             {
-                if (playerController.HasKitchenObj() && HasReceiptWithInput(playerController.GetKitchenObj().GetKitchenObjectSO()))
+                if (playerController.HasKitchenObj && HasReceiptWithInput(playerController.KitchenObj.GetKitchenObjectSO()))
                 {
-                    playerController.GetKitchenObj().SetCurKitchenObjParent(this);
-                    _fryingReceiptSO = GetFryingReceiptSOWithInput(GetKitchenObj().GetKitchenObjectSO());
+                    playerController.KitchenObj.SetCurKitchenObjParent(this);
+                    _fryingReceiptSO = GetFryingReceiptSOWithInput(KitchenObj.GetKitchenObjectSO());
 
                     _fryingTimer = FRYING_TIME_MIN;
                     _curState = State.Frying;
@@ -140,7 +140,7 @@ namespace KitchenChaos
 
         private FryingReceiptSO GetFryingReceiptSOWithInput(KitchenObjectSO inputKitchenObjSO)
         {
-            foreach (FryingReceiptSO fryingReceiptSO in _listFryingReceiptSO)
+            foreach (FryingReceiptSO fryingReceiptSO in _fryingReceipts)
             {
                 if (fryingReceiptSO.Input == inputKitchenObjSO)
                 {
@@ -153,7 +153,7 @@ namespace KitchenChaos
 
         private BurningReceiptSO GetBurningReceiptSOWithInput(KitchenObjectSO inputKitchenObjSO)
         {
-            foreach (BurningReceiptSO burningReceiptSO in _listBurningReceiptSO)
+            foreach (BurningReceiptSO burningReceiptSO in _burningReceipts)
             {
                 if (burningReceiptSO.Input == inputKitchenObjSO)
                 {

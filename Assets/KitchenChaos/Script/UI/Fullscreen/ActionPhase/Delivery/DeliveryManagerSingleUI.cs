@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,15 +8,15 @@ namespace KitchenChaos
     public sealed class DeliveryManagerSingleUI : MonoBehaviour
     {
         [Header("Asset Ref")]
-        [SerializeField] private Image _ingredientImage;
+        [SerializeField] private Image _ingredientImg;
 
         [Header("Internal Ref")]
-        [SerializeField] private TextMeshProUGUI _receiptNameText;
+        [SerializeField] private TextMeshProUGUI _receiptNameTxt;
         [SerializeField] private Transform _ingredientContainer;
 
         private void Awake()
         {
-            _ingredientImage.gameObject.SetActive(false);
+            _ingredientImg.gameObject.SetActive(false);
         }
 
         public void Show()
@@ -30,16 +31,16 @@ namespace KitchenChaos
 
         public void SetReceiptName(string name)
         {
-            _receiptNameText.SetText(name);
+            _receiptNameTxt.SetText(name);
         }
 
-        public void SetIngredientIcons(KitchenObjectSO[] listKitchenObjSO)
+        public void SetIngredientIcons(IReadOnlyList<KitchenObjectSO> KitchenObjsSO)
         {
             ClearPreviousIngredientICons();
 
-            foreach (KitchenObjectSO kitchenObjSO in listKitchenObjSO)
+            foreach (KitchenObjectSO kitchenObjSO in KitchenObjsSO)
             {
-                Image ingredientIcon = Instantiate(_ingredientImage, _ingredientContainer);
+                Image ingredientIcon = Instantiate(_ingredientImg, _ingredientContainer);
                 ingredientIcon.sprite = kitchenObjSO.Sprite;
                 ingredientIcon.gameObject.SetActive(true);
             }

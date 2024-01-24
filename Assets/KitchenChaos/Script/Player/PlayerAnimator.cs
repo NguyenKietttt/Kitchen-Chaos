@@ -4,21 +4,22 @@ namespace KitchenChaos
 {
     public sealed class PlayerAnimator : MonoBehaviour
     {
-        private readonly int IsWalkingParam = Animator.StringToHash("IsWalking");
+        private readonly int _isWalkingAnimKey = Animator.StringToHash("IsWalking");
 
+        [Header("Internal Ref")]
         [SerializeField] private Animator _animator;
 
-        private bool _lastMovingValue;
+        private bool _lastMovingStatus;
 
         public void UpdateWalkingAnim(bool canMove)
         {
-            if (_lastMovingValue == canMove)
+            if (_lastMovingStatus == canMove)
             {
                 return;
             }
 
-            _animator.SetBool(IsWalkingParam, canMove);
-            _lastMovingValue = canMove;
+            _animator.SetBool(_isWalkingAnimKey, canMove);
+            _lastMovingStatus = canMove;
         }
     }
 }

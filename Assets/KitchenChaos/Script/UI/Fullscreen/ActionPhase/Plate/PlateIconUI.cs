@@ -30,8 +30,8 @@ namespace KitchenChaos
 
             ClearPreviousVisual();
 
-            HashSet<KitchenObjectSO> listKitchenObjSO = _plateKitchenObj.GetListKitchenObjectSO();
-            foreach (KitchenObjectSO kitchenObjectSO in listKitchenObjSO)
+            IReadOnlyCollection<KitchenObjectSO> kitchenObjHashSet = _plateKitchenObj.KitchenObjHashSet;
+            foreach (KitchenObjectSO kitchenObjectSO in kitchenObjHashSet)
             {
                 PlateIconSingleUI plateIconSingleUI = Instantiate(_plateIconSingleUI, transform);
                 plateIconSingleUI.SetIcon(kitchenObjectSO);

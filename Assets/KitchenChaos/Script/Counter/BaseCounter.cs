@@ -1,11 +1,12 @@
-using System;
-using Codice.Client.BaseCommands.Config;
 using UnityEngine;
 
 namespace KitchenChaos
 {
     public class BaseCounter : MonoBehaviour, IKitchenObjParent
     {
+        public Transform SpawnPoint => _spawnPoint;
+        public KitchenObject KitchenObj => _curKitchenObj;
+        public bool HasKitchenObj => _curKitchenObj != null;
 
         [Header("Internal Ref")]
         [SerializeField] private GameObject _selectedVisualObj;
@@ -27,16 +28,6 @@ namespace KitchenChaos
 
         public virtual void OnCuttingInteract(PlayerController playerController) { }
 
-        public Transform GetSpawnPoint()
-        {
-            return _spawnPoint;
-        }
-
-        public KitchenObject GetKitchenObj()
-        {
-            return _curKitchenObj;
-        }
-
         public void SetKitchenObj(KitchenObject newKitchenObj)
         {
             _curKitchenObj = newKitchenObj;
@@ -45,11 +36,6 @@ namespace KitchenChaos
             {
                 Bootstrap.Instance.EventMgr.PlaceObject?.Invoke();
             }
-        }
-
-        public bool HasKitchenObj()
-        {
-            return _curKitchenObj != null;
         }
 
         public void ClearKitchenObj()

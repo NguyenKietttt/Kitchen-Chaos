@@ -4,7 +4,7 @@ namespace KitchenChaos
 {
     public sealed class ContainerCounter : BaseCounter
     {
-        [Header("SO")]
+        [Header("Child Asset ref")]
         [SerializeField] private KitchenObjectSO _kitchenObjSO;
 
         [Header("Child Internal Ref")]
@@ -14,7 +14,7 @@ namespace KitchenChaos
 
         public override void OnInteract(PlayerController playerController)
         {
-            if (playerController.HasKitchenObj())
+            if (playerController.HasKitchenObj)
             {
                 return;
             }

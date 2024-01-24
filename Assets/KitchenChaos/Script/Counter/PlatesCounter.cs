@@ -44,7 +44,7 @@ namespace KitchenChaos
 
         public override void OnInteract(PlayerController playerController)
         {
-            if (!playerController.HasKitchenObj() && _platesSpawnAmount > PLATES_SPAWN_AMOUNT_MIN)
+            if (!playerController.HasKitchenObj && _platesSpawnAmount > PLATES_SPAWN_AMOUNT_MIN)
             {
                 _platesSpawnAmount--;
 
