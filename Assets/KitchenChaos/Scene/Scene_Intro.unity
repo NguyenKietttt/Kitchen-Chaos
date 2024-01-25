@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbe71ef7dc8b3ab41a246b8a1e1ea963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dishReceiptsSO: {fileID: 11400000, guid: 0e6e677387c40564a9faee5c3a7c77af, type: 2}
+  _dishReceiptsSO: {fileID: 11400000, guid: 179bcf5899d090d41ac6340127913f61, type: 2}
   _playerPrefab: {fileID: 6282792218623842890, guid: d1dd1f4e54041f541be236aefccaff15,
     type: 3}
   _levelOnePrefab: {fileID: 4843124729967624556, guid: b0443d0eccbb93347a3479df103b6bd7,
@@ -926,7 +926,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c17bbfa1b0d5be48bc192716646f293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sfxClipsSO: {fileID: 11400000, guid: 8f32c385f6b39e9499f2e18ed1304dbb, type: 2}
+  _sfxClipsSO: {fileID: 11400000, guid: 2e7eb95f2b3b66946a2c507efeeb8702, type: 2}
   _chopVolume: 0.2
   _pickupVolume: 0.2
   _dropVolume: 0.2

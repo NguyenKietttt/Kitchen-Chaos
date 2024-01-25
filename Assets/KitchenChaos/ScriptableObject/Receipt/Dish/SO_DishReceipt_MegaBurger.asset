@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6945169d9b710b458556542e372d38c, type: 3}
+  m_Script: {fileID: 11500000, guid: 49bb6cd8f39e58a409deeff529facde4, type: 3}
   m_Name: SO_DishReceipt_MegaBurger
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   _kitchenObjsSO:
   - {fileID: 11400000, guid: 8409e9d00498fde4e81e200523b4e191, type: 2}
   - {fileID: 11400000, guid: cf28947ba0e8a904285f9fa94b941256, type: 2}
