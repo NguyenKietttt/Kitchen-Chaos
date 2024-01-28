@@ -6,6 +6,16 @@ namespace KitchenChaos
 {
     public sealed class TutorialUI : BaseScreen
     {
+        [Header("Asset Ref")]
+        [SerializeField] private RebindKeySO _rebindKeyMoveUpSO;
+        [SerializeField] private RebindKeySO _rebindKeyMoveDownSO;
+        [SerializeField] private RebindKeySO _rebindKeyMoveLeftSO;
+        [SerializeField] private RebindKeySO _rebindKeyMoveRightSO;
+        [SerializeField] private RebindKeySO _rebindKeyInteractSO;
+        [SerializeField] private RebindKeySO _rebindKeyCutSO;
+        [SerializeField] private RebindKeySO _rebindKeyInteractGamepadSO;
+        [SerializeField] private RebindKeySO _rebindKeyCutGamepadSO;
+
         [Header("Internal Ref")]
         [SerializeField] private TextMeshProUGUI _keyboardMoveUpTxt;
         [SerializeField] private TextMeshProUGUI _keyboardMoveDownTxt;
@@ -52,15 +62,15 @@ namespace KitchenChaos
 
         private void UpdateVisual()
         {
-            _keyboardMoveUpTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.MoveUp));
-            _keyboardMoveDownTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.MoveDown));
-            _keyboardMoveLeftTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.MoveLeft));
-            _keyboardMoveRightTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.MoveRight));
-            _keyboardInteractTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.Interact));
-            _keyboardCutTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.Cut));
+            _keyboardMoveUpTxt.SetText(_rebindKeyMoveUpSO.GetDisplayString());
+            _keyboardMoveDownTxt.SetText(_rebindKeyMoveDownSO.GetDisplayString());
+            _keyboardMoveLeftTxt.SetText(_rebindKeyMoveLeftSO.GetDisplayString());
+            _keyboardMoveRightTxt.SetText(_rebindKeyMoveRightSO.GetDisplayString());
+            _keyboardInteractTxt.SetText(_rebindKeyInteractSO.GetDisplayString());
+            _keyboardCutTxt.SetText(_rebindKeyCutSO.GetDisplayString());
 
-            _gamepadInteractTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.GamepadInteract));
-            _gamepadCutTxt.SetText(Bootstrap.Instance.InputMgr.GetBidingText(InputManager.Binding.GamepadCut));
+            _gamepadInteractTxt.SetText(_rebindKeyInteractGamepadSO.GetDisplayString());
+            _gamepadCutTxt.SetText(_rebindKeyCutGamepadSO.GetDisplayString());
         }
 
         private void Show()
