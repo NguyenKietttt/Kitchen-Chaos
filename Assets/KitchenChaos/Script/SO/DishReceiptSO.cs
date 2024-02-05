@@ -10,7 +10,10 @@ namespace KitchenChaos
         public IReadOnlyList<KitchenObjectSO> KitchenObjsSO => Array.AsReadOnly(_kitchenObjsSO);
         public string Name => _name;
 
+        [Header("Asset Ref")]
         [SerializeField] private KitchenObjectSO[] _kitchenObjsSO;
+
+        [Header("Property")]
         [SerializeField] private string _name;
     }
 }

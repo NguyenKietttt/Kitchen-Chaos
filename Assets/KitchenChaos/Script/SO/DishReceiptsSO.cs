@@ -8,6 +8,7 @@ namespace KitchenChaos
     {
         public IReadOnlyList<DishReceiptSO> Receipts => _receipts;
 
+        [Header("Asset Ref")]
         [SerializeField] private DishReceiptSO[] _receipts;
     }
 }
