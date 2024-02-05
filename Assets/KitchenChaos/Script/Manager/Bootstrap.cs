@@ -43,7 +43,7 @@ namespace KitchenChaos
             }
 
             InitManagers();
-            _sceneLoader.LoadAsync(SceneLoader.Scene.Gameplay, () => GameStateMgr.Init());
+            _sceneLoader.LoadAsync(SceneState.Gameplay, () => GameStateMgr.Init());
         }
 
         private void Update()
