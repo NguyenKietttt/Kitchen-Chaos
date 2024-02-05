@@ -21,14 +21,14 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.ChangeStoveCounterState -= OnStoveCounterStateChanged;
         }
 
-        private void OnStoveCounterStateChanged(int senderID, StoveCounter.State state)
+        private void OnStoveCounterStateChanged(int senderID, StoveCounterState state)
         {
             if (_stoveCounterObj.GetInstanceID() != senderID)
             {
                 return;
             }
 
-            bool isActiveVisual = state is StoveCounter.State.Frying or StoveCounter.State.Fried;
+            bool isActiveVisual = state is StoveCounterState.Frying or StoveCounterState.Fried;
             _stoveOnObj.SetActive(isActiveVisual);
             _particlesObj.SetActive(isActiveVisual);
         }

@@ -31,7 +31,7 @@ namespace KitchenChaos
         private void OnPlateSpawned()
         {
             GameObject plateVisual = Instantiate(_plateVisualPrefab, _spawnPoint);
-            plateVisual.transform.localPosition = new Vector3(0, PLATE_OFFSET_Y * _plateVisuals.Count, 0);
+            plateVisual.transform.localPosition = new Vector3(0.0f, PLATE_OFFSET_Y * _plateVisuals.Count, 0.0f);
 
             _plateVisuals.Push(plateVisual);
         }

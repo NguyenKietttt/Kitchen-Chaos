@@ -46,14 +46,14 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
         }
 
-        private void OnStoveCounterState(int senderID, StoveCounter.State state)
+        private void OnStoveCounterState(int senderID, StoveCounterState state)
         {
             if (_stoveCounterObj.GetInstanceID() != senderID)
             {
                 return;
             }
 
-            if (state is StoveCounter.State.Frying or StoveCounter.State.Fried)
+            if (state is StoveCounterState.Frying or StoveCounterState.Fried)
             {
                 _audioSrc.Play();
             }
