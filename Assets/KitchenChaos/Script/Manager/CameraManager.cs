@@ -5,8 +5,6 @@ namespace KitchenChaos
 {
     public sealed class CameraManager : MonoBehaviour
     {
-        public enum CameraState { None, MainMenu, Gameplay }
-
         [Header("External Ref")]
         [SerializeField] private CinemachineVirtualCamera _mainMenuVirutalCam;
         [SerializeField] private CinemachineVirtualCamera _gameplayVirutalCam;
