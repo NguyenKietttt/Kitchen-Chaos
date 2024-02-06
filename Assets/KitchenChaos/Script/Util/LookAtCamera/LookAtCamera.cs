@@ -4,16 +4,8 @@ namespace KitchenChaos
 {
     public sealed class LookAtCamera : MonoBehaviour
     {
-        private enum Mode
-        {
-            LookAt,
-            LookAtInverted,
-            CameraForward,
-            CameraForwardInverted
-        }
-
         [Header("Property")]
-        [SerializeField] private Mode _mode;
+        [SerializeField] private LookAtCameraMode _mode;
 
         private void LateUpdate()
         {
@@ -24,16 +16,16 @@ namespace KitchenChaos
         {
             switch (_mode)
             {
-                case Mode.LookAt:
+                case LookAtCameraMode.LookAt:
                     transform.LookAt(Camera.main.transform);
                     break;
-                case Mode.LookAtInverted:
+                case LookAtCameraMode.LookAtInverted:
                     transform.LookAt(transform.position + (transform.position - Camera.main.transform.position));
                     break;
-                case Mode.CameraForward:
+                case LookAtCameraMode.CameraForward:
                     transform.forward = Camera.main.transform.forward;
                     break;
-                case Mode.CameraForwardInverted:
+                case LookAtCameraMode.CameraForwardInverted:
                     transform.forward = -Camera.main.transform.forward;
                     break;
             }
