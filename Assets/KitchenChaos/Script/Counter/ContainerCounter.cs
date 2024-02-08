@@ -4,7 +4,7 @@ namespace KitchenChaos
 {
     public sealed class ContainerCounter : BaseCounter
     {
-        [Header("Child Asset ref")]
+        [Header("Child Config")]
         [SerializeField] private KitchenObjectSO _kitchenObjSO;
 
         [Header("Child Internal Ref")]
