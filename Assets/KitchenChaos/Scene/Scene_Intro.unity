@@ -179,6 +179,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &303834212
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 303834213}
+  - component: {fileID: 303834214}
+  m_Layer: 0
+  m_Name: DeliveryManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &303834213
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303834212}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 370449370}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &303834214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303834212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fa77626a2fef9049b6703bf1d89cff3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 8771f48f0692ee14393e5b4d2acdd8ad, type: 2}
 --- !u!1 &370449368
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,15 +253,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbe71ef7dc8b3ab41a246b8a1e1ea963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dishReceiptsSO: {fileID: 11400000, guid: 179bcf5899d090d41ac6340127913f61, type: 2}
-  _playerPrefab: {fileID: 6282792218623842890, guid: d1dd1f4e54041f541be236aefccaff15,
-    type: 3}
-  _levelOnePrefab: {fileID: 4843124729967624556, guid: b0443d0eccbb93347a3479df103b6bd7,
-    type: 3}
+  _config: {fileID: 11400000, guid: 8deeb135ba4c2f348b1f2fc890d5fa66, type: 2}
   _sceneLoader: {fileID: 1083183393}
   _uiManager: {fileID: 1713410093}
   _sfxMgr: {fileID: 1362282216}
   _musicMgr: {fileID: 564810170}
+  _deliveryMgr: {fileID: 303834214}
 --- !u!4 &370449370
 Transform:
   m_ObjectHideFlags: 0
@@ -234,6 +276,7 @@ Transform:
   - {fileID: 1713410092}
   - {fileID: 564810168}
   - {fileID: 1362282215}
+  - {fileID: 303834213}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &417561830

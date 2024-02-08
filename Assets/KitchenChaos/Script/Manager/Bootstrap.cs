@@ -15,24 +15,22 @@ namespace KitchenChaos
         public SFXManager SFXMgr => _sfxMgr;
         public MusicManager MusicMgr => _musicMgr;
         public UIManager UIManager => _uiManager;
-        public GameObject PlayerPrefab => _playerPrefab;
-        public GameObject LevelOnePrefab => _levelOnePrefab;
+        public GameObject PlayerPrefab => _config.PlayerPrefab;
+        public GameObject LevelOnePrefab => _config.LevelOnePrefab;
 
         [Header("Asset Ref")]
-        [SerializeField] private DishReceiptsSO _dishReceiptsSO;
-        [SerializeField] private GameObject _playerPrefab;
-        [SerializeField] private GameObject _levelOnePrefab;
+        [SerializeField] private BootstrapCfg _config;
 
         [Header("Internal Ref")]
         [SerializeField] private SceneLoader _sceneLoader;
         [SerializeField] private UIManager _uiManager;
         [SerializeField] private SFXManager _sfxMgr;
         [SerializeField] private MusicManager _musicMgr;
+        [SerializeField] private DeliveryManager _deliveryMgr;
 
         private EventManager _eventMgr;
         private GameStateManager _gameStateMgr;
         private InputManager _inputMgr;
-        private DeliveryManager _deliveryMgr;
 
         private void Awake()
         {
@@ -67,7 +65,7 @@ namespace KitchenChaos
             _uiManager.Init();
             _gameStateMgr = new GameStateManager();
             _inputMgr = new InputManager();
-            _deliveryMgr = new DeliveryManager(_dishReceiptsSO);
+            _deliveryMgr.Init();
             _sfxMgr.Init();
         }
     }

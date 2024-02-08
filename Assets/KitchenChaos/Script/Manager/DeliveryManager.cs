@@ -4,26 +4,22 @@ using UnityEngine;
 
 namespace KitchenChaos
 {
-    public sealed class DeliveryManager
+    public sealed class DeliveryManager : MonoBehaviour
     {
-        private const float SPAWN_RECEIPT_TIMER_MAX = 4.0f;
-        private const float SPAWN_RECEIPT_TIMER_MIN = 0.0f;
-        private const int WAITING_RECEIPT_MAX = 4;
-        private const int DEFAULT_AMOUNT_SUCCESSFUL_RECEIPT = 0;
-
         public IReadOnlyList<DishReceiptSO> WaitingReceiptsSO => _waitingReceiptsSO.AsReadOnly();
         public int AmountSucessfulReceipt => _amountSucessfulReceipt;
 
         private readonly List<DishReceiptSO> _waitingReceiptsSO = new();
-        private readonly DishReceiptsSO _dishReceiptsS0;
+
+        [Header("Config")]
+        [SerializeField] private DeliveryManagerCfg _config;
 
         private GameState _curState;
         private float _spawnReceiptTimer;
         private int _amountSucessfulReceipt;
 
-        public DeliveryManager(DishReceiptsSO dishReceiptsSO)
+        public void Init()
         {
-            _dishReceiptsS0 = dishReceiptsSO;
             Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
         }
 
@@ -41,13 +37,14 @@ namespace KitchenChaos
 
             _spawnReceiptTimer += deltaTime;
 
-            if (_spawnReceiptTimer >= SPAWN_RECEIPT_TIMER_MAX)
+            if (_spawnReceiptTimer >= _config.SpawnReceiptTimerMax)
             {
-                _spawnReceiptTimer = SPAWN_RECEIPT_TIMER_MIN;
+                _spawnReceiptTimer = _config.SpawnReceiptTimerMin;
 
-                if (_curState is GameState.GamePlaying && _waitingReceiptsSO.Count < WAITING_RECEIPT_MAX)
+                if (_curState is GameState.GamePlaying && _waitingReceiptsSO.Count < _config.WaitingReceiptMax)
                 {
-                    DishReceiptSO waitingReceiptSO = _dishReceiptsS0.Receipts[Random.Range(0, _dishReceiptsS0.Receipts.Count)];
+                    int index = Random.Range(0, _config.DishReceiptsS0.Receipts.Count);
+                    DishReceiptSO waitingReceiptSO = _config.DishReceiptsS0.Receipts[index];
                     _waitingReceiptsSO.Add(waitingReceiptSO);
 
                     Bootstrap.Instance.EventMgr.SpawnReceipt?.Invoke();
@@ -97,12 +94,12 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.DeliverReceiptFailed?.Invoke();
         }
 
-        public void Reset()
+        private void Reset()
         {
             _waitingReceiptsSO.Clear();
 
-            _spawnReceiptTimer = SPAWN_RECEIPT_TIMER_MIN;
-            _amountSucessfulReceipt = DEFAULT_AMOUNT_SUCCESSFUL_RECEIPT;
+            _spawnReceiptTimer = _config.SpawnReceiptTimerMin;
+            _amountSucessfulReceipt = _config.WaitingReceiptMin;
         }
 
         private void OnGameStateChanged(GameState state)
