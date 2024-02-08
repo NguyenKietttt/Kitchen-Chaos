@@ -15,11 +15,6 @@ namespace KitchenChaos
         public SFXManager SFXMgr => _sfxMgr;
         public MusicManager MusicMgr => _musicMgr;
         public UIManager UIManager => _uiManager;
-        public GameObject PlayerPrefab => _config.PlayerPrefab;
-        public GameObject LevelOnePrefab => _config.LevelOnePrefab;
-
-        [Header("Asset Ref")]
-        [SerializeField] private BootstrapCfg _config;
 
         [Header("Internal Ref")]
         [SerializeField] private SceneLoader _sceneLoader;
@@ -27,9 +22,9 @@ namespace KitchenChaos
         [SerializeField] private SFXManager _sfxMgr;
         [SerializeField] private MusicManager _musicMgr;
         [SerializeField] private DeliveryManager _deliveryMgr;
+        [SerializeField] private GameStateManager _gameStateMgr;
 
         private EventManager _eventMgr;
-        private GameStateManager _gameStateMgr;
         private InputManager _inputMgr;
 
         private void Awake()
@@ -41,29 +36,21 @@ namespace KitchenChaos
             }
 
             InitManagers();
-            _sceneLoader.LoadAsync(SceneState.Gameplay, () => GameStateMgr.Init());
-        }
-
-        private void Update()
-        {
-            float deltaTime = Time.deltaTime;
-
-            GameStateMgr.OnUpdate(deltaTime);
-            DeliveryMgr.OnUpdate(deltaTime);
+            _sceneLoader.LoadAsync(SceneState.Gameplay, () => _gameStateMgr.ChangeState(GameState.MainMenu));
         }
 
         private void OnDestroy()
         {
-            DeliveryMgr.OnDestroy();
-            InputMgr.OnDestroy();
-            GameStateMgr.OnDestroy();
+            _deliveryMgr.OnDestroy();
+            _inputMgr.OnDestroy();
+            _gameStateMgr.OnDestroy();
         }
 
         private void InitManagers()
         {
             _eventMgr = new EventManager();
             _uiManager.Init();
-            _gameStateMgr = new GameStateManager();
+            _gameStateMgr.Init();
             _inputMgr = new InputManager();
             _deliveryMgr.Init();
             _sfxMgr.Init();

@@ -28,14 +28,14 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
         }
 
-        public void OnUpdate(float deltaTime)
+        private void Update()
         {
             if (_curState is not GameState.GamePlaying)
             {
                 return;
             }
 
-            _spawnReceiptTimer += deltaTime;
+            _spawnReceiptTimer += Time.deltaTime;
 
             if (_spawnReceiptTimer >= _config.SpawnReceiptTimerMax)
             {

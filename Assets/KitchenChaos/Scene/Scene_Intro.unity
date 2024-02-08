@@ -253,12 +253,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbe71ef7dc8b3ab41a246b8a1e1ea963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _config: {fileID: 11400000, guid: 8deeb135ba4c2f348b1f2fc890d5fa66, type: 2}
   _sceneLoader: {fileID: 1083183393}
   _uiManager: {fileID: 1713410093}
   _sfxMgr: {fileID: 1362282216}
   _musicMgr: {fileID: 564810170}
   _deliveryMgr: {fileID: 303834214}
+  _gameStateMgr: {fileID: 986372422}
 --- !u!4 &370449370
 Transform:
   m_ObjectHideFlags: 0
@@ -277,6 +277,7 @@ Transform:
   - {fileID: 564810168}
   - {fileID: 1362282215}
   - {fileID: 303834213}
+  - {fileID: 986372421}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &417561830
@@ -655,6 +656,51 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 924546092}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &986372420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 986372421}
+  - component: {fileID: 986372422}
+  m_Layer: 0
+  m_Name: GameStateManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &986372421
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986372420}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 370449370}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &986372422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986372420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36e0aca049d27aa40818aec5b51fbb01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 254fa310eab9bf3469afeaa34abc7e64, type: 2}
 --- !u!1 &1083183391
 GameObject:
   m_ObjectHideFlags: 0

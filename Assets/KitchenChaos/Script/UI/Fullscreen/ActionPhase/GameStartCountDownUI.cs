@@ -20,7 +20,7 @@ namespace KitchenChaos
 
         private void Update()
         {
-            int countdownNumber = Mathf.CeilToInt(Bootstrap.Instance.GameStateMgr.CountDownToStartTimer);
+            int countdownNumber = Mathf.CeilToInt(Bootstrap.Instance.GameStateMgr.CountDownTimer);
             _countDownTxt.SetText(countdownNumber.ToString());
 
             if (_preCountdownNumber != countdownNumber)

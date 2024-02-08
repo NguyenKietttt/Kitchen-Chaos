@@ -10,7 +10,7 @@ namespace KitchenChaos
 
         private void Update()
         {
-            _timerImg.fillAmount = Bootstrap.Instance.GameStateMgr.GamePlayingTimerNormalized;
+            _timerImg.fillAmount = Bootstrap.Instance.GameStateMgr.PlayingTimerNormalized;
         }
     }
 }

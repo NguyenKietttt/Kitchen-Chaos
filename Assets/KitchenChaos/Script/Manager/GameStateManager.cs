@@ -2,48 +2,43 @@ using UnityEngine;
 
 namespace KitchenChaos
 {
-    public sealed class GameStateManager
+    public sealed class GameStateManager : MonoBehaviour
     {
-        private const float COUNTDOWN_TO_START_TIMER_MAX = 3.0f;
-        private const float COUNTDOWN_TO_START_TIMER_MIN = 0.0f;
-        private const float GAME_PLAYING_TIMER_MAX = 60.0f;
-        private const float GAME_PLAYING_TIMER_MIN = 0.0f;
+        public float PlayingTimerNormalized => _playingTimer / _config.PlayingTimerMax;
+        public float CountDownTimer => _countdownTimer;
 
-        public float GamePlayingTimerNormalized => _gameplayingTimer / GAME_PLAYING_TIMER_MAX;
-        public float CountDownToStartTimer => _countdownToStartTimer;
+        [Header("Config")]
+        [SerializeField] private GameStateManagerCfg _config;
 
         private GameState _curState;
         private GameObject _playerObj;
         private GameObject _levelObj;
-        private float _countdownToStartTimer = COUNTDOWN_TO_START_TIMER_MAX;
-        private float _gameplayingTimer;
-
-        public GameStateManager()
-        {
-            Bootstrap.Instance.EventMgr.TooglePause += OnTogglePaused;
-            Bootstrap.Instance.EventMgr.Interact += OnInteract;
-        }
+        private float _countdownTimer;
+        private float _playingTimer;
 
         public void Init()
         {
-            ChangeState(GameState.MainMenu);
+            Bootstrap.Instance.EventMgr.TooglePause += OnTogglePaused;
+            Bootstrap.Instance.EventMgr.Interact += OnInteract;
+
+            _countdownTimer = _config.CoundownTimerMax;
         }
 
-        public void OnUpdate(in float deltaTime)
+        private void Update()
         {
             switch (_curState)
             {
                 case GameState.CountDownToStart:
-                    _countdownToStartTimer -= deltaTime;
-                    if (_countdownToStartTimer < COUNTDOWN_TO_START_TIMER_MIN)
+                    _countdownTimer -= Time.deltaTime;
+                    if (_countdownTimer < _config.CoundownTimerMin)
                     {
                         ChangeState(GameState.GamePlaying);
                     }
 
                     break;
                 case GameState.GamePlaying:
-                    _gameplayingTimer += Time.deltaTime;
-                    if (_gameplayingTimer >= GAME_PLAYING_TIMER_MAX)
+                    _playingTimer += Time.deltaTime;
+                    if (_playingTimer >= _config.PlayingTimerMax)
                     {
                         ChangeState(GameState.GameOver);
                     }
@@ -63,18 +58,18 @@ namespace KitchenChaos
             switch (state)
             {
                 case GameState.MainMenu:
-                    _countdownToStartTimer = COUNTDOWN_TO_START_TIMER_MAX;
-                    _gameplayingTimer = GAME_PLAYING_TIMER_MIN;
+                    _countdownTimer = _config.CoundownTimerMax;
+                    _playingTimer = _config.PlayingTimerMin;
 
                     if (_playerObj != null)
                     {
-                        Object.Destroy(_playerObj);
+                        Destroy(_playerObj);
                         _playerObj = null;
                     }
 
                     if (_levelObj != null)
                     {
-                        Object.Destroy(_levelObj);
+                        Destroy(_levelObj);
                         _levelObj = null;
                     }
 
@@ -84,16 +79,16 @@ namespace KitchenChaos
                 case GameState.WaitingToStart:
                     Bootstrap.Instance.UIManager.Push(UISystem.ScreenID.ActionPhase);
 
-                    _playerObj = Object.Instantiate(Bootstrap.Instance.PlayerPrefab);
-                    _levelObj = Object.Instantiate(Bootstrap.Instance.LevelOnePrefab);
+                    _playerObj = Instantiate(_config.PlayerPrefab);
+                    _levelObj = Instantiate(_config.LevelOnePrefab);
 
                     Bootstrap.Instance.UIManager.Push(UISystem.ScreenID.Tutorial);
                     break;
                 case GameState.GamePlaying:
-                    _countdownToStartTimer = COUNTDOWN_TO_START_TIMER_MAX;
+                    _countdownTimer = _config.CoundownTimerMax;
                     break;
                 case GameState.GameOver:
-                    _gameplayingTimer = GAME_PLAYING_TIMER_MIN;
+                    _playingTimer = _config.PlayingTimerMin;
                     Bootstrap.Instance.UIManager.Push(UISystem.ScreenID.GameOver);
                     break;
             }

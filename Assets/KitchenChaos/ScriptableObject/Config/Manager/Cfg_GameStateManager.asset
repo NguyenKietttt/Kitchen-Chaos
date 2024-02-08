@@ -9,11 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04e91eb20a212004ca65ef2546b6ce0f, type: 3}
-  m_Name: Cfg_Bootstrap
+  m_Script: {fileID: 11500000, guid: 97fafee54a37b8e47aa62c239101add1, type: 3}
+  m_Name: Cfg_GameStateManager
   m_EditorClassIdentifier: 
-  _dishReceiptsSO: {fileID: 11400000, guid: 179bcf5899d090d41ac6340127913f61, type: 2}
   _playerPrefab: {fileID: 6282792218623842890, guid: d1dd1f4e54041f541be236aefccaff15,
     type: 3}
   _levelOnePrefab: {fileID: 4843124729967624556, guid: b0443d0eccbb93347a3479df103b6bd7,
     type: 3}
+  _coundownTimerMin: 0
+  _coundownTimerMax: 3
+  _playingTimerMin: 0
+  _playingTimerMax: 60
