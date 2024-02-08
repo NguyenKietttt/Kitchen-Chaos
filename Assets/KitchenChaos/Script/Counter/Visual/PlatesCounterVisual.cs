@@ -5,11 +5,8 @@ namespace KitchenChaos
 {
     public sealed class PlatesCounterVisual : MonoBehaviour
     {
-        private const float PLATE_OFFSET_Y = 0.1f;
-        private const int PLATE_VISUAL_COUNT_MIN = 0;
-
-        [Header("Asset Ref")]
-        [SerializeField] private GameObject _plateVisualPrefab;
+        [Header("Config")]
+        [SerializeField] private PlateCounterVisualCfg _config;
 
         [Header("External Ref")]
         [SerializeField] private Transform _spawnPoint;
@@ -25,20 +22,20 @@ namespace KitchenChaos
         private void OnDestroy()
         {
             Bootstrap.Instance.EventMgr.SpawnPlate -= OnPlateSpawned;
-            Bootstrap.Instance.EventMgr.RemovePlate += OnPlateRemoved;
+            Bootstrap.Instance.EventMgr.RemovePlate -= OnPlateRemoved;
         }
 
         private void OnPlateSpawned()
         {
-            GameObject plateVisual = Instantiate(_plateVisualPrefab, _spawnPoint);
-            plateVisual.transform.localPosition = new Vector3(0.0f, PLATE_OFFSET_Y * _plateVisuals.Count, 0.0f);
+            GameObject plateVisual = Instantiate(_config.PlateVisualPrefab, _spawnPoint);
+            plateVisual.transform.localPosition = new Vector3(0.0f, _config.PlateOffsetY * _plateVisuals.Count, 0.0f);
 
             _plateVisuals.Push(plateVisual);
         }
 
         private void OnPlateRemoved()
         {
-            if (_plateVisuals.Count > PLATE_VISUAL_COUNT_MIN)
+            if (_plateVisuals.Count > _config.PlateAmountMin)
             {
                 Destroy(_plateVisuals.Pop());
             }
