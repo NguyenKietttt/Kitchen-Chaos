@@ -6,7 +6,7 @@ namespace KitchenChaos
     {
         private const int MIN_PROGRESS = 0;
 
-        [Header("Child Asset Ref")]
+        [Header("Child Config")]
         [SerializeField] private CuttingReceiptSO[] _cuttingReceipts;
 
         [Header("Child Internal Ref")]
