@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc47c6b0b63dc1e48bcba0863db5001b, type: 3}
+  m_Name: Cfg_StoveCounter
+  m_EditorClassIdentifier: 
+  _fryingReceipts:
+  - {fileID: 11400000, guid: f9d5d0b8452e92247858ebee96e8d756, type: 2}
+  _burningReceipts:
+  - {fileID: 11400000, guid: d98933d4170a74b4fb1999ed5d718683, type: 2}
+  _burningTimerMin: 0
+  _fryingTimerMin: 0
+  _progressMin: 0

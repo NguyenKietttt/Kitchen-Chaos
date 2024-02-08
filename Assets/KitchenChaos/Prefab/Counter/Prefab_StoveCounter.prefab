@@ -903,7 +903,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selectedVisualObj: {fileID: 796374389931372620}
   _spawnPoint: {fileID: 1452120455869725526}
-  _fryingReceipts:
-  - {fileID: 11400000, guid: f9d5d0b8452e92247858ebee96e8d756, type: 2}
-  _burningReceipts:
-  - {fileID: 11400000, guid: d98933d4170a74b4fb1999ed5d718683, type: 2}
+  _config: {fileID: 11400000, guid: 9875f5fd4b4fd0e4dad18fc4b60b3ff4, type: 2}
