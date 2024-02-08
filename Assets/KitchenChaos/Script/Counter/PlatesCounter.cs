@@ -4,12 +4,8 @@ namespace KitchenChaos
 {
     public sealed class PlatesCounter : BaseCounter
     {
-        private const float SPAWN_PLATE_TIMER_MAX = 4.0f;
-        private const float SPAWN_PLATE_TIMER_MIN = 0.0f;
-        private const int PLATES_SPAWN_AMOUNT_MAX = 4;
-        private const int PLATES_SPAWN_AMOUNT_MIN = 0;
-
-        [Header("Child Asset Ref")]
+        [Header("Child Config")]
+        [SerializeField] private PlatesCounterCfg _config;
         [SerializeField] private KitchenObjectSO _plateKitchenObjSO;
 
         private GameState _curState;
@@ -25,11 +21,11 @@ namespace KitchenChaos
         {
             _spawnPlateTimer += Time.deltaTime;
 
-            if (_spawnPlateTimer >= SPAWN_PLATE_TIMER_MAX)
+            if (_spawnPlateTimer >= _config.PlateSpawnTimerMax)
             {
-                _spawnPlateTimer = SPAWN_PLATE_TIMER_MIN;
+                _spawnPlateTimer = _config.PlateSpawnTimerMin;
 
-                if (_curState is GameState.GamePlaying && _platesSpawnAmount < PLATES_SPAWN_AMOUNT_MAX)
+                if (_curState is GameState.GamePlaying && _platesSpawnAmount < _config.PlateSpawnAmountMax)
                 {
                     _platesSpawnAmount++;
                     Bootstrap.Instance.EventMgr.SpawnPlate?.Invoke();
@@ -44,7 +40,7 @@ namespace KitchenChaos
 
         public override void OnInteract(PlayerController playerController)
         {
-            if (!playerController.HasKitchenObj && _platesSpawnAmount > PLATES_SPAWN_AMOUNT_MIN)
+            if (!playerController.HasKitchenObj && _platesSpawnAmount > _config.PlateSpawnTimerMin)
             {
                 _platesSpawnAmount--;
 
