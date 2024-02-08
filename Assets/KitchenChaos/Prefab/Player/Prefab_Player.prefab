@@ -81,6 +81,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerAnimator: {fileID: 6241452263999107307}
   _kitchenObjHoldPoint: {fileID: 1616143291652384859}
+  _config: {fileID: 11400000, guid: 5373f8eac4b45394f94f6cbabe5e24af, type: 2}
   _counterLayerMask:
     serializedVersion: 2
     m_Bits: 64

@@ -1,29 +1,20 @@
-using System;
 using UnityEngine;
 
 namespace KitchenChaos
 {
     public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
     {
-        private const float PLAYER_RADIUS = 0.7f;
-        private const float MOVE_OFFSET = 0.5f;
-        private const int PLAYER_HEIGHT = 2;
-        private const float PLAYER_HEIGHT_OFFSET = 0.5f;
-        private const int MOVING_SPEED = 7;
-        private const int ROTATION_SPEED = 10;
-        private const int INTERACTION_DISTANCE = 2;
-
         public Transform SpawnPoint => _kitchenObjHoldPoint;
         public KitchenObject KitchenObj => _kitchenObj;
         public bool HasKitchenObj => _kitchenObj != null;
         public bool IsMoving => _isMoving;
 
+        [Header("Config")]
+        [SerializeField] private PlayerControllerCfg _config;
+
         [Header("Internal Ref")]
         [SerializeField] private PlayerAnimator _playerAnimator;
         [SerializeField] private Transform _kitchenObjHoldPoint;
-
-        [Header("Property")]
-        [SerializeField] private LayerMask _counterLayerMask;
 
         private BaseCounter _selectedCounter;
         private KitchenObject _kitchenObj;
@@ -57,7 +48,7 @@ namespace KitchenChaos
         private void HandleCounterSelection(Vector2 input)
         {
             Vector3 curPos = transform.position;
-            Vector3 playerPos = new(curPos.x, PLAYER_HEIGHT * PLAYER_HEIGHT_OFFSET, curPos.z);
+            Vector3 playerPos = new(curPos.x, _config.Height * _config.HeightOffset, curPos.z);
             Vector3 moveDir = new(input.x, 0, input.y);
 
             if (moveDir != Vector3.zero)
@@ -65,7 +56,7 @@ namespace KitchenChaos
                 _lastInteractionDir = moveDir;
             }
 
-            if (Physics.Raycast(playerPos, _lastInteractionDir, out RaycastHit hit, INTERACTION_DISTANCE, _counterLayerMask))
+            if (Physics.Raycast(playerPos, _lastInteractionDir, out RaycastHit hit, _config.InteractDistance, _config.CounterLayerMask))
             {
                 if (hit.transform.TryGetComponent(out BaseCounter baseCounter))
                 {
@@ -119,7 +110,7 @@ namespace KitchenChaos
             if (canMove)
             {
                 Vector3 moveDir = new(input.x, 0, input.y);
-                float moveDistance = MOVING_SPEED * Time.deltaTime;
+                float moveDistance = _config.MoveSpeed * Time.deltaTime;
 
                 if (!CanMove(moveDir, moveDistance))
                 {
@@ -146,14 +137,14 @@ namespace KitchenChaos
         {
             Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
 
-            if ((moveDirX.x <= -MOVE_OFFSET || moveDirX.x >= MOVE_OFFSET) && CanMove(moveDirX, moveDistance))
+            if ((moveDirX.x <= -_config.MoveOffset || moveDirX.x >= _config.MoveOffset) && CanMove(moveDirX, moveDistance))
             {
                 return moveDirX;
             }
 
             Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
 
-            if ((moveDirZ.z <= -MOVE_OFFSET || moveDirZ.z >= MOVE_OFFSET) && CanMove(moveDirZ, moveDistance))
+            if ((moveDirZ.z <= -_config.MoveOffset || moveDirZ.z >= _config.MoveOffset) && CanMove(moveDirZ, moveDistance))
             {
                 return moveDirZ;
             }
@@ -164,7 +155,7 @@ namespace KitchenChaos
         private bool CanMove(Vector3 moveDir, float moveDistance)
         {
             Vector3 curPos = transform.position;
-            return !Physics.CapsuleCast(curPos, curPos + (Vector3.up * PLAYER_HEIGHT), PLAYER_RADIUS, moveDir, moveDistance);
+            return !Physics.CapsuleCast(curPos, curPos + (Vector3.up * _config.Height), _config.Radius, moveDir, moveDistance);
         }
 
         public bool CanMove(Vector2 input)
@@ -179,7 +170,7 @@ namespace KitchenChaos
 
         private void UpdateRotationByMovingDirection(Vector3 moveDir)
         {
-            transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * ROTATION_SPEED);
+            transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * _config.RotateSpeed);
         }
 
         public void SetKitchenObj(KitchenObject newKitchenObj)
