@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11c5908d95ccb41498ee911b0369a9b4, type: 3}
   m_Name: Cfg_PlateCounter
   m_EditorClassIdentifier: 
+  _plateSO: {fileID: 11400000, guid: e3cb8df2a896c5648b9542147ad64c84, type: 2}
   _plateSpawnTimerMin: 0
   _plateSpawnTimerMax: 4
   _plateSpawnAmountMin: 0

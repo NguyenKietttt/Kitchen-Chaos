@@ -6,7 +6,6 @@ namespace KitchenChaos
     {
         [Header("Child Config")]
         [SerializeField] private PlatesCounterCfg _config;
-        [SerializeField] private KitchenObjectSO _plateKitchenObjSO;
 
         private GameState _curState;
         private float _spawnPlateTimer;
@@ -44,7 +43,7 @@ namespace KitchenChaos
             {
                 _platesSpawnAmount--;
 
-                KitchenObject.SpawnKitchenObj(_plateKitchenObjSO, playerController);
+                KitchenObject.SpawnKitchenObj(_config.PlateSO, playerController);
                 Bootstrap.Instance.EventMgr.RemovePlate?.Invoke();
             }
         }
