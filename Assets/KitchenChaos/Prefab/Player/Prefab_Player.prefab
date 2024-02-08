@@ -79,12 +79,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22b2df3011bb68445b5b4f6908e70c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 5373f8eac4b45394f94f6cbabe5e24af, type: 2}
   _playerAnimator: {fileID: 6241452263999107307}
   _kitchenObjHoldPoint: {fileID: 1616143291652384859}
-  _config: {fileID: 11400000, guid: 5373f8eac4b45394f94f6cbabe5e24af, type: 2}
-  _counterLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!1 &7824466459124904095
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,6 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 508152cfb6a6a3f4fb6440b62e7b4429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 9ecca49b41bd5434e8139ecbb14b748d, type: 2}
   _playerController: {fileID: 832291162446513904}
   _audioSrc: {fileID: 3486415609050730320}
 --- !u!1001 &3299635207676168622

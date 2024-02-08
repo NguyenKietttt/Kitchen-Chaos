@@ -4,8 +4,8 @@ namespace KitchenChaos
 {
     public sealed class PlayerSound : MonoBehaviour
     {
-        private const float FOOTSTEP_TIMER_MAX = 0.1f;
-        private const float FOOTSTEP_TIMER_MIN = 0.0f;
+        [Header("Config")]
+        [SerializeField] private PlayerSFXCfg _config;
 
         [Header("External Ref")]
         [SerializeField] private PlayerController _playerController;
@@ -18,9 +18,9 @@ namespace KitchenChaos
         private void Update()
         {
             _footstepTimer += Time.deltaTime;
-            if (_footstepTimer >= FOOTSTEP_TIMER_MAX)
+            if (_footstepTimer >= _config.FootstepTimerMax)
             {
-                _footstepTimer = FOOTSTEP_TIMER_MIN;
+                _footstepTimer = _config.FootstepTimerMin;
                 if (_playerController.IsMoving)
                 {
                     _audioSrc.PlayOneShot(Bootstrap.Instance.SFXMgr.GetRandomFootStepAudioClip());
