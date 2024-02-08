@@ -217,6 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd26fc58ff08b74ab186b17eb206495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 763af093a8fffab47aff29be262956e5, type: 2}
   _stoveCounterObj: {fileID: 8429991187470582211}
   _stoveCounter: {fileID: 6390879159441733293}
   _audioSrc: {fileID: 3881933653536065067}
