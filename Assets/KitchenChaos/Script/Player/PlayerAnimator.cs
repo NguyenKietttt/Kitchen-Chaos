@@ -4,7 +4,8 @@ namespace KitchenChaos
 {
     public sealed class PlayerAnimator : MonoBehaviour
     {
-        private readonly int _isWalkingAnimKey = Animator.StringToHash("IsWalking");
+        [Header("Config")]
+        [SerializeField] private PlayerAnimatorCfg _config;
 
         [Header("Internal Ref")]
         [SerializeField] private Animator _animator;
@@ -18,7 +19,7 @@ namespace KitchenChaos
                 return;
             }
 
-            _animator.SetBool(_isWalkingAnimKey, canMove);
+            _animator.SetBool(_config.IsWalkingKeyHash, canMove);
             _lastMovingStatus = canMove;
         }
     }
