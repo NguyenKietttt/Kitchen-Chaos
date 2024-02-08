@@ -1,31 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Victor.Tools;
 
 namespace KitchenChaos
 {
     public sealed class SFXManager : MonoBehaviour
     {
-        private const string SFX_VOLUMN_KEY = "SFX_VOLUMN_KEY";
-        private const float MAX_VOLUMN = 1.0f;
-        private const float MIN_VOLUMN = 0.0f;
-        private const float VOLUME_STEP = 0.1f;
-
         public float MasterVolumn => _masterVolumn;
 
-        [Header("Asset Ref")]
-        [SerializeField] private SFXClipsSO _sfxClipsSO;
+        [Header("Config")]
+        [SerializeField] private SFXManagerCfg _config;
 
-        [Header("Property")]
-        [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _chopVolume;
-        [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _pickupVolume;
-        [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _dropVolume;
-        [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _trashVolume;
-        [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _deliverySuccessVolume;
-        [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _deliveryFailedVolume;
-        [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _countdownPopupVolume;
-
-        private float _masterVolumn = MAX_VOLUMN;
+        private float _masterVolumn;
 
         public void Init()
         {
@@ -38,7 +23,7 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.PlaceObject += OnObjectPlaced;
             Bootstrap.Instance.EventMgr.InteractWithTrashCounter += OnInteractWithTrashCounter;
 
-            _masterVolumn = PlayerPrefs.GetFloat(SFX_VOLUMN_KEY, MAX_VOLUMN);
+            _masterVolumn = PlayerPrefs.GetFloat(_config.PlayerPrefsVolumnKey, _config.DefaultVolumn);
         }
 
         private void OnDestroy()
@@ -55,60 +40,60 @@ namespace KitchenChaos
 
         public void ChangeVolumn()
         {
-            _masterVolumn += VOLUME_STEP;
+            _masterVolumn += _config.VolumnStep;
 
-            if (_masterVolumn > MAX_VOLUMN)
+            if (_masterVolumn > _config.VolumnMax)
             {
-                _masterVolumn = MIN_VOLUMN;
+                _masterVolumn = _config.VolumnMin;
             }
 
-            PlayerPrefs.SetFloat(SFX_VOLUMN_KEY, _masterVolumn);
+            PlayerPrefs.SetFloat(_config.PlayerPrefsVolumnKey, _masterVolumn);
             PlayerPrefs.Save();
         }
 
         public AudioClip GetRandomFootStepAudioClip()
         {
-            return _sfxClipsSO.Footstep[Random.Range(0, _sfxClipsSO.Footstep.Count)];
+            return _config.FootstepClips[Random.Range(0, _config.FootstepClips.Count)];
         }
 
         private void OnCoundownPopup()
         {
-            PlaySound(_sfxClipsSO.Warning, Camera.main.transform.position, _countdownPopupVolume);
+            PlaySound(_config.WarningClips, Camera.main.transform.position, _config.CountdownPopupVolume);
         }
 
         private void OnStoveWarning()
         {
-            PlaySound(_sfxClipsSO.Warning, Camera.main.transform.position, _countdownPopupVolume);
+            PlaySound(_config.WarningClips, Camera.main.transform.position, _config.CountdownPopupVolume);
         }
 
         private void OnInteractWithCutCounter()
         {
-            PlaySound(_sfxClipsSO.Chop, Camera.main.transform.position, _chopVolume);
+            PlaySound(_config.ChopClips, Camera.main.transform.position, _config.ChopVolume);
         }
 
         private void OnPickSomething()
         {
-            PlaySound(_sfxClipsSO.ObjectPickup, Camera.main.transform.position, _pickupVolume);
+            PlaySound(_config.ObjectPickupClips, Camera.main.transform.position, _config.PickupVolume);
         }
 
         private void OnObjectPlaced()
         {
-            PlaySound(_sfxClipsSO.ObjectDrop, Camera.main.transform.position, _dropVolume);
+            PlaySound(_config.ObjectDropClips, Camera.main.transform.position, _config.DropVolume);
         }
 
         private void OnInteractWithTrashCounter()
         {
-            PlaySound(_sfxClipsSO.Trash, Camera.main.transform.position, _trashVolume);
+            PlaySound(_config.TrashClips, Camera.main.transform.position, _config.TrashVolume);
         }
 
         private void OnDeliverReceiptSuccess()
         {
-            PlaySound(_sfxClipsSO.DeliverySuccess, Camera.main.transform.position, _deliverySuccessVolume);
+            PlaySound(_config.DeliverySuccessClips, Camera.main.transform.position, _config.DeliverySuccessVolume);
         }
 
         private void OnDeliverReceiptFailed()
         {
-            PlaySound(_sfxClipsSO.DeliveryFail, Camera.main.transform.position, _deliveryFailedVolume);
+            PlaySound(_config.DeliveryFailClips, Camera.main.transform.position, _config.DeliveryFailedVolume);
         }
 
         private void PlaySound(IReadOnlyList<AudioClip> audioClips, Vector3 position, float volumeMultiplier = 1)

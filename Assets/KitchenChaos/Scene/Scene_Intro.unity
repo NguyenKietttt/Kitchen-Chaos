@@ -1016,6 +1016,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c17bbfa1b0d5be48bc192716646f293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 7bcca4d7c357d124eb866564b2bbe3d1, type: 2}
   _sfxClipsSO: {fileID: 11400000, guid: 2e7eb95f2b3b66946a2c507efeeb8702, type: 2}
   _chopVolume: 0.2
   _pickupVolume: 0.2
