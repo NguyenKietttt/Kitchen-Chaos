@@ -53,7 +53,7 @@ namespace KitchenChaos
 
                 _burningTimer = _config.BurningTimerMin;
                 _curState = StoveCounterState.Fried;
-                _burningReceiptSO = GetBurningReceiptSOWithInput(KitchenObj.GetKitchenObjectSO());
+                _burningReceiptSO = GetBurningReceiptSOWithInput(KitchenObj.KitchenObjectSO);
 
                 Bootstrap.Instance.EventMgr.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
             }
@@ -87,7 +87,7 @@ namespace KitchenChaos
                     if (playerController.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
                     {
                         KitchenObject kitchenObj = KitchenObj;
-                        if (plateKitchenObj.TryAddIngredient(kitchenObj.GetKitchenObjectSO()))
+                        if (plateKitchenObj.TryAddIngredient(kitchenObj.KitchenObjectSO))
                         {
                             kitchenObj.DestroySelf();
 
@@ -110,10 +110,10 @@ namespace KitchenChaos
             }
             else
             {
-                if (playerController.HasKitchenObj && HasReceiptWithInput(playerController.KitchenObj.GetKitchenObjectSO()))
+                if (playerController.HasKitchenObj && HasReceiptWithInput(playerController.KitchenObj.KitchenObjectSO))
                 {
                     playerController.KitchenObj.SetCurKitchenObjParent(this);
-                    _fryingReceiptSO = GetFryingReceiptSOWithInput(KitchenObj.GetKitchenObjectSO());
+                    _fryingReceiptSO = GetFryingReceiptSOWithInput(KitchenObj.KitchenObjectSO);
 
                     _fryingTimer = _config.FryingTimerMin;
                     _curState = StoveCounterState.Frying;

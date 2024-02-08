@@ -25,7 +25,7 @@ namespace KitchenChaos
                     if (playerController.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
                     {
                         KitchenObject kitchenObj = KitchenObj;
-                        if (plateKitchenObj.TryAddIngredient(kitchenObj.GetKitchenObjectSO()))
+                        if (plateKitchenObj.TryAddIngredient(kitchenObj.KitchenObjectSO))
                         {
                             kitchenObj.DestroySelf();
                         }
@@ -41,7 +41,7 @@ namespace KitchenChaos
             }
             else
             {
-                if (playerController.HasKitchenObj && HasReceiptWithInput(playerController.KitchenObj.GetKitchenObjectSO()))
+                if (playerController.HasKitchenObj && HasReceiptWithInput(playerController.KitchenObj.KitchenObjectSO))
                 {
                     playerController.KitchenObj.SetCurKitchenObjParent(this);
                     UpdateCounterProgress(MIN_PROGRESS);
@@ -51,7 +51,7 @@ namespace KitchenChaos
 
         public override void OnCuttingInteract(PlayerController playerController)
         {
-            if (HasKitchenObj && HasReceiptWithInput(KitchenObj.GetKitchenObjectSO()))
+            if (HasKitchenObj && HasReceiptWithInput(KitchenObj.KitchenObjectSO))
             {
                 TriggerCutAnim();
                 UpdateCounterProgress(++_curCuttingProcess);
@@ -63,7 +63,7 @@ namespace KitchenChaos
         private void UpdateCounterProgress(int newCuttingProgress)
         {
             _curCuttingProcess = newCuttingProgress;
-            CuttingReceiptSO outputCuttingReceiptSO = GetCuttingReceiptSOWithInput(KitchenObj.GetKitchenObjectSO());
+            CuttingReceiptSO outputCuttingReceiptSO = GetCuttingReceiptSOWithInput(KitchenObj.KitchenObjectSO);
             float progressNormalized = (float)_curCuttingProcess / outputCuttingReceiptSO.CuttingProcessMax;
 
             Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), progressNormalized);

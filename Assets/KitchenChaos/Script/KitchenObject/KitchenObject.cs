@@ -4,8 +4,10 @@ namespace KitchenChaos
 {
     public class KitchenObject : MonoBehaviour
     {
-        [Header("Asset Ref")]
-        [SerializeField] private KitchenObjectSO _kitchenObjectS0;
+        public KitchenObjectSO KitchenObjectSO => _config.KitchenObjSO;
+
+        [Header("Config")]
+        [SerializeField] private KitchenObjectCfg _config;
 
         private IKitchenObjParent _curKitchenObjParent;
 
@@ -16,11 +18,6 @@ namespace KitchenChaos
             kitchenObj.SetCurKitchenObjParent(kitchenObjParent);
 
             return kitchenObj;
-        }
-
-        public KitchenObjectSO GetKitchenObjectSO()
-        {
-            return _kitchenObjectS0;
         }
 
         public void SetCurKitchenObjParent(IKitchenObjParent newKitchenObjParent)

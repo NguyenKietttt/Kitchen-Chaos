@@ -11,7 +11,7 @@ namespace KitchenChaos
                     if (playerController.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
                     {
                         KitchenObject kitchenObj = KitchenObj;
-                        if (plateKitchenObj.TryAddIngredient(kitchenObj.GetKitchenObjectSO()))
+                        if (plateKitchenObj.TryAddIngredient(kitchenObj.KitchenObjectSO))
                         {
                             kitchenObj.DestroySelf();
                         }
@@ -20,7 +20,7 @@ namespace KitchenChaos
                     {
                         if (KitchenObj.TryGetPlate(out plateKitchenObj))
                         {
-                            if (plateKitchenObj.TryAddIngredient(playerController.KitchenObj.GetKitchenObjectSO()))
+                            if (plateKitchenObj.TryAddIngredient(playerController.KitchenObj.KitchenObjectSO))
                             {
                                 playerController.KitchenObj.DestroySelf();
                             }
