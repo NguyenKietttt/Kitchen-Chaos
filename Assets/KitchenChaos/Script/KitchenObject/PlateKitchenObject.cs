@@ -9,14 +9,18 @@ namespace KitchenChaos
     {
         public IReadOnlyCollection<KitchenObjectSO> KitchenObjHashSet => _kitchenObjHashSet;
 
-        [Header("Child Asset Ref")]
-        [SerializeField] private KitchenObjectSO[] _validKitchenObjs;
-
         private readonly HashSet<KitchenObjectSO> _kitchenObjHashSet = new();
+
+        private PlateKitchenObjectCfg _plateConfig;
+
+        private void Start()
+        {
+            _plateConfig = (PlateKitchenObjectCfg)_config;
+        }
 
         public bool TryAddIngredient(KitchenObjectSO kitchenObjSO)
         {
-            if (!_validKitchenObjs.Contains(kitchenObjSO))
+            if (!_plateConfig.ValidKitchenObjSOs.Contains(kitchenObjSO))
             {
                 return false;
             }

@@ -7,7 +7,7 @@ namespace KitchenChaos
         public KitchenObjectSO KitchenObjectSO => _config.KitchenObjSO;
 
         [Header("Config")]
-        [SerializeField] private KitchenObjectCfg _config;
+        [SerializeField] protected KitchenObjectCfg _config;
 
         private IKitchenObjParent _curKitchenObjParent;
 

@@ -204,7 +204,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: d5f842917e0162645a794f0ad5a05d02, type: 2}
-  _kitchenObjectS0: {fileID: 11400000, guid: e3cb8df2a896c5648b9542147ad64c84, type: 2}
   _validKitchenObjs:
   - {fileID: 11400000, guid: 8409e9d00498fde4e81e200523b4e191, type: 2}
   - {fileID: 11400000, guid: f4fd1b0c41344a34bb5392e1535e9f4d, type: 2}

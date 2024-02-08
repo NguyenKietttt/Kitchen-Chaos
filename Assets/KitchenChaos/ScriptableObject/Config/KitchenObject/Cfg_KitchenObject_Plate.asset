@@ -9,7 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4ea2c243d1535248ac0235e14e628b8, type: 3}
+  m_Script: {fileID: 11500000, guid: d4bdf4a94d7f58647811491c4109df67, type: 3}
   m_Name: Cfg_KitchenObject_Plate
   m_EditorClassIdentifier: 
   _kitchenObjSO: {fileID: 11400000, guid: e3cb8df2a896c5648b9542147ad64c84, type: 2}
+  _listValidKitchenObjSO:
+  - {fileID: 11400000, guid: 8409e9d00498fde4e81e200523b4e191, type: 2}
+  - {fileID: 11400000, guid: f4fd1b0c41344a34bb5392e1535e9f4d, type: 2}
+  - {fileID: 11400000, guid: 5aebf9606f85ad04c8d1b5ac5d0271a8, type: 2}
+  - {fileID: 11400000, guid: cf28947ba0e8a904285f9fa94b941256, type: 2}
+  - {fileID: 11400000, guid: a53f1a5a4f86ce84ca5130d747c93b36, type: 2}
+  - {fileID: 11400000, guid: aa684eefe14f5b14fb375bddc2e697aa, type: 2}
