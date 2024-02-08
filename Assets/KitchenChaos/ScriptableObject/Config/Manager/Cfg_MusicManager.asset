@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23a7f85b7957e314f973504b3b95760a, type: 3}
+  m_Name: Cfg_MusicManager
+  m_EditorClassIdentifier: 
+  _playerPrefsVolumnKey: MUSIC_VOLUMN_KEY
+  _volumnMin: 0
+  _volumnMax: 1
+  _defaultVolumn: 0.5
+  _volumnStep: 0.1
