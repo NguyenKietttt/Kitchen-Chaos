@@ -5,8 +5,8 @@ namespace KitchenChaos
 {
     public sealed class PlateIconUI : MonoBehaviour
     {
-        [Header("Asset Ref")]
-        [SerializeField] private PlateIconSingleUI _plateIconSingleUI;
+        [Header("Config")]
+        [SerializeField] private PlateIconUICfg _config;
 
         [Header("Internal Ref")]
         [SerializeField] private PlateKitchenObject _plateKitchenObj;
@@ -33,7 +33,7 @@ namespace KitchenChaos
             IReadOnlyCollection<KitchenObjectSO> kitchenObjHashSet = _plateKitchenObj.KitchenObjHashSet;
             foreach (KitchenObjectSO kitchenObjectSO in kitchenObjHashSet)
             {
-                PlateIconSingleUI plateIconSingleUI = Instantiate(_plateIconSingleUI, transform);
+                PlateIconSingleUI plateIconSingleUI = Instantiate(_config.PlateIconSingleUI, transform);
                 plateIconSingleUI.SetIcon(kitchenObjectSO);
             }
         }

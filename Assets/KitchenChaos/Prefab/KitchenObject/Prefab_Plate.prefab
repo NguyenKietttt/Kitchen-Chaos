@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77d01867b7ae5b943b412b63d76eeec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 8be998ac06c14204ab73be32235f4f5c, type: 2}
   _plateIconSingleUI: {fileID: 7769288788645968316, guid: 6a9228e8442bd5d45bd9aa73c73cc65f,
     type: 3}
   _plateKitchenObj: {fileID: 4250291143845995604}
@@ -204,13 +205,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: d5f842917e0162645a794f0ad5a05d02, type: 2}
-  _validKitchenObjs:
-  - {fileID: 11400000, guid: 8409e9d00498fde4e81e200523b4e191, type: 2}
-  - {fileID: 11400000, guid: f4fd1b0c41344a34bb5392e1535e9f4d, type: 2}
-  - {fileID: 11400000, guid: 5aebf9606f85ad04c8d1b5ac5d0271a8, type: 2}
-  - {fileID: 11400000, guid: cf28947ba0e8a904285f9fa94b941256, type: 2}
-  - {fileID: 11400000, guid: a53f1a5a4f86ce84ca5130d747c93b36, type: 2}
-  - {fileID: 11400000, guid: aa684eefe14f5b14fb375bddc2e697aa, type: 2}
 --- !u!1001 &1112236482092313201
 PrefabInstance:
   m_ObjectHideFlags: 0
