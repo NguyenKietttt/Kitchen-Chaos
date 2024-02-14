@@ -322,6 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d25c6824f874e604fb19bdfede3ff2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: bb503d2925c28fd42aae41311be0ebb2, type: 2}
   _ingredientImg: {fileID: 852985279080529410, guid: 98e0cec08773a2240b2db0a99fdba904,
     type: 3}
   _receiptNameTxt: {fileID: 3387552290282888643}

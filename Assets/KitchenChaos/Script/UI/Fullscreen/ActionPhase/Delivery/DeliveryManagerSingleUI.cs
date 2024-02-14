@@ -7,8 +7,8 @@ namespace KitchenChaos
 {
     public sealed class DeliveryManagerSingleUI : MonoBehaviour
     {
-        [Header("Asset Ref")]
-        [SerializeField] private Image _ingredientImg;
+        [Header("Config")]
+        [SerializeField] private DeliveryManagerSingleUICfg _config;
 
         [Header("Internal Ref")]
         [SerializeField] private TextMeshProUGUI _receiptNameTxt;
@@ -16,7 +16,7 @@ namespace KitchenChaos
 
         private void Awake()
         {
-            _ingredientImg.gameObject.SetActive(false);
+            _config.IngredientImg.gameObject.SetActive(false);
         }
 
         public void Show()
@@ -40,7 +40,7 @@ namespace KitchenChaos
 
             foreach (KitchenObjectSO kitchenObjSO in KitchenObjsSO)
             {
-                Image ingredientIcon = Instantiate(_ingredientImg, _ingredientContainer);
+                Image ingredientIcon = Instantiate(_config.IngredientImg, _ingredientContainer);
                 ingredientIcon.sprite = kitchenObjSO.Sprite;
                 ingredientIcon.gameObject.SetActive(true);
             }
