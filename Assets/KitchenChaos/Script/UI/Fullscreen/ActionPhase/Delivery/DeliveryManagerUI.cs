@@ -5,15 +5,15 @@ namespace KitchenChaos
 {
     public sealed class DeliveryManagerUI : MonoBehaviour
     {
-        [Header("Asset Ref")]
-        [SerializeField] private DeliveryManagerSingleUI _receiptTemplateUI;
+        [Header("Config")]
+        [SerializeField] private DeliveryManagerUICfg _config;
 
         [Header("Internal Ref")]
         [SerializeField] private Transform _container;
 
         private void Awake()
         {
-            _receiptTemplateUI.Hide();
+            _config.ReceiptTemplateUI.Hide();
         }
 
         private void Start()
@@ -37,7 +37,7 @@ namespace KitchenChaos
             IEnumerable<DishReceiptSO> waitingDishReceipts = Bootstrap.Instance.DeliveryMgr.WaitingReceiptsSO;
             foreach (DishReceiptSO receipt in waitingDishReceipts)
             {
-                DeliveryManagerSingleUI waitingReceipUI = Instantiate(_receiptTemplateUI, _container);
+                DeliveryManagerSingleUI waitingReceipUI = Instantiate(_config.ReceiptTemplateUI, _container);
                 waitingReceipUI.SetReceiptName(receipt.Name);
                 waitingReceipUI.SetIngredientIcons(receipt.KitchenObjsSO);
                 waitingReceipUI.Show();
