@@ -7,8 +7,8 @@ namespace KitchenChaos
 {
     public sealed class RebindKeyButton : MonoBehaviour
     {
-        [Header("Asset Ref")]
-        [SerializeField] private RebindKeySO _rebindKeySO;
+        [Header("Config")]
+        [SerializeField] private RebindKeyButtonCfg _config;
 
         [Header("Internal Ref")]
         [SerializeField] private Button _button;
@@ -33,8 +33,8 @@ namespace KitchenChaos
         {
             Bootstrap.Instance.UIManager.Push(ScreenID.RebindKey);
 
-            string actionName = _rebindKeySO.GetActionName();
-            int index = _rebindKeySO.Index;
+            string actionName = _config.RebindKeySO.GetActionName();
+            int index = _config.RebindKeySO.Index;
 
             Bootstrap.Instance.InputMgr.RebindBinding(actionName, index, () =>
             {
@@ -45,7 +45,7 @@ namespace KitchenChaos
 
         private void UpdateText()
         {
-            _text.SetText(_rebindKeySO.GetDisplayString());
+            _text.SetText(_config.RebindKeySO.GetDisplayString());
         }
     }
 }
