@@ -7,9 +7,8 @@ namespace KitchenChaos
 {
     public sealed class DeliveryResultUI : MonoBehaviour
     {
-        [Header("Asset Ref")]
-        [SerializeField] private Sprite _successSprite;
-        [SerializeField] private Sprite _failedSprite;
+        [Header("Config")]
+        [SerializeField] private DeliveryResultUICfg _config;
 
         [Header("Internal Ref")]
         [SerializeField] private Image _backgroundImg;
@@ -17,16 +16,12 @@ namespace KitchenChaos
         [SerializeField] private TextMeshProUGUI _messageTxt;
         [SerializeField] private CanvasGroup _canvasGroup;
 
-        [Header("Property")]
-        [SerializeField] private Color _successColor;
-        [SerializeField] private Color _failedColor;
-
         private void Start()
         {
             Bootstrap.Instance.EventMgr.DeliverReceiptSuccess += OnDeliverReceiptSuccess;
             Bootstrap.Instance.EventMgr.DeliverReceiptFailed += OnDeliverReceiptFailed;
 
-            gameObject.SetActive(false);
+            Hide();
         }
 
         private void OnDestroy()
@@ -35,24 +30,35 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.DeliverReceiptFailed -= OnDeliverReceiptFailed;
         }
 
+        private void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
+        private void Hide()
+        {
+            gameObject.SetActive(false);
+        }
+
         private void OnDeliverReceiptSuccess()
         {
-            _backgroundImg.color = _successColor;
-            _iconImg.sprite = _successSprite;
-            _messageTxt.SetText("DELIVERY\nSUCCESS");
-
+            UpdateNotiResult(_config.SuccessColor, _config.SuccessSpr, "DELIVERY\nSUCCESS");
             PlayShowingSequence();
-            gameObject.SetActive(true);
+            Show();
         }
 
         private void OnDeliverReceiptFailed()
         {
-            _backgroundImg.color = _failedColor;
-            _iconImg.sprite = _failedSprite;
-            _messageTxt.SetText("DELIVERY\nFAILED");
-
+            UpdateNotiResult(_config.FailedColor, _config.FailedSpr, "DELIVERY\nFAILED");
             PlayShowingSequence();
-            gameObject.SetActive(true);
+            Show();
+        }
+
+        private void UpdateNotiResult(Color bgColor, Sprite iconSpr, string message)
+        {
+            _backgroundImg.color = bgColor;
+            _iconImg.sprite = iconSpr;
+            _messageTxt.SetText(message);
         }
 
         private void PlayShowingSequence()
