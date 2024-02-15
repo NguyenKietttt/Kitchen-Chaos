@@ -6,8 +6,8 @@ namespace KitchenChaos
 {
     public sealed class MainMenuUI : BaseScreen
     {
-        [Header("Asset Ref")]
-        [SerializeField] private GameObject _decorationPrefab;
+        [Header("Config")]
+        [SerializeField] private MainMenuUICfg _config;
 
         [Header("Internal Ref")]
         [SerializeField] private Button _playBtn;
@@ -20,7 +20,7 @@ namespace KitchenChaos
             _playBtn.onClick.AddListener(OnPlayButtonClicked);
             _quitBtn.onClick.AddListener(OnQuitButtonClicked);
 
-            _decorationObj = Instantiate(_decorationPrefab);
+            _decorationObj = Instantiate(_config.DecorationPrefab);
 
             _playBtn.Select();
 
