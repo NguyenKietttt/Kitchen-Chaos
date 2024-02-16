@@ -230,11 +230,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selectedVisualObj: {fileID: 2221171905474234492}
   _spawnPoint: {fileID: 8152834445401694763}
-  _animator: {fileID: 8179069942290394130}
-  _listCuttingReceiptSO:
+  _cuttingReceipts:
   - {fileID: 11400000, guid: 697c421517d16114bb6376806461e707, type: 2}
   - {fileID: 11400000, guid: 2e679adcd893d87428fa15fb53cb443a, type: 2}
   - {fileID: 11400000, guid: 899c8b9a51c8a4c459e905525443370f, type: 2}
+  _animator: {fileID: 8179069942290394130}
 --- !u!4 &8152834445401694763 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4892657604223497121, guid: bf512aba332c134459aeaf874ad26206,

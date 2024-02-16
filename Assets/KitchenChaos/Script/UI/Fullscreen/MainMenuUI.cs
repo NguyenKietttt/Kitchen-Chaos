@@ -2,61 +2,74 @@ using UISystem;
 using UnityEngine;
 using UnityEngine.UI;
 
-public sealed class MainMenuUI : BaseScreen
+namespace KitchenChaos
 {
-    [Header("Asset Ref")]
-    [SerializeField] private GameObject _decorationPrefab;
-
-    [Header("Internal Ref")]
-    [SerializeField] private Button _playBtn;
-    [SerializeField] private Button _quitBtn;
-
-    private GameObject _decorationObj;
-
-    public override void OnPush(object[] datas = null)
+    public sealed class MainMenuUI : BaseScreen
     {
-        _playBtn.onClick.AddListener(OnPlayButtonClicked);
-        _quitBtn.onClick.AddListener(OnQuitButtonClicked);
+        [Header("Config")]
+        [SerializeField] private MainMenuUICfg _config;
 
-        _decorationObj = Instantiate(_decorationPrefab);
+        [Header("Internal Ref")]
+        [SerializeField] private Button _playBtn;
+        [SerializeField] private Button _quitBtn;
 
-        _playBtn.Select();
+        private GameObject _decorationObj;
 
-        Time.timeScale = 1;
-    }
+        public override void OnPush(object[] datas = null)
+        {
+            _playBtn.onClick.AddListener(OnPlayButtonClicked);
+            _quitBtn.onClick.AddListener(OnQuitButtonClicked);
 
-    public override void OnFocus()
-    {
-        gameObject.SetActive(true);
-        _decorationObj.SetActive(true);
-    }
+            _decorationObj = Instantiate(_config.DecorationPrefab);
 
-    public override void OnFocusLost()
-    {
-        gameObject.SetActive(false);
-        _decorationObj.SetActive(false);
-    }
+            _playBtn.Select();
 
-    public override void OnPop()
-    {
-        _playBtn.onClick.RemoveAllListeners();
-        _quitBtn.onClick.RemoveAllListeners();
+            Time.timeScale = 1;
+        }
 
-        Destroy(gameObject);
-        Destroy(_decorationObj);
-    }
+        public override void OnFocus()
+        {
+            Show();
+        }
 
-    private void OnPlayButtonClicked()
-    {
-        Bootstrap.Instance.GameStateMgr.ChangeState(GameState.WaitingToStart);
-    }
+        public override void OnFocusLost()
+        {
+            Hide();
+        }
 
-    private void OnQuitButtonClicked()
-    {
+        public override void OnPop()
+        {
+            _playBtn.onClick.RemoveAllListeners();
+            _quitBtn.onClick.RemoveAllListeners();
+
+            Destroy(gameObject);
+            Destroy(_decorationObj);
+        }
+
+        private void OnPlayButtonClicked()
+        {
+            Bootstrap.Instance.GameStateMgr.ChangeState(GameState.WaitingToStart);
+        }
+
+        private void OnQuitButtonClicked()
+        {
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+            UnityEditor.EditorApplication.isPlaying = false;
 #else
-        Application.Quit();
+            Application.Quit();
 #endif
+        }
+
+        private void Show()
+        {
+            gameObject.SetActive(true);
+            _decorationObj.SetActive(true);
+        }
+
+        private void Hide()
+        {
+            gameObject.SetActive(false);
+            _decorationObj.SetActive(false);
+        }
     }
 }

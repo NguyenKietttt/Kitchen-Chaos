@@ -1,114 +1,117 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public sealed class DeliveryManager
+namespace KitchenChaos
 {
-    private const float SPAWN_RECEIPT_TIMER_MAX = 4.0f;
-    private const int WAITING_RECEIPT_MAX = 4;
-
-    public IEnumerable<ReceiptSO> ListWaitingReceiptSO => _waitingListReceiptSO.AsReadOnly();
-    public int AmountSucessfulReceipt => _amountSucessfulReceipt;
-
-    private readonly List<ReceiptSO> _waitingListReceiptSO = new();
-    private readonly ListReceiptSO _receiptSOList;
-
-    private GameState _curState;
-    private float _spawnReceiptTimer;
-    private int _amountSucessfulReceipt;
-
-    public DeliveryManager(ListReceiptSO listReceiptSO)
+    public sealed class DeliveryManager : MonoBehaviour
     {
-        _receiptSOList = listReceiptSO;
-        Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
-    }
+        public IReadOnlyList<DishReceiptSO> WaitingReceiptsSO => _waitingReceiptsSO.AsReadOnly();
+        public int AmountSucessfulReceipt => _amountSucessfulReceipt;
 
-    public void OnDestroy()
-    {
-        Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
-    }
+        private readonly List<DishReceiptSO> _waitingReceiptsSO = new();
 
-    public void OnUpdate(float deltaTime)
-    {
-        if (_curState is not GameState.GamePlaying)
+        [Header("Config")]
+        [SerializeField] private DeliveryManagerCfg _config;
+
+        private GameState _curState;
+        private float _spawnReceiptTimer;
+        private int _amountSucessfulReceipt;
+
+        public void Init()
         {
-            return;
+            Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
         }
 
-        _spawnReceiptTimer += deltaTime;
-
-        if (_spawnReceiptTimer >= SPAWN_RECEIPT_TIMER_MAX)
+        public void OnDestroy()
         {
-            _spawnReceiptTimer = 0;
+            Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
+        }
 
-            if (_curState is GameState.GamePlaying && _waitingListReceiptSO.Count < WAITING_RECEIPT_MAX)
+        private void Update()
+        {
+            if (_curState is not GameState.GamePlaying)
             {
-                ReceiptSO waitingReceiptSO = _receiptSOList.ReceiptSOList[Random.Range(0, _receiptSOList.ReceiptSOList.Length)];
-                _waitingListReceiptSO.Add(waitingReceiptSO);
-
-                Bootstrap.Instance.EventMgr.SpawnReceipt?.Invoke();
+                return;
             }
-        }
-    }
 
-    public void DeliveryReceipt(PlateKitchenObject plateKitchenObj)
-    {
-        for (int i = 0; i < _waitingListReceiptSO.Count; i++)
-        {
-            ReceiptSO waitingReceiptSO = _waitingListReceiptSO[i];
-            HashSet<KitchenObjectSO> listPlateKichenObjSO = plateKitchenObj.GetListKitchenObjectSO();
+            _spawnReceiptTimer += Time.deltaTime;
 
-            if (waitingReceiptSO.ListKitchenObjSO.Length == listPlateKichenObjSO.Count)
+            if (_spawnReceiptTimer >= _config.SpawnReceiptTimerMax)
             {
-                bool isPlateContentMatchesReceipt = true;
+                _spawnReceiptTimer = _config.SpawnReceiptTimerMin;
 
-                foreach (KitchenObjectSO receiptKitchenObjSO in waitingReceiptSO.ListKitchenObjSO)
+                if (_curState is GameState.GamePlaying && _waitingReceiptsSO.Count < _config.WaitingReceiptMax)
                 {
-                    bool isIngredientFound = false;
+                    int index = Random.Range(0, _config.DishReceiptsS0.Receipts.Count);
+                    DishReceiptSO waitingReceiptSO = _config.DishReceiptsS0.Receipts[index];
+                    _waitingReceiptsSO.Add(waitingReceiptSO);
 
-                    if (listPlateKichenObjSO.Contains(receiptKitchenObjSO))
-                    {
-                        isIngredientFound = true;
-                    }
-
-                    if (!isIngredientFound)
-                    {
-                        isPlateContentMatchesReceipt = false;
-                    }
-                }
-
-                if (isPlateContentMatchesReceipt)
-                {
-                    _amountSucessfulReceipt++;
-                    _waitingListReceiptSO.RemoveAt(i);
-
-                    Bootstrap.Instance.EventMgr.CompleteReceipt?.Invoke();
-                    Bootstrap.Instance.EventMgr.DeliverReceiptSuccess?.Invoke();
-
-                    return;
+                    Bootstrap.Instance.EventMgr.SpawnReceipt?.Invoke();
                 }
             }
         }
 
-        Bootstrap.Instance.EventMgr.DeliverReceiptFailed?.Invoke();
-    }
-
-    public void Reset()
-    {
-        _waitingListReceiptSO.Clear();
-
-        _spawnReceiptTimer = 0;
-        _amountSucessfulReceipt = 0;
-    }
-
-    private void OnGameStateChanged(GameState state)
-    {
-        _curState = state;
-
-        switch (_curState)
+        public void DeliveryReceipt(PlateKitchenObject plateKitchenObj)
         {
-            case GameState.MainMenu:
-                Reset();
-                break;
+            for (int i = 0; i < _waitingReceiptsSO.Count; i++)
+            {
+                DishReceiptSO waitingReceiptSO = _waitingReceiptsSO[i];
+                IReadOnlyCollection<KitchenObjectSO> kitchenObjHashSet = plateKitchenObj.KitchenObjHashSet;
+
+                if (waitingReceiptSO.KitchenObjsSO.Count == kitchenObjHashSet.Count)
+                {
+                    bool isPlateContentMatchesReceipt = true;
+
+                    foreach (KitchenObjectSO receiptKitchenObjSO in waitingReceiptSO.KitchenObjsSO)
+                    {
+                        bool isIngredientFound = false;
+
+                        if (kitchenObjHashSet.Contains(receiptKitchenObjSO))
+                        {
+                            isIngredientFound = true;
+                        }
+
+                        if (!isIngredientFound)
+                        {
+                            isPlateContentMatchesReceipt = false;
+                        }
+                    }
+
+                    if (isPlateContentMatchesReceipt)
+                    {
+                        _amountSucessfulReceipt++;
+                        _waitingReceiptsSO.RemoveAt(i);
+
+                        Bootstrap.Instance.EventMgr.CompleteReceipt?.Invoke();
+                        Bootstrap.Instance.EventMgr.DeliverReceiptSuccess?.Invoke();
+
+                        return;
+                    }
+                }
+            }
+
+            Bootstrap.Instance.EventMgr.DeliverReceiptFailed?.Invoke();
+        }
+
+        private void Reset()
+        {
+            _waitingReceiptsSO.Clear();
+
+            _spawnReceiptTimer = _config.SpawnReceiptTimerMin;
+            _amountSucessfulReceipt = _config.WaitingReceiptMin;
+        }
+
+        private void OnGameStateChanged(GameState state)
+        {
+            _curState = state;
+
+            switch (_curState)
+            {
+                case GameState.MainMenu:
+                    Reset();
+                    break;
+            }
         }
     }
 }

@@ -3,52 +3,55 @@ using UISystem;
 using UnityEngine;
 using UnityEngine.UI;
 
-public sealed class GameOverUI : BaseScreen
+namespace KitchenChaos
 {
-    [Header("Internal Ref")]
-    [SerializeField] private TextMeshProUGUI _amountReceiptDeliveredTxt;
-    [SerializeField] private Button _mainMenuBtn;
-
-    public override void OnPush(object[] datas = null)
+    public sealed class GameOverUI : BaseScreen
     {
-        Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
-        _mainMenuBtn.onClick.AddListener(() => OnMainMenuBtnClicked());
-    }
+        [Header("Internal Ref")]
+        [SerializeField] private TextMeshProUGUI _amountReceiptDeliveredTxt;
+        [SerializeField] private Button _mainMenuBtn;
 
-    public override void OnPop()
-    {
-        _mainMenuBtn.onClick.RemoveAllListeners();
-        Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
-
-        Destroy(gameObject);
-    }
-
-    private void OnMainMenuBtnClicked()
-    {
-        Bootstrap.Instance.GameStateMgr.ChangeState(GameState.MainMenu);
-    }
-
-    private void OnGameStateChanged(GameState state)
-    {
-        switch (state)
+        public override void OnPush(object[] datas = null)
         {
-            case GameState.GameOver:
-                _amountReceiptDeliveredTxt.SetText(Bootstrap.Instance.DeliveryMgr.AmountSucessfulReceipt.ToString());
-                Show();
-                break;
-            default:
-                Hide();
-                break;
+            Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
+            _mainMenuBtn.onClick.AddListener(() => OnMainMenuBtnClicked());
         }
-    }
 
-    private void Show()
-    {
-        gameObject.SetActive(true);
-    }
+        public override void OnPop()
+        {
+            _mainMenuBtn.onClick.RemoveAllListeners();
+            Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
 
-    private void Hide()
-    {
-        gameObject.SetActive(false);
+            Destroy(gameObject);
+        }
+
+        private void OnMainMenuBtnClicked()
+        {
+            Bootstrap.Instance.GameStateMgr.ChangeState(GameState.MainMenu);
+        }
+
+        private void OnGameStateChanged(GameState state)
+        {
+            switch (state)
+            {
+                case GameState.GameOver:
+                    _amountReceiptDeliveredTxt.SetText(Bootstrap.Instance.DeliveryMgr.AmountSucessfulReceipt.ToString());
+                    Show();
+                    break;
+                default:
+                    Hide();
+                    break;
+            }
+        }
+
+        private void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
+        private void Hide()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

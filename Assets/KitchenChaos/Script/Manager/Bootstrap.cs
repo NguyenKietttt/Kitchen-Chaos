@@ -1,66 +1,59 @@
+using UISystem;
 using UnityEngine;
 
-public sealed class Bootstrap : MonoBehaviour
+namespace KitchenChaos
 {
-    public static Bootstrap Instance { get; private set; }
-
-    public EventManager EventMgr { get; private set; }
-    public GameStateManager GameStateMgr { get; private set; }
-    public InputManager InputMgr { get; private set; }
-    public DeliveryManager DeliveryMgr { get; private set; }
-    public SFXManager SFXMgr => _sfxMgr;
-    public MusicManager MusicMgr => _musicMgr;
-    public UISystem.UIManager UIManager => _uiManager;
-
-    public GameObject PlayerPrefab => _playerPrefab;
-    public GameObject LevelOnePrefab => _levelOnePrefab;
-
-    [Header("Asset Ref")]
-    [SerializeField] private ListReceiptSO _receiptSOList;
-    [SerializeField] private GameObject _playerPrefab;
-    [SerializeField] private GameObject _levelOnePrefab;
-
-    [Header("Internal Ref")]
-    [SerializeField] private SceneLoader _sceneLoader;
-    [SerializeField] private UISystem.UIManager _uiManager;
-    [SerializeField] private SFXManager _sfxMgr;
-    [SerializeField] private MusicManager _musicMgr;
-
-    private void Awake()
+    public sealed class Bootstrap : MonoBehaviour
     {
-        if (Instance == null)
+        public static Bootstrap Instance => _instance;
+        private static Bootstrap _instance;
+
+        public EventManager EventMgr => _eventMgr;
+        public GameStateManager GameStateMgr => _gameStateMgr;
+        public InputManager InputMgr => _inputMgr;
+        public DeliveryManager DeliveryMgr => _deliveryMgr;
+        public SFXManager SFXMgr => _sfxMgr;
+        public MusicManager MusicMgr => _musicMgr;
+        public UIManager UIManager => _uiManager;
+
+        [Header("Internal Ref")]
+        [SerializeField] private SceneLoader _sceneLoader;
+        [SerializeField] private UIManager _uiManager;
+        [SerializeField] private SFXManager _sfxMgr;
+        [SerializeField] private MusicManager _musicMgr;
+        [SerializeField] private DeliveryManager _deliveryMgr;
+        [SerializeField] private GameStateManager _gameStateMgr;
+
+        private EventManager _eventMgr;
+        private InputManager _inputMgr;
+
+        private void Awake()
         {
-            Instance = this;
-            DontDestroyOnLoad(this);
+            if (_instance == null)
+            {
+                _instance = this;
+                DontDestroyOnLoad(this);
+            }
+
+            InitManagers();
+            _sceneLoader.LoadAsync(SceneState.Gameplay, () => _gameStateMgr.ChangeState(GameState.MainMenu));
         }
 
-        InitManagers();
-        _sceneLoader.LoadAsync(SceneLoader.Scene.Gameplay, () => GameStateMgr.Init());
-    }
+        private void OnDestroy()
+        {
+            _deliveryMgr.OnDestroy();
+            _inputMgr.OnDestroy();
+            _gameStateMgr.OnDestroy();
+        }
 
-    private void Update()
-    {
-        float deltaTime = Time.deltaTime;
-
-        GameStateMgr.OnUpdate(deltaTime);
-        DeliveryMgr.OnUpdate(deltaTime);
-    }
-
-    private void OnDestroy()
-    {
-        DeliveryMgr.OnDestroy();
-        InputMgr.OnDestroy();
-        GameStateMgr.OnDestroy();
-    }
-
-    private void InitManagers()
-    {
-        EventMgr = new EventManager();
-        _uiManager.Init();
-        GameStateMgr = new GameStateManager();
-        InputMgr = new InputManager();
-
-        DeliveryMgr = new DeliveryManager(_receiptSOList);
-        SFXMgr.Init();
+        private void InitManagers()
+        {
+            _eventMgr = new EventManager();
+            _uiManager.Init();
+            _gameStateMgr.Init();
+            _inputMgr = new InputManager();
+            _deliveryMgr.Init();
+            _sfxMgr.Init();
+        }
     }
 }

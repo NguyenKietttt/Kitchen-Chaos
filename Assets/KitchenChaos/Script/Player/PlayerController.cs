@@ -1,217 +1,196 @@
-using System;
 using UnityEngine;
 
-public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
+namespace KitchenChaos
 {
-    private const float PLAYER_RADIUS = 0.7f;
-    private const float MOVE_OFFSET = 0.5f;
-    private const int PLAYER_HEIGHT = 2;
-    private const int MOVING_SPEED = 7;
-    private const int ROTATION_SPEED = 10;
-    private const int INTERACTION_DISTANCE = 2;
-
-    public static event Action PickSomething;
-
-    public bool IsMoving => _isMoving;
-
-    [Header("Internal Ref")]
-    [SerializeField] private PlayerAnimator _playerAnimator;
-    [SerializeField] private Transform _kitchenObjHoldPoint;
-
-    [Header("Property")]
-    [SerializeField] private LayerMask _counterLayerMask;
-
-    private BaseCounter _selectedCounter;
-    private KitchenObject _kitchenObj;
-    private GameState _curState;
-    private Vector3 _lastInteractionDir;
-    private bool _isMoving;
-
-    private void OnEnable()
+    public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
     {
-        Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
-        Bootstrap.Instance.EventMgr.Interact += OnInteractAction;
-        Bootstrap.Instance.EventMgr.CuttingInteract += OnCuttingInteractAction;
-    }
+        public Transform SpawnPoint => _kitchenObjHoldPoint;
+        public KitchenObject KitchenObj => _kitchenObj;
+        public bool HasKitchenObj => _kitchenObj != null;
+        public bool IsMoving => _isMoving;
 
-    private void Update()
-    {
-        Vector2 input = Bootstrap.Instance.InputMgr.GetInputVectorNormalized();
-        bool canMove = CanMove(input);
+        [Header("Config")]
+        [SerializeField] private PlayerControllerCfg _config;
 
-        HandleMovement(canMove, input);
-        HandleCounterSelection(input);
-    }
+        [Header("Internal Ref")]
+        [SerializeField] private PlayerAnimator _playerAnimator;
+        [SerializeField] private Transform _kitchenObjHoldPoint;
 
-    private void OnDisable()
-    {
-        Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
-        Bootstrap.Instance.EventMgr.Interact -= OnInteractAction;
-        Bootstrap.Instance.EventMgr.CuttingInteract -= OnCuttingInteractAction;
+        private BaseCounter _selectedCounter;
+        private KitchenObject _kitchenObj;
+        private GameState _curState;
+        private Vector3 _lastInteractionDir;
+        private bool _isMoving;
 
-        PickSomething = null;
-    }
-
-    private void HandleCounterSelection(Vector2 input)
-    {
-        Vector3 curPos = transform.position;
-        Vector3 playerPos = new(curPos.x, PLAYER_HEIGHT * 0.5f, curPos.z);
-        Vector3 moveDir = new(input.x, 0, input.y);
-
-        if (moveDir != Vector3.zero)
+        private void OnEnable()
         {
-            _lastInteractionDir = moveDir;
+            Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
+            Bootstrap.Instance.EventMgr.Interact += OnInteractAction;
+            Bootstrap.Instance.EventMgr.CuttingInteract += OnCuttingInteractAction;
         }
 
-        if (Physics.Raycast(playerPos, _lastInteractionDir, out RaycastHit hit, INTERACTION_DISTANCE, _counterLayerMask))
+        private void Update()
         {
-            if (hit.transform.TryGetComponent(out BaseCounter baseCounter))
+            Vector2 input = Bootstrap.Instance.InputMgr.InputVectorNormalized;
+            bool canMove = CanMove(input);
+
+            HandleMovement(canMove, input);
+            HandleCounterSelection(input);
+        }
+
+        private void OnDisable()
+        {
+            Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
+            Bootstrap.Instance.EventMgr.Interact -= OnInteractAction;
+            Bootstrap.Instance.EventMgr.CuttingInteract -= OnCuttingInteractAction;
+        }
+
+        private void HandleCounterSelection(Vector2 input)
+        {
+            Vector3 curPos = transform.position;
+            Vector3 playerPos = new(curPos.x, _config.Height * _config.HeightOffset, curPos.z);
+            Vector3 moveDir = new(input.x, 0, input.y);
+
+            if (moveDir != Vector3.zero)
             {
-                if (_selectedCounter == null || _selectedCounter != baseCounter)
+                _lastInteractionDir = moveDir;
+            }
+
+            if (Physics.Raycast(playerPos, _lastInteractionDir, out RaycastHit hit, _config.InteractDistance, _config.CounterLayerMask))
+            {
+                if (hit.transform.TryGetComponent(out BaseCounter baseCounter))
                 {
-                    _selectedCounter = baseCounter;
-                    Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(_selectedCounter);
+                    if (_selectedCounter == null || _selectedCounter != baseCounter)
+                    {
+                        _selectedCounter = baseCounter;
+                        Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(_selectedCounter.gameObject.GetInstanceID());
+                    }
+                }
+                else
+                {
+                    _selectedCounter = null;
+                    Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(int.MinValue);
                 }
             }
             else
             {
                 _selectedCounter = null;
-                Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(null);
+                Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(int.MinValue);
             }
         }
-        else
-        {
-            _selectedCounter = null;
-            Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(null);
-        }
-    }
 
-    private void OnInteractAction()
-    {
-        if (_curState is not GameState.GamePlaying)
+        private void OnInteractAction()
         {
-            return;
-        }
-
-        if (_selectedCounter != null)
-        {
-            _selectedCounter.OnInteract(this);
-        }
-    }
-
-    private void OnCuttingInteractAction()
-    {
-        if (_curState is not GameState.GamePlaying)
-        {
-            return;
-        }
-
-        if (_selectedCounter != null)
-        {
-            _selectedCounter.OnCuttingInteract(this);
-        }
-    }
-
-    private void HandleMovement(bool canMove, Vector2 input)
-    {
-        if (canMove)
-        {
-            Vector3 moveDir = new(input.x, 0, input.y);
-            float moveDistance = MOVING_SPEED * Time.deltaTime;
-
-            if (!CanMove(moveDir, moveDistance))
+            if (_curState is not GameState.GamePlaying)
             {
-                moveDir = TryMoveHugWall(moveDir, moveDistance);
+                return;
             }
 
-            if (CanMove(moveDir, moveDistance))
+            if (_selectedCounter != null)
             {
-                UpdatePosition(moveDir, moveDistance);
+                _selectedCounter.OnInteract(this);
+            }
+        }
+
+        private void OnCuttingInteractAction()
+        {
+            if (_curState is not GameState.GamePlaying)
+            {
+                return;
             }
 
-            UpdateRotationByMovingDirection(moveDir);
-            _isMoving = true;
+            if (_selectedCounter != null)
+            {
+                _selectedCounter.OnCuttingInteract(this);
+            }
         }
-        else
+
+        private void HandleMovement(bool canMove, Vector2 input)
         {
-            _isMoving = false;
+            if (canMove)
+            {
+                Vector3 moveDir = new(input.x, 0, input.y);
+                float moveDistance = _config.MoveSpeed * Time.deltaTime;
+
+                if (!CanMove(moveDir, moveDistance))
+                {
+                    moveDir = TryMoveHugWall(moveDir, moveDistance);
+                }
+
+                if (CanMove(moveDir, moveDistance))
+                {
+                    UpdatePosition(moveDir, moveDistance);
+                }
+
+                UpdateRotationByMovingDirection(moveDir);
+                _isMoving = true;
+            }
+            else
+            {
+                _isMoving = false;
+            }
+
+            _playerAnimator.UpdateWalkingAnim(canMove);
         }
 
-        _playerAnimator.UpdateWalkingAnim(canMove);
-    }
-
-    private Vector3 TryMoveHugWall(Vector3 moveDir, float moveDistance)
-    {
-        Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
-
-        if ((moveDirX.x <= -MOVE_OFFSET || moveDirX.x >= MOVE_OFFSET) && CanMove(moveDirX, moveDistance))
+        private Vector3 TryMoveHugWall(Vector3 moveDir, float moveDistance)
         {
-            return moveDirX;
+            Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
+
+            if ((moveDirX.x <= -_config.MoveOffset || moveDirX.x >= _config.MoveOffset) && CanMove(moveDirX, moveDistance))
+            {
+                return moveDirX;
+            }
+
+            Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
+
+            if ((moveDirZ.z <= -_config.MoveOffset || moveDirZ.z >= _config.MoveOffset) && CanMove(moveDirZ, moveDistance))
+            {
+                return moveDirZ;
+            }
+
+            return moveDir.normalized;
         }
 
-        Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
-
-        if ((moveDirZ.z <= -MOVE_OFFSET || moveDirZ.z >= MOVE_OFFSET) && CanMove(moveDirZ, moveDistance))
+        private bool CanMove(Vector3 moveDir, float moveDistance)
         {
-            return moveDirZ;
+            Vector3 curPos = transform.position;
+            return !Physics.CapsuleCast(curPos, curPos + (Vector3.up * _config.Height), _config.Radius, moveDir, moveDistance);
         }
 
-        return moveDir.normalized;
-    }
-
-    private bool CanMove(Vector3 moveDir, float moveDistance)
-    {
-        Vector3 curPos = transform.position;
-        return !Physics.CapsuleCast(curPos, curPos + (Vector3.up * PLAYER_HEIGHT), PLAYER_RADIUS, moveDir, moveDistance);
-    }
-
-    public bool CanMove(Vector2 input)
-    {
-        return input != Vector2.zero;
-    }
-
-    private void UpdatePosition(Vector3 moveDir, float moveDistance)
-    {
-        transform.position += moveDir * moveDistance;
-    }
-
-    private void UpdateRotationByMovingDirection(Vector3 moveDir)
-    {
-        transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * ROTATION_SPEED);
-    }
-
-    public Transform GetSpawnPoint()
-    {
-        return _kitchenObjHoldPoint;
-    }
-
-    public KitchenObject GetKitchenObj()
-    {
-        return _kitchenObj;
-    }
-
-    public void SetKitchenObj(KitchenObject newKitchenObj)
-    {
-        _kitchenObj = newKitchenObj;
-
-        if (newKitchenObj != null)
+        public bool CanMove(Vector2 input)
         {
-            PickSomething?.Invoke();
+            return input != Vector2.zero;
         }
-    }
 
-    public bool HasKitchenObj()
-    {
-        return _kitchenObj != null;
-    }
+        private void UpdatePosition(Vector3 moveDir, float moveDistance)
+        {
+            transform.position += moveDir * moveDistance;
+        }
 
-    public void ClearKitchenObj()
-    {
-        _kitchenObj = null;
-    }
+        private void UpdateRotationByMovingDirection(Vector3 moveDir)
+        {
+            transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * _config.RotateSpeed);
+        }
 
-    private void OnGameStateChanged(GameState state)
-    {
-        _curState = state;
+        public void SetKitchenObj(KitchenObject newKitchenObj)
+        {
+            _kitchenObj = newKitchenObj;
+
+            if (newKitchenObj != null)
+            {
+                Bootstrap.Instance.EventMgr.PickSomething?.Invoke();
+            }
+        }
+
+        public void ClearKitchenObj()
+        {
+            _kitchenObj = null;
+        }
+
+        private void OnGameStateChanged(GameState state)
+        {
+            _curState = state;
+        }
     }
 }

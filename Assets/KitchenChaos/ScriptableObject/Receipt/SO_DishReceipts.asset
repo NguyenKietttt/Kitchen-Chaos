@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c58a022a21ba61447b1cf52626638a92, type: 3}
+  m_Name: SO_DishReceipts
+  m_EditorClassIdentifier: 
+  _receipts:
+  - {fileID: 11400000, guid: 63520917c227fd247910b171513d955a, type: 2}
+  - {fileID: 11400000, guid: ba849865595cf57488a6db600e5fd894, type: 2}
+  - {fileID: 11400000, guid: 58dbc6488fb5e2c4eaf0c8a0f2f87d12, type: 2}
+  - {fileID: 11400000, guid: d6321677036271542995e8f7ece94ec5, type: 2}

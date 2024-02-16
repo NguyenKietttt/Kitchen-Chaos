@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 8118042849567652495}
   - component: {fileID: 4294499886718037684}
   - component: {fileID: 5983040434036334429}
-  - component: {fileID: 3699295191833377773}
   - component: {fileID: 7244756556369963841}
+  - component: {fileID: 7892832554081699401}
   m_Layer: 0
   m_Name: Canvas_PlateIconsUI
   m_TagString: Untagged
@@ -128,19 +128,6 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &3699295191833377773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2947089991997647238}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0b28f7d9476878408a87f23055579ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mode: 2
 --- !u!114 &7244756556369963841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,9 +140,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77d01867b7ae5b943b412b63d76eeec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 8be998ac06c14204ab73be32235f4f5c, type: 2}
   _plateKitchenObj: {fileID: 4250291143845995604}
-  _plateIconSingleUI: {fileID: 7769288788645968316, guid: 6a9228e8442bd5d45bd9aa73c73cc65f,
-    type: 3}
+--- !u!114 &7892832554081699401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2947089991997647238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86064bcf32e67c8438dd98454e2ca4d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mode: 2
 --- !u!1 &5485934621926713933
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,14 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115263f8615ecd149b20f0be662f10b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _kitchenObjectS0: {fileID: 11400000, guid: e3cb8df2a896c5648b9542147ad64c84, type: 2}
-  _validListKitchenObjSO:
-  - {fileID: 11400000, guid: 8409e9d00498fde4e81e200523b4e191, type: 2}
-  - {fileID: 11400000, guid: f4fd1b0c41344a34bb5392e1535e9f4d, type: 2}
-  - {fileID: 11400000, guid: 5aebf9606f85ad04c8d1b5ac5d0271a8, type: 2}
-  - {fileID: 11400000, guid: cf28947ba0e8a904285f9fa94b941256, type: 2}
-  - {fileID: 11400000, guid: a53f1a5a4f86ce84ca5130d747c93b36, type: 2}
-  - {fileID: 11400000, guid: aa684eefe14f5b14fb375bddc2e697aa, type: 2}
+  _config: {fileID: 11400000, guid: d5f842917e0162645a794f0ad5a05d02, type: 2}
 --- !u!1001 &1112236482092313201
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -385,8 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f50df8df27307654080a7564a4df0adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _plateKitchenObj: {fileID: 4250291143845995604}
-  _listKitchenObjSOGameObj:
+  _KitchenObjSOToGameObjs:
   - _kitchenObjSO: {fileID: 11400000, guid: 8409e9d00498fde4e81e200523b4e191, type: 2}
     _gameObj: {fileID: 8682132578091192516}
   - _kitchenObjSO: {fileID: 11400000, guid: cf28947ba0e8a904285f9fa94b941256, type: 2}
@@ -399,6 +390,7 @@ MonoBehaviour:
     _gameObj: {fileID: 8682132577283837510}
   - _kitchenObjSO: {fileID: 11400000, guid: a53f1a5a4f86ce84ca5130d747c93b36, type: 2}
     _gameObj: {fileID: 8873872710023325270}
+  _plateKitchenObj: {fileID: 4250291143845995604}
 --- !u!4 &5518931130028935923 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 408889407006782756, guid: 10e39c981f2de6441b54efde32ced8f0,

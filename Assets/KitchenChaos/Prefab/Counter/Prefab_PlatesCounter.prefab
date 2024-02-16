@@ -101,8 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d3d554687f07904589a15a2cfedaa5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _plateVisualPrefab: {fileID: 3812876574508226177, guid: c0c9afd619b40914a8f625c0535e2284,
-    type: 3}
+  _config: {fileID: 11400000, guid: 1a53dc0bfd314544682c9ad1e9b05a8f, type: 2}
   _spawnPoint: {fileID: 1016138056936324063}
 --- !u!1001 &5619430236743207038
 PrefabInstance:
@@ -221,6 +220,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selectedVisualObj: {fileID: 5675466340820173135}
   _spawnPoint: {fileID: 1016138056936324063}
+  _config: {fileID: 11400000, guid: 278c77ca7b948444ea6e877f70e7146e, type: 2}
   _plateKitchenObjSO: {fileID: 11400000, guid: e3cb8df2a896c5648b9542147ad64c84, type: 2}
 --- !u!1001 &8174804729837692389
 PrefabInstance:

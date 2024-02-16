@@ -1,52 +1,55 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class DeliveryManagerUI : MonoBehaviour
+namespace KitchenChaos
 {
-    [Header("Asset Ref")]
-    [SerializeField] private DeliveryManagerSingleUI _receiptTemplateUI;
-
-    [Header("Internal Ref")]
-    [SerializeField] private Transform _container;
-
-    private void Awake()
+    public sealed class DeliveryManagerUI : MonoBehaviour
     {
-        _receiptTemplateUI.gameObject.SetActive(false);
-    }
+        [Header("Config")]
+        [SerializeField] private DeliveryManagerUICfg _config;
 
-    private void Start()
-    {
-        Bootstrap.Instance.EventMgr.SpawnReceipt += UpdateVisual;
-        Bootstrap.Instance.EventMgr.CompleteReceipt += UpdateVisual;
+        [Header("Internal Ref")]
+        [SerializeField] private Transform _container;
 
-        UpdateVisual();
-    }
-
-    private void OnDestroy()
-    {
-        Bootstrap.Instance.EventMgr.SpawnReceipt -= UpdateVisual;
-        Bootstrap.Instance.EventMgr.CompleteReceipt -= UpdateVisual;
-    }
-
-    public void UpdateVisual()
-    {
-        ClearPreviousVisual();
-
-        IEnumerable<ReceiptSO> listWaitingReceiptSO = Bootstrap.Instance.DeliveryMgr.ListWaitingReceiptSO;
-        foreach (ReceiptSO receiptSO in listWaitingReceiptSO)
+        private void Awake()
         {
-            DeliveryManagerSingleUI waitingReceipUI = Instantiate(_receiptTemplateUI, _container);
-            waitingReceipUI.SetReceiptName(receiptSO.ReceiptName);
-            waitingReceipUI.SetIngredientIcons(receiptSO.ListKitchenObjSO);
-            waitingReceipUI.gameObject.SetActive(true);
+            _config.ReceiptTemplateUI.Hide();
         }
-    }
 
-    private void ClearPreviousVisual()
-    {
-        foreach (Transform child in _container)
+        private void Start()
         {
-            Destroy(child.gameObject);
+            Bootstrap.Instance.EventMgr.SpawnReceipt += UpdateVisual;
+            Bootstrap.Instance.EventMgr.CompleteReceipt += UpdateVisual;
+
+            UpdateVisual();
+        }
+
+        private void OnDestroy()
+        {
+            Bootstrap.Instance.EventMgr.SpawnReceipt -= UpdateVisual;
+            Bootstrap.Instance.EventMgr.CompleteReceipt -= UpdateVisual;
+        }
+
+        public void UpdateVisual()
+        {
+            ClearPreviousVisual();
+
+            IEnumerable<DishReceiptSO> waitingDishReceipts = Bootstrap.Instance.DeliveryMgr.WaitingReceiptsSO;
+            foreach (DishReceiptSO receipt in waitingDishReceipts)
+            {
+                DeliveryManagerSingleUI waitingReceipUI = Instantiate(_config.ReceiptTemplateUI, _container);
+                waitingReceipUI.SetReceiptName(receipt.Name);
+                waitingReceipUI.SetIngredientIcons(receipt.KitchenObjsSO);
+                waitingReceipUI.Show();
+            }
+        }
+
+        private void ClearPreviousVisual()
+        {
+            foreach (Transform child in _container)
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
 }

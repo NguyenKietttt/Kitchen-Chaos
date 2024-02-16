@@ -1,62 +1,52 @@
 using Cinemachine;
 using UnityEngine;
 
-public sealed class CameraManager : MonoBehaviour
+namespace KitchenChaos
 {
-    public enum CameraState { None, MainMenu, Gameplay }
-
-    public static CameraManager Instance => _instance;
-    private static CameraManager _instance;
-
-    [Header("External Ref")]
-    [SerializeField] private CinemachineVirtualCamera _mainMenuVirutalCam;
-    [SerializeField] private CinemachineVirtualCamera _gameplayVirutalCam;
-
-    private void Awake()
+    public sealed class CameraManager : MonoBehaviour
     {
-        _instance = this;
+        [Header("External Ref")]
+        [SerializeField] private CinemachineVirtualCamera _mainMenuVirutalCam;
+        [SerializeField] private CinemachineVirtualCamera _gameplayVirutalCam;
 
-        Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
-    }
-
-    private void OnDestroy()
-    {
-        Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
-    }
-
-    private void OnGameStateChanged(GameState state)
-    {
-        switch (state)
+        private void Awake()
         {
-            case GameState.MainMenu:
-                ChangeCamera(CameraState.MainMenu);
-                break;
-            case GameState.WaitingToStart:
-                ChangeCamera(CameraState.Gameplay);
-                break;
-            case GameState.CountDownToStart:
-                break;
-            case GameState.GamePlaying:
-                break;
-            case GameState.GameOver:
-                break;
+            Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
         }
-    }
 
-    private void ChangeCamera(CameraState state)
-    {
-        switch (state)
+        private void OnDestroy()
         {
-            case CameraState.MainMenu:
-                _mainMenuVirutalCam.enabled = true;
-                _gameplayVirutalCam.enabled = false;
+            Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
+        }
 
-                break;
-            case CameraState.Gameplay:
-                _mainMenuVirutalCam.enabled = false;
-                _gameplayVirutalCam.enabled = true;
+        private void OnGameStateChanged(GameState state)
+        {
+            switch (state)
+            {
+                case GameState.MainMenu:
+                    ChangeCamera(CameraState.MainMenu);
+                    break;
+                case GameState.WaitingToStart:
+                    ChangeCamera(CameraState.Gameplay);
+                    break;
+            }
+        }
 
-                break;
+        private void ChangeCamera(CameraState state)
+        {
+            switch (state)
+            {
+                case CameraState.MainMenu:
+                    _mainMenuVirutalCam.enabled = true;
+                    _gameplayVirutalCam.enabled = false;
+
+                    break;
+                case CameraState.Gameplay:
+                    _mainMenuVirutalCam.enabled = false;
+                    _gameplayVirutalCam.enabled = true;
+
+                    break;
+            }
         }
     }
 }

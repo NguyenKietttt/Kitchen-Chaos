@@ -1,28 +1,31 @@
 using UnityEngine;
 
-public sealed class ContainerCounter : BaseCounter
+namespace KitchenChaos
 {
-    [Header("SO")]
-    [SerializeField] private KitchenObjectSO _kitchenObjSO;
-
-    [Header("Child Internal Ref")]
-    [SerializeField] private Animator _animator;
-
-    private readonly int _clidAnimKeyHash = Animator.StringToHash("OpenClose");
-
-    public override void OnInteract(PlayerController playerController)
+    public sealed class ContainerCounter : BaseCounter
     {
-        if (playerController.HasKitchenObj())
+        [Header("Child Config")]
+        [SerializeField] private KitchenObjectSO _kitchenObjSO;
+
+        [Header("Child Internal Ref")]
+        [SerializeField] private Animator _animator;
+
+        private readonly int _clidAnimKeyHash = Animator.StringToHash("OpenClose");
+
+        public override void OnInteract(PlayerController playerController)
         {
-            return;
+            if (playerController.HasKitchenObj)
+            {
+                return;
+            }
+
+            TriggerClidAnim();
+            KitchenObject.SpawnKitchenObj(_kitchenObjSO, playerController);
         }
 
-        TriggerClidAnim();
-        KitchenObject.SpawnKitchenObj(_kitchenObjSO, playerController);
-    }
-
-    private void TriggerClidAnim()
-    {
-        _animator.SetTrigger(_clidAnimKeyHash);
+        private void TriggerClidAnim()
+        {
+            _animator.SetTrigger(_clidAnimKeyHash);
+        }
     }
 }

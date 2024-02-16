@@ -1,46 +1,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class PlateIconUI : MonoBehaviour
+namespace KitchenChaos
 {
-    [Header("Asset Ref")]
-    [SerializeField] private PlateIconSingleUI _plateIconSingleUI;
-
-    [Header("Internal Ref")]
-    [SerializeField] private PlateKitchenObject _plateKitchenObj;
-
-    private void Start()
+    public sealed class PlateIconUI : MonoBehaviour
     {
-        Bootstrap.Instance.EventMgr.AddIngredientSuccess += UpdateVisual;
-    }
+        [Header("Config")]
+        [SerializeField] private PlateIconUICfg _config;
 
-    private void OnDestroy()
-    {
-        Bootstrap.Instance.EventMgr.AddIngredientSuccess -= UpdateVisual;
-    }
+        [Header("Internal Ref")]
+        [SerializeField] private PlateKitchenObject _plateKitchenObj;
 
-    private void UpdateVisual(int plateID, KitchenObjectSO kitchenObjSO)
-    {
-        if (plateID != _plateKitchenObj.GetInstanceID())
+        private void Start()
         {
-            return;
+            Bootstrap.Instance.EventMgr.AddIngredientSuccess += UpdateVisual;
         }
 
-        ClearPreviousVisual();
-
-        HashSet<KitchenObjectSO> listKitchenObjSO = _plateKitchenObj.GetListKitchenObjectSO();
-        foreach (KitchenObjectSO kitchenObjectSO in listKitchenObjSO)
+        private void OnDestroy()
         {
-            PlateIconSingleUI plateIconSingleUI = Instantiate(_plateIconSingleUI, transform);
-            plateIconSingleUI.SetIcon(kitchenObjectSO);
+            Bootstrap.Instance.EventMgr.AddIngredientSuccess -= UpdateVisual;
         }
-    }
 
-    private void ClearPreviousVisual()
-    {
-        foreach (Transform child in transform)
+        private void UpdateVisual(int senderID, KitchenObjectSO kitchenObjSO)
         {
-            Destroy(child.gameObject);
+            if (senderID != _plateKitchenObj.GetInstanceID())
+            {
+                return;
+            }
+
+            ClearPreviousVisual();
+
+            IReadOnlyCollection<KitchenObjectSO> kitchenObjHashSet = _plateKitchenObj.KitchenObjHashSet;
+            foreach (KitchenObjectSO kitchenObjectSO in kitchenObjHashSet)
+            {
+                PlateIconSingleUI plateIconSingleUI = Instantiate(_config.PlateIconSingleUI, transform);
+                plateIconSingleUI.SetIcon(kitchenObjectSO);
+            }
+        }
+
+        private void ClearPreviousVisual()
+        {
+            foreach (Transform child in transform)
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
 }

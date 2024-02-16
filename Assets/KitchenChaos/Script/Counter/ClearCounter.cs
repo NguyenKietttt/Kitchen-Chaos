@@ -1,40 +1,43 @@
-public sealed class ClearCounter : BaseCounter
+namespace KitchenChaos
 {
-    public override void OnInteract(PlayerController playerController)
+    public sealed class ClearCounter : BaseCounter
     {
-        if (HasKitchenObj())
+        public override void OnInteract(PlayerController playerController)
         {
-            if (playerController.HasKitchenObj())
+            if (HasKitchenObj)
             {
-                if (playerController.GetKitchenObj().TryGetPlate(out PlateKitchenObject plateKitchenObj))
+                if (playerController.HasKitchenObj)
                 {
-                    KitchenObject kitchenObj = GetKitchenObj();
-                    if (plateKitchenObj.TryAddIngredient(kitchenObj.GetKitchenObjectSO()))
+                    if (playerController.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
                     {
-                        kitchenObj.DestroySelf();
+                        KitchenObject kitchenObj = KitchenObj;
+                        if (plateKitchenObj.TryAddIngredient(kitchenObj.KitchenObjectSO))
+                        {
+                            kitchenObj.DestroySelf();
+                        }
+                    }
+                    else
+                    {
+                        if (KitchenObj.TryGetPlate(out plateKitchenObj))
+                        {
+                            if (plateKitchenObj.TryAddIngredient(playerController.KitchenObj.KitchenObjectSO))
+                            {
+                                playerController.KitchenObj.DestroySelf();
+                            }
+                        }
                     }
                 }
                 else
                 {
-                    if (GetKitchenObj().TryGetPlate(out plateKitchenObj))
-                    {
-                        if (plateKitchenObj.TryAddIngredient(playerController.GetKitchenObj().GetKitchenObjectSO()))
-                        {
-                            playerController.GetKitchenObj().DestroySelf();
-                        }
-                    }
+                    KitchenObj.SetCurKitchenObjParent(playerController);
                 }
             }
             else
             {
-                GetKitchenObj().SetCurKitchenObjParent(playerController);
-            }
-        }
-        else
-        {
-            if (playerController.HasKitchenObj())
-            {
-                playerController.GetKitchenObj().SetCurKitchenObjParent(this);
+                if (playerController.HasKitchenObj)
+                {
+                    playerController.KitchenObj.SetCurKitchenObjParent(this);
+                }
             }
         }
     }

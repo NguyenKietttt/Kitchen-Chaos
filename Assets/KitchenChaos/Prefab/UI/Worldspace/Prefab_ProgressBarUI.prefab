@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4064282447118090889}
   - component: {fileID: 2704930403479778928}
   - component: {fileID: 5014360271195571533}
-  - component: {fileID: 3224738902453812281}
   - component: {fileID: 4425943729444794694}
+  - component: {fileID: 805300635826703207}
   m_Layer: 7
   m_Name: Prefab_ProgressBarUI
   m_TagString: Untagged
@@ -105,19 +105,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3224738902453812281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 75585631385021743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0b28f7d9476878408a87f23055579ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mode: 2
 --- !u!114 &4425943729444794694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,8 +117,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a469fe7389d52f42afafbbf388bb7dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: c2b2930745badf94b9b17534e29cd96f, type: 2}
   _progressCounterObj: {fileID: 0}
   _progressImg: {fileID: 8306269815563725809}
+--- !u!114 &805300635826703207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75585631385021743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86064bcf32e67c8438dd98454e2ca4d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mode: 2
 --- !u!1 &8154025946120478344
 GameObject:
   m_ObjectHideFlags: 0

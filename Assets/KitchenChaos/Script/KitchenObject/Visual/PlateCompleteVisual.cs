@@ -1,48 +1,49 @@
 using UnityEngine;
 
-public sealed class PlateCompleteVisual : MonoBehaviour
+namespace KitchenChaos
 {
-    [Header("External Ref")]
-    [SerializeField] private PlateKitchenObject _plateKitchenObj;
-
-    [Header("Mix Ref")]
-    [SerializeField]
-    private KitchenObjSO_GameObj[] _listKitchenObjSOGameObj;
-
-    private void Start()
+    public sealed class PlateCompleteVisual : MonoBehaviour
     {
-        DeactiveCompleteVisual();
+        [Header("Asset Ref")]
+        [SerializeField] private KitchenObjSOToGameObj[] _KitchenObjSOToGameObjs;
 
-        Bootstrap.Instance.EventMgr.AddIngredientSuccess += OnAddIngredientSucces;
-    }
+        [Header("External Ref")]
+        [SerializeField] private PlateKitchenObject _plateKitchenObj;
 
-    private void OnDestroy()
-    {
-        Bootstrap.Instance.EventMgr.AddIngredientSuccess -= OnAddIngredientSucces;
-    }
-
-    private void DeactiveCompleteVisual()
-    {
-        for (int i = 0; i < _listKitchenObjSOGameObj.Length; i++)
+        private void Start()
         {
-            _listKitchenObjSOGameObj[i].GameObj.SetActive(false);
-        }
-    }
+            DeactiveCompleteVisual();
 
-    private void OnAddIngredientSucces(int plateID, KitchenObjectSO kitchenObjSO)
-    {
-        if (plateID != _plateKitchenObj.GetInstanceID())
-        {
-            return;
+            Bootstrap.Instance.EventMgr.AddIngredientSuccess += OnAddIngredientSucces;
         }
 
-        for (int i = 0; i < _listKitchenObjSOGameObj.Length; i++)
+        private void OnDestroy()
         {
-            KitchenObjSO_GameObj kitchenObjSOGameObj = _listKitchenObjSOGameObj[i];
+            Bootstrap.Instance.EventMgr.AddIngredientSuccess -= OnAddIngredientSucces;
+        }
 
-            if (kitchenObjSOGameObj.KitchenObjSO == kitchenObjSO)
+        private void DeactiveCompleteVisual()
+        {
+            for (int i = 0; i < _KitchenObjSOToGameObjs.Length; i++)
             {
-                kitchenObjSOGameObj.GameObj.SetActive(true);
+                _KitchenObjSOToGameObjs[i].GameObj.SetActive(false);
+            }
+        }
+
+        private void OnAddIngredientSucces(int senderID, KitchenObjectSO kitchenObjSO)
+        {
+            if (senderID != _plateKitchenObj.GetInstanceID())
+            {
+                return;
+            }
+
+            for (int i = 0; i < _KitchenObjSOToGameObjs.Length; i++)
+            {
+                KitchenObjSOToGameObj kitchenObjSOGameObj = _KitchenObjSOToGameObjs[i];
+                if (kitchenObjSOGameObj.KitchenObjSO == kitchenObjSO)
+                {
+                    kitchenObjSOGameObj.GameObj.SetActive(true);
+                }
             }
         }
     }

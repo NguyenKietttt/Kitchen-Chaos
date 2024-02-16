@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8993008458002632941}
-  - component: {fileID: 8134025796266367818}
+  - component: {fileID: 369325646644748651}
   m_Layer: 7
   m_Name: Container_DeliveryResult
   m_TagString: Untagged
@@ -37,7 +37,7 @@ RectTransform:
   m_AnchoredPosition: {x: -1.6, y: 3}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8134025796266367818
+--- !u!114 &369325646644748651
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,10 +46,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 899058150170178494}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0b28f7d9476878408a87f23055579ab, type: 3}
+  m_Script: {fileID: 11500000, guid: 86064bcf32e67c8438dd98454e2ca4d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mode: 1
+  _mode: 2
 --- !u!1 &1512940222758514234
 GameObject:
   m_ObjectHideFlags: 0
@@ -604,14 +604,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc9ea416d74678478ffea85e4a29fa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _successSprite: {fileID: 21300000, guid: 6c562ac6d3e47ff4794df31886c6d864, type: 3}
-  _failedSprite: {fileID: 21300000, guid: 0d6e1281049dccc4189bf308b2ccf331, type: 3}
+  _config: {fileID: 11400000, guid: ee0e969369f4d174f902d1aa1f246ff7, type: 2}
   _backgroundImg: {fileID: 4926940087595554877}
   _iconImg: {fileID: 6385124355924473763}
   _messageTxt: {fileID: 843329526360199791}
   _canvasGroup: {fileID: 8043632368699101135}
-  _successColor: {r: 0.32156864, g: 0.6784314, b: 0.21568628, a: 1}
-  _failedColor: {r: 1, g: 0.15294118, b: 0.07058824, a: 1}
 --- !u!1001 &3847862807334099521
 PrefabInstance:
   m_ObjectHideFlags: 0

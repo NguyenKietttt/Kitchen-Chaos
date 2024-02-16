@@ -112,6 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ad565a0b17a46e49a588a516a3f7948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 37cf60e2a2197104a86ba00258d78cad, type: 2}
   _receiptTemplateUI: {fileID: 1293695588463609135, guid: 2502e4e9451b02140bdc2079aae9c18d,
     type: 3}
   _container: {fileID: 7552409217178787324}

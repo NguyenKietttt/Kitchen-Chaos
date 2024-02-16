@@ -1,113 +1,106 @@
+using System.Collections.Generic;
 using UnityEngine;
-using Victor.Tools;
 
-public sealed class SFXManager : MonoBehaviour
+namespace KitchenChaos
 {
-    private const string SFX_VOLUMN_KEY = "SFX_VOLUMN_KEY";
-    private const float MAX_VOLUMN = 1.0f;
-
-    public float MasterVolumn => _masterVolumn;
-
-    [Header("Asset Ref")]
-    [SerializeField] private AudioClipRefsSO _audioClipRefsSO;
-
-    [Header("Property")]
-    [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _chopVolume;
-    [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _pickupVolume;
-    [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _dropVolume;
-    [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _trashVolume;
-    [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _deliverySuccessVolume;
-    [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _deliveryFailedVolume;
-    [SerializeField][VTRangeStep(0.0f, 1.0f, 0.1f)] private float _countdownPopupVolume;
-
-    private float _masterVolumn = MAX_VOLUMN;
-
-    public void Init()
+    public sealed class SFXManager : MonoBehaviour
     {
-        Bootstrap.Instance.EventMgr.DeliverReceiptSuccess += OnDeliverReceiptSuccess;
-        Bootstrap.Instance.EventMgr.DeliverReceiptFailed += OnDeliverReceiptFailed;
-        Bootstrap.Instance.EventMgr.CountdownPopup += OnCoundownPopup;
-        Bootstrap.Instance.EventMgr.StoveWarning += OnStoveWarning;
-        CuttingCounter.CutObject += OnCut;
-        PlayerController.PickSomething += OnPickSomething;
-        BaseCounter.ObjectPlaced += OnObjectPlaced;
-        TrashCounter.ObjectTrashed += OnObjectTrashed;
+        public float MasterVolumn => _masterVolumn;
 
-        _masterVolumn = PlayerPrefs.GetFloat(SFX_VOLUMN_KEY, MAX_VOLUMN);
-    }
+        [Header("Config")]
+        [SerializeField] private SFXManagerCfg _config;
 
-    private void OnDestroy()
-    {
-        Bootstrap.Instance.EventMgr.DeliverReceiptSuccess -= OnDeliverReceiptSuccess;
-        Bootstrap.Instance.EventMgr.DeliverReceiptFailed -= OnDeliverReceiptFailed;
-        Bootstrap.Instance.EventMgr.CountdownPopup -= OnCoundownPopup;
-        Bootstrap.Instance.EventMgr.StoveWarning -= OnStoveWarning;
-        CuttingCounter.CutObject -= OnCut;
-        PlayerController.PickSomething -= OnPickSomething;
-        BaseCounter.ObjectPlaced -= OnObjectPlaced;
-        TrashCounter.ObjectTrashed -= OnObjectTrashed;
-    }
+        private float _masterVolumn;
 
-    public void ChangeVolumn()
-    {
-        _masterVolumn += 0.1f;
-
-        if (_masterVolumn > MAX_VOLUMN)
+        public void Init()
         {
-            _masterVolumn = 0;
+            Bootstrap.Instance.EventMgr.DeliverReceiptSuccess += OnDeliverReceiptSuccess;
+            Bootstrap.Instance.EventMgr.DeliverReceiptFailed += OnDeliverReceiptFailed;
+            Bootstrap.Instance.EventMgr.CountdownPopup += OnCoundownPopup;
+            Bootstrap.Instance.EventMgr.StoveWarning += OnStoveWarning;
+            Bootstrap.Instance.EventMgr.InteractWithCutCounter += OnInteractWithCutCounter;
+            Bootstrap.Instance.EventMgr.PickSomething += OnPickSomething;
+            Bootstrap.Instance.EventMgr.PlaceObject += OnObjectPlaced;
+            Bootstrap.Instance.EventMgr.InteractWithTrashCounter += OnInteractWithTrashCounter;
+
+            _masterVolumn = PlayerPrefs.GetFloat(_config.PlayerPrefsVolumnKey, _config.DefaultVolumn);
         }
 
-        PlayerPrefs.SetFloat(SFX_VOLUMN_KEY, _masterVolumn);
-        PlayerPrefs.Save();
-    }
+        private void OnDestroy()
+        {
+            Bootstrap.Instance.EventMgr.DeliverReceiptSuccess -= OnDeliverReceiptSuccess;
+            Bootstrap.Instance.EventMgr.DeliverReceiptFailed -= OnDeliverReceiptFailed;
+            Bootstrap.Instance.EventMgr.CountdownPopup -= OnCoundownPopup;
+            Bootstrap.Instance.EventMgr.StoveWarning -= OnStoveWarning;
+            Bootstrap.Instance.EventMgr.InteractWithCutCounter -= OnInteractWithCutCounter;
+            Bootstrap.Instance.EventMgr.PickSomething -= OnPickSomething;
+            Bootstrap.Instance.EventMgr.PlaceObject -= OnObjectPlaced;
+            Bootstrap.Instance.EventMgr.InteractWithTrashCounter -= OnInteractWithTrashCounter;
+        }
 
-    public AudioClip GetRandomFootStepAudioClip()
-    {
-        return _audioClipRefsSO.Footstep[Random.Range(0, _audioClipRefsSO.Footstep.Length)];
-    }
+        public void ChangeVolumn()
+        {
+            _masterVolumn += _config.VolumnStep;
 
-    private void OnCoundownPopup()
-    {
-        PlaySound(_audioClipRefsSO.Warning, Camera.main.transform.position, _countdownPopupVolume);
-    }
+            if (_masterVolumn > _config.VolumnMax)
+            {
+                _masterVolumn = _config.VolumnMin;
+            }
 
-    private void OnStoveWarning()
-    {
-        PlaySound(_audioClipRefsSO.Warning, Camera.main.transform.position, _countdownPopupVolume);
-    }
+            PlayerPrefs.SetFloat(_config.PlayerPrefsVolumnKey, _masterVolumn);
+            PlayerPrefs.Save();
+        }
 
-    private void OnCut()
-    {
-        PlaySound(_audioClipRefsSO.Chop, Camera.main.transform.position, _chopVolume);
-    }
+        public AudioClip GetRandomFootStepAudioClip()
+        {
+            return _config.FootstepClips[Random.Range(0, _config.FootstepClips.Count)];
+        }
 
-    private void OnPickSomething()
-    {
-        PlaySound(_audioClipRefsSO.ObjectPickup, Camera.main.transform.position, _pickupVolume);
-    }
+        private void OnCoundownPopup()
+        {
+            PlaySound(_config.WarningClips, Camera.main.transform.position, _config.CountdownPopupVolume);
+        }
 
-    private void OnObjectPlaced()
-    {
-        PlaySound(_audioClipRefsSO.ObjectDrop, Camera.main.transform.position, _dropVolume);
-    }
+        private void OnStoveWarning()
+        {
+            PlaySound(_config.WarningClips, Camera.main.transform.position, _config.CountdownPopupVolume);
+        }
 
-    private void OnObjectTrashed()
-    {
-        PlaySound(_audioClipRefsSO.Trash, Camera.main.transform.position, _trashVolume);
-    }
+        private void OnInteractWithCutCounter()
+        {
+            PlaySound(_config.ChopClips, Camera.main.transform.position, _config.ChopVolume);
+        }
 
-    private void OnDeliverReceiptSuccess()
-    {
-        PlaySound(_audioClipRefsSO.DeliverySuccess, Camera.main.transform.position, _deliverySuccessVolume);
-    }
+        private void OnPickSomething()
+        {
+            PlaySound(_config.ObjectPickupClips, Camera.main.transform.position, _config.PickupVolume);
+        }
 
-    private void OnDeliverReceiptFailed()
-    {
-        PlaySound(_audioClipRefsSO.DeliveryFail, Camera.main.transform.position, _deliveryFailedVolume);
-    }
+        private void OnObjectPlaced()
+        {
+            PlaySound(_config.ObjectDropClips, Camera.main.transform.position, _config.DropVolume);
+        }
 
-    private void PlaySound(AudioClip[] audioClips, Vector3 position, float volumeMultiplier = 1)
-    {
-        AudioSource.PlayClipAtPoint(audioClips[Random.Range(0, audioClips.Length)], position, volumeMultiplier * _masterVolumn);
+        private void OnInteractWithTrashCounter()
+        {
+            PlaySound(_config.TrashClips, Camera.main.transform.position, _config.TrashVolume);
+        }
+
+        private void OnDeliverReceiptSuccess()
+        {
+            PlaySound(_config.DeliverySuccessClips, Camera.main.transform.position, _config.DeliverySuccessVolume);
+        }
+
+        private void OnDeliverReceiptFailed()
+        {
+            PlaySound(_config.DeliveryFailClips, Camera.main.transform.position, _config.DeliveryFailedVolume);
+        }
+
+        private void PlaySound(IReadOnlyList<AudioClip> audioClips, Vector3 position, float volumeMultiplier = 1)
+        {
+            int index = Random.Range(0, audioClips.Count);
+            float finalVolumn = volumeMultiplier * _masterVolumn;
+            AudioSource.PlayClipAtPoint(audioClips[index], position, finalVolumn);
+        }
     }
 }

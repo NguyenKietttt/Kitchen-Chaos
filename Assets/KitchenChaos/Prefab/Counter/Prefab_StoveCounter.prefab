@@ -217,6 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd26fc58ff08b74ab186b17eb206495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 763af093a8fffab47aff29be262956e5, type: 2}
   _stoveCounterObj: {fileID: 8429991187470582211}
   _stoveCounter: {fileID: 6390879159441733293}
   _audioSrc: {fileID: 3881933653536065067}
@@ -233,8 +234,8 @@ GameObject:
   - component: {fileID: 8728834869903529830}
   - component: {fileID: 7570308566735272150}
   - component: {fileID: 5299859569218572966}
-  - component: {fileID: 2935992646202380530}
   - component: {fileID: 4371497446859400034}
+  - component: {fileID: 288998969647495322}
   m_Layer: 6
   m_Name: Canvas_UI_StoveWarning
   m_TagString: Untagged
@@ -337,19 +338,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &2935992646202380530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8314437876836601329}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0b28f7d9476878408a87f23055579ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mode: 2
 --- !u!114 &4371497446859400034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -362,8 +350,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13449f2f6d6e67a44bc6af1db0af7ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 476f9e0e2b46f174286a8594fbe3c88e, type: 2}
   _stoveCounter: {fileID: 6390879159441733293}
   _canvasGroup: {fileID: 5299859569218572966}
+--- !u!114 &288998969647495322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8314437876836601329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86064bcf32e67c8438dd98454e2ca4d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mode: 2
 --- !u!1001 &3800115930680169702
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -644,10 +646,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18b38c18b679d7942b4b21b727eac3ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 028fea93b531d4e4ba3d2f4290b60ad8, type: 2}
   _stoveCounter: {fileID: 6390879159441733293}
   _progressBarImg: {fileID: 4199674485693620984}
-  _idleColor: {r: 1, g: 0.67058825, b: 0, a: 1}
-  _warningColor: {r: 1, g: 0.19215688, b: 0.1137255, a: 1}
 --- !u!1001 &5926141798686062864
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -903,7 +904,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selectedVisualObj: {fileID: 796374389931372620}
   _spawnPoint: {fileID: 1452120455869725526}
-  _listFryingReceiptSO:
-  - {fileID: 11400000, guid: f9d5d0b8452e92247858ebee96e8d756, type: 2}
-  _listBurningReceiptSO:
-  - {fileID: 11400000, guid: d98933d4170a74b4fb1999ed5d718683, type: 2}
+  _config: {fileID: 11400000, guid: 9875f5fd4b4fd0e4dad18fc4b60b3ff4, type: 2}

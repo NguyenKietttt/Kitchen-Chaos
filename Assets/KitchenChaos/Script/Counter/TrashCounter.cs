@@ -1,20 +1,14 @@
-using System;
-
-public sealed class TrashCounter : BaseCounter
+namespace KitchenChaos
 {
-    public static event Action ObjectTrashed;
-
-    private void OnDestroy()
+    public sealed class TrashCounter : BaseCounter
     {
-        ObjectTrashed = null;
-    }
-
-    public override void OnInteract(PlayerController playerController)
-    {
-        if (playerController.HasKitchenObj())
+        public override void OnInteract(PlayerController playerController)
         {
-            playerController.GetKitchenObj().DestroySelf();
-            ObjectTrashed?.Invoke();
+            if (playerController.HasKitchenObj)
+            {
+                playerController.KitchenObj.DestroySelf();
+                Bootstrap.Instance.EventMgr.InteractWithTrashCounter?.Invoke();
+            }
         }
     }
 }

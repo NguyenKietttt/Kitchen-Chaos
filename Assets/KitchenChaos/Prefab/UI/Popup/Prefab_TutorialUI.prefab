@@ -1247,6 +1247,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 2
   _type: 2
+  _rebindKeyMoveUpSO: {fileID: 11400000, guid: 25f5670a436692046b13a8cb5c914c9b, type: 2}
+  _rebindKeyMoveDownSO: {fileID: 11400000, guid: 6a10284f2f4e09a458348833e04479cb,
+    type: 2}
+  _rebindKeyMoveLeftSO: {fileID: 11400000, guid: 79ea50905a5c19d41afe5ef30bb07911,
+    type: 2}
+  _rebindKeyMoveRightSO: {fileID: 11400000, guid: e2b029b05bc1a234ca2b172ece49bc75,
+    type: 2}
+  _rebindKeyInteractSO: {fileID: 11400000, guid: a44ae8290ad191340a7ad09073f29fa4,
+    type: 2}
+  _rebindKeyCutSO: {fileID: 11400000, guid: 18b8a7e5d5d70344c82588dbcedeba6b, type: 2}
+  _rebindKeyInteractGamepadSO: {fileID: 11400000, guid: 54ddca18a018b4646b7f3c121863ff85,
+    type: 2}
+  _rebindKeyCutGamepadSO: {fileID: 11400000, guid: eece181599caf0c4e853653b4e95f54c,
+    type: 2}
   _keyboardMoveUpTxt: {fileID: 569677802629255121}
   _keyboardMoveDownTxt: {fileID: 6141177773590803161}
   _keyboardMoveLeftTxt: {fileID: 3828013250163008090}
