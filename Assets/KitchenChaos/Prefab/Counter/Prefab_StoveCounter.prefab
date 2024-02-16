@@ -645,10 +645,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18b38c18b679d7942b4b21b727eac3ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 028fea93b531d4e4ba3d2f4290b60ad8, type: 2}
   _stoveCounter: {fileID: 6390879159441733293}
   _progressBarImg: {fileID: 4199674485693620984}
-  _idleColor: {r: 1, g: 0.67058825, b: 0, a: 1}
-  _warningColor: {r: 1, g: 0.19215688, b: 0.1137255, a: 1}
 --- !u!1001 &5926141798686062864
 PrefabInstance:
   m_ObjectHideFlags: 0

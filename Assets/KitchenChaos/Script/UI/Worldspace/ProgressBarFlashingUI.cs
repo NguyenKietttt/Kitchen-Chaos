@@ -6,15 +6,12 @@ namespace KitchenChaos
 {
     public sealed class ProgressBarFlashingUI : MonoBehaviour
     {
-        private const float BURN_PROGRESS_AMOUNT = 0.5f;
+        [Header("Config")]
+        [SerializeField] private ProgressBarFlashingUICfg _config;
 
         [Header("Internal Ref")]
         [SerializeField] private StoveCounter _stoveCounter;
         [SerializeField] private Image _progressBarImg;
-
-        [Header("Property")]
-        [SerializeField] private Color _idleColor;
-        [SerializeField] private Color _warningColor;
 
         private Sequence _flashingSequence;
 
@@ -38,7 +35,7 @@ namespace KitchenChaos
                 return;
             }
 
-            if (_stoveCounter.IsFried && progressNormalized >= BURN_PROGRESS_AMOUNT)
+            if (_stoveCounter.IsFried && progressNormalized >= _config.BurnProgressAmount)
             {
                 if (!_flashingSequence.IsPlaying())
                 {
@@ -59,14 +56,14 @@ namespace KitchenChaos
         private void ResetProgressBarColor()
         {
             _flashingSequence.Pause();
-            _progressBarImg.color = _idleColor;
+            _progressBarImg.color = _config.IdleColor;
         }
 
         private void PrepareFlashingSequence()
         {
             _flashingSequence = DOTween.Sequence()
-                .Append(_progressBarImg.DOColor(_warningColor, 0.1f))
-                .Append(_progressBarImg.DOColor(_idleColor, 0.1f))
+                .Append(_progressBarImg.DOColor(_config.WarningColor, 0.1f))
+                .Append(_progressBarImg.DOColor(_config.IdleColor, 0.1f))
                 .SetLoops(-1, LoopType.Restart);
         }
     }
