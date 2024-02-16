@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a469fe7389d52f42afafbbf388bb7dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: c2b2930745badf94b9b17534e29cd96f, type: 2}
   _progressCounterObj: {fileID: 0}
   _progressImg: {fileID: 8306269815563725809}
 --- !u!1 &8154025946120478344

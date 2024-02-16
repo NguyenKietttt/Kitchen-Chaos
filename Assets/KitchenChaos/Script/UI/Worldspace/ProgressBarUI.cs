@@ -5,8 +5,8 @@ namespace KitchenChaos
 {
     public sealed class ProgressBarUI : MonoBehaviour
     {
-        private const int MAX_PROGRESS = 1;
-        private const int MIN_PROGRESS = 0;
+        [Header("Config")]
+        [SerializeField] private ProgressBarUICfg _config;
 
         [Header("External Ref")]
         [SerializeField] private GameObject _progressCounterObj;
@@ -18,8 +18,8 @@ namespace KitchenChaos
         {
             Bootstrap.Instance.EventMgr.UpdateCounterProgress += OnCounterProgressChanged;
 
-            _progressImg.fillAmount = MIN_PROGRESS;
-            HideProgressBar();
+            _progressImg.fillAmount = _config.MinProgress;
+            Hide();
         }
 
         private void OnDestroy()
@@ -36,22 +36,22 @@ namespace KitchenChaos
 
             _progressImg.fillAmount = progressNormalized;
 
-            if (progressNormalized <= MIN_PROGRESS || progressNormalized >= MAX_PROGRESS)
+            if (progressNormalized <= _config.MinProgress || progressNormalized >= _config.MaxProgress)
             {
-                HideProgressBar();
+                Hide();
             }
             else
             {
-                ShowProgressBar();
+                Show();
             }
         }
 
-        private void ShowProgressBar()
+        private void Show()
         {
             gameObject.SetActive(true);
         }
 
-        private void HideProgressBar()
+        private void Hide()
         {
             gameObject.SetActive(false);
         }
