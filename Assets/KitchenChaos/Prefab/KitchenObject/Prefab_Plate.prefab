@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 8118042849567652495}
   - component: {fileID: 4294499886718037684}
   - component: {fileID: 5983040434036334429}
-  - component: {fileID: 3699295191833377773}
   - component: {fileID: 7244756556369963841}
+  - component: {fileID: 7892832554081699401}
   m_Layer: 0
   m_Name: Canvas_PlateIconsUI
   m_TagString: Untagged
@@ -128,19 +128,6 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &3699295191833377773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2947089991997647238}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0b28f7d9476878408a87f23055579ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mode: 2
 --- !u!114 &7244756556369963841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,9 +141,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: 8be998ac06c14204ab73be32235f4f5c, type: 2}
-  _plateIconSingleUI: {fileID: 7769288788645968316, guid: 6a9228e8442bd5d45bd9aa73c73cc65f,
-    type: 3}
   _plateKitchenObj: {fileID: 4250291143845995604}
+--- !u!114 &7892832554081699401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2947089991997647238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86064bcf32e67c8438dd98454e2ca4d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mode: 2
 --- !u!1 &5485934621926713933
 GameObject:
   m_ObjectHideFlags: 0
