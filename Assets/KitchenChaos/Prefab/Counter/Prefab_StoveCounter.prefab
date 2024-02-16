@@ -363,6 +363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13449f2f6d6e67a44bc6af1db0af7ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 476f9e0e2b46f174286a8594fbe3c88e, type: 2}
   _stoveCounter: {fileID: 6390879159441733293}
   _canvasGroup: {fileID: 5299859569218572966}
 --- !u!1001 &3800115930680169702

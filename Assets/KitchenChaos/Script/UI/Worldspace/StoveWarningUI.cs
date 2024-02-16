@@ -5,7 +5,8 @@ namespace KitchenChaos
 {
     public sealed class StoveWarningUI : MonoBehaviour
     {
-        private const float BURN_PROGRESS_AMOUNT = 0.5f;
+        [Header("Config")]
+        [SerializeField] private StoveWarningUICfg _config;
 
         [Header("Internal Ref")]
         [SerializeField] private StoveCounter _stoveCounter;
@@ -34,7 +35,7 @@ namespace KitchenChaos
                 return;
             }
 
-            if (_stoveCounter.IsFried && progressNormalized >= BURN_PROGRESS_AMOUNT)
+            if (_stoveCounter.IsFried && progressNormalized >= _config.BurnProgressAmount)
             {
                 Show();
             }
