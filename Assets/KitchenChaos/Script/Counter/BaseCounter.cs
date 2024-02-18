@@ -24,7 +24,7 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.SelectCounter -= OnCounterSelected;
         }
 
-        public virtual void OnInteract(PlayerInteraction player) { }
+        public abstract void OnInteract(PlayerInteraction player);
 
         public virtual void OnCuttingInteract() { }
 

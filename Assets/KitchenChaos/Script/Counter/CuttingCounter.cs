@@ -34,7 +34,7 @@ namespace KitchenChaos
                 else
                 {
                     _curCuttingProcess = MIN_PROGRESS;
-                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(MIN_PROGRESS, gameObject.GetInstanceID());
+                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), MIN_PROGRESS);
 
                     KitchenObj.SetCurKitchenObjParent(player);
                 }
