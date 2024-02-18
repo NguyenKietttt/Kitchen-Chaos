@@ -10,22 +10,22 @@ namespace KitchenChaos
         [Header("Child Internal Ref")]
         [SerializeField] private Animator _animator;
 
-        private readonly int _clidAnimKeyHash = Animator.StringToHash("OpenClose");
+        private readonly int _lidAnimKeyHash = Animator.StringToHash("OpenClose");
 
-        public override void OnInteract(PlayerController playerController)
+        public override void OnInteract(PlayerInteraction player)
         {
-            if (playerController.HasKitchenObj)
+            if (player.HasKitchenObj)
             {
                 return;
             }
 
-            TriggerClidAnim();
-            KitchenObject.SpawnKitchenObj(_kitchenObjSO, playerController);
+            TriggerLidAnim();
+            KitchenObject.SpawnKitchenObj(_kitchenObjSO, player);
         }
 
-        private void TriggerClidAnim()
+        private void TriggerLidAnim()
         {
-            _animator.SetTrigger(_clidAnimKeyHash);
+            _animator.SetTrigger(_lidAnimKeyHash);
         }
     }
 }

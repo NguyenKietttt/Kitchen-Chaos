@@ -2,13 +2,13 @@ namespace KitchenChaos
 {
     public sealed class ClearCounter : BaseCounter
     {
-        public override void OnInteract(PlayerController playerController)
+        public override void OnInteract(PlayerInteraction player)
         {
             if (HasKitchenObj)
             {
-                if (playerController.HasKitchenObj)
+                if (player.HasKitchenObj)
                 {
-                    if (playerController.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
+                    if (player.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
                     {
                         KitchenObject kitchenObj = KitchenObj;
                         if (plateKitchenObj.TryAddIngredient(kitchenObj.KitchenObjectSO))
@@ -20,23 +20,23 @@ namespace KitchenChaos
                     {
                         if (KitchenObj.TryGetPlate(out plateKitchenObj))
                         {
-                            if (plateKitchenObj.TryAddIngredient(playerController.KitchenObj.KitchenObjectSO))
+                            if (plateKitchenObj.TryAddIngredient(player.KitchenObj.KitchenObjectSO))
                             {
-                                playerController.KitchenObj.DestroySelf();
+                                player.KitchenObj.DestroySelf();
                             }
                         }
                     }
                 }
                 else
                 {
-                    KitchenObj.SetCurKitchenObjParent(playerController);
+                    KitchenObj.SetCurKitchenObjParent(player);
                 }
             }
             else
             {
-                if (playerController.HasKitchenObj)
+                if (player.HasKitchenObj)
                 {
-                    playerController.KitchenObj.SetCurKitchenObjParent(this);
+                    player.KitchenObj.SetCurKitchenObjParent(this);
                 }
             }
         }

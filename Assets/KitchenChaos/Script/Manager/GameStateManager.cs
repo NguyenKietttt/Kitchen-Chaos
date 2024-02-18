@@ -18,7 +18,7 @@ namespace KitchenChaos
 
         public void Init()
         {
-            Bootstrap.Instance.EventMgr.TooglePause += OnTogglePaused;
+            Bootstrap.Instance.EventMgr.TogglePause += OnTogglePaused;
             Bootstrap.Instance.EventMgr.Interact += OnInteract;
 
             _countdownTimer = _config.CoundownTimerMax;
@@ -49,7 +49,7 @@ namespace KitchenChaos
 
         public void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.TooglePause -= OnTogglePaused;
+            Bootstrap.Instance.EventMgr.TogglePause -= OnTogglePaused;
             Bootstrap.Instance.EventMgr.Interact -= OnInteract;
         }
 

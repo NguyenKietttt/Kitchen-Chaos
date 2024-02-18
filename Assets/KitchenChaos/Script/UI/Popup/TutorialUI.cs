@@ -28,7 +28,7 @@ namespace KitchenChaos
 
         public override void OnPush(object[] datas = null)
         {
-            Bootstrap.Instance.EventMgr.RebindingKey += UpdateVisual;
+            Bootstrap.Instance.EventMgr.RebindKey += UpdateVisual;
             Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
 
             UpdateVisual();
@@ -46,7 +46,7 @@ namespace KitchenChaos
 
         public override void OnPop()
         {
-            Bootstrap.Instance.EventMgr.RebindingKey -= UpdateVisual;
+            Bootstrap.Instance.EventMgr.RebindKey -= UpdateVisual;
             Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
 
             Destroy(gameObject);

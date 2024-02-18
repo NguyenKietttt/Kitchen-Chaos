@@ -5,7 +5,7 @@ namespace KitchenChaos
     public sealed class PlayerAnimator : MonoBehaviour
     {
         [Header("Config")]
-        [SerializeField] private PlayerAnimatorCfg _config;
+        [SerializeField] private PlayerCfg _config;
 
         [Header("Internal Ref")]
         [SerializeField] private Animator _animator;
