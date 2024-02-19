@@ -5,21 +5,21 @@ namespace KitchenChaos
     [CreateAssetMenu(fileName = "Cfg_MusicManager", menuName = "Scriptable Object/Config/Manager/MusicManager")]
     public sealed class MusicManagerCfg : ScriptableObject
     {
-        public string PlayerPrefsVolumnKey => _playerPrefsVolumnKey;
+        public string PlayerPrefsVolumeKey => _playerPrefsVolumeKey;
 
-        public float VolumnMin => _volumnMin;
-        public float VolumnMax => _volumnMax;
-        public float DefaultVolumn => _defaultVolumn;
-        public float VolumnStep => _volumnStep;
+        public float VolumeMin => _volumeMin;
+        public float VolumeMax => _volumeMax;
+        public float DefaultVolume => _defaultVolume;
+        public float VolumeStep => _volumeStep;
 
         [Header("Property")]
-        [SerializeField] private string _playerPrefsVolumnKey;
+        [SerializeField] private string _playerPrefsVolumeKey;
 
         [Space]
 
-        [SerializeField] private float _volumnMin;
-        [SerializeField] private float _volumnMax;
-        [SerializeField] private float _defaultVolumn;
-        [SerializeField] private float _volumnStep;
+        [SerializeField] private float _volumeMin;
+        [SerializeField] private float _volumeMax;
+        [SerializeField] private float _defaultVolume;
+        [SerializeField] private float _volumeStep;
     }
 }

@@ -6,8 +6,8 @@ namespace KitchenChaos
     public sealed class CameraManager : MonoBehaviour
     {
         [Header("External Ref")]
-        [SerializeField] private CinemachineVirtualCamera _mainMenuVirutalCam;
-        [SerializeField] private CinemachineVirtualCamera _gameplayVirutalCam;
+        [SerializeField] private CinemachineVirtualCamera _mainMenuVirtualCam;
+        [SerializeField] private CinemachineVirtualCamera _gameplayVirtualCam;
 
         private void Awake()
         {
@@ -37,13 +37,13 @@ namespace KitchenChaos
             switch (state)
             {
                 case CameraState.MainMenu:
-                    _mainMenuVirutalCam.enabled = true;
-                    _gameplayVirutalCam.enabled = false;
+                    _mainMenuVirtualCam.enabled = true;
+                    _gameplayVirtualCam.enabled = false;
 
                     break;
                 case CameraState.Gameplay:
-                    _mainMenuVirutalCam.enabled = false;
-                    _gameplayVirutalCam.enabled = true;
+                    _mainMenuVirtualCam.enabled = false;
+                    _gameplayVirtualCam.enabled = true;
 
                     break;
             }

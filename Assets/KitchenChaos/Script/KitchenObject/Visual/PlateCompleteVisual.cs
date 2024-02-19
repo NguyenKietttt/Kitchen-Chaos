@@ -12,17 +12,17 @@ namespace KitchenChaos
 
         private void Start()
         {
-            DeactiveCompleteVisual();
+            DisableCompleteVisual();
 
-            Bootstrap.Instance.EventMgr.AddIngredientSuccess += OnAddIngredientSucces;
+            Bootstrap.Instance.EventMgr.AddIngredientSuccess += OnAddIngredientSuccess;
         }
 
         private void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.AddIngredientSuccess -= OnAddIngredientSucces;
+            Bootstrap.Instance.EventMgr.AddIngredientSuccess -= OnAddIngredientSuccess;
         }
 
-        private void DeactiveCompleteVisual()
+        private void DisableCompleteVisual()
         {
             for (int i = 0; i < _KitchenObjSOToGameObjs.Length; i++)
             {
@@ -30,7 +30,7 @@ namespace KitchenChaos
             }
         }
 
-        private void OnAddIngredientSucces(int senderID, KitchenObjectSO kitchenObjSO)
+        private void OnAddIngredientSuccess(int senderID, KitchenObjectSO kitchenObjSO)
         {
             if (senderID != _plateKitchenObj.GetInstanceID())
             {

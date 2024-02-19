@@ -16,7 +16,7 @@ MonoBehaviour:
     type: 3}
   _levelOnePrefab: {fileID: 4843124729967624556, guid: b0443d0eccbb93347a3479df103b6bd7,
     type: 3}
-  _coundownTimerMin: 0
-  _coundownTimerMax: 3
+  _countdownTimerMin: 0
+  _countdownTimerMax: 3
   _playingTimerMin: 0
   _playingTimerMax: 60

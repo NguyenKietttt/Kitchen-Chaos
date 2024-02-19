@@ -8,8 +8,8 @@ namespace KitchenChaos
         public GameObject PlayerPrefab => _playerPrefab;
         public GameObject LevelOnePrefab => _levelOnePrefab;
 
-        public float CoundownTimerMin => _coundownTimerMin;
-        public float CoundownTimerMax => _coundownTimerMax;
+        public float CountdownTimerMin => _countdownTimerMin;
+        public float CountdownTimerMax => _countdownTimerMax;
         public float PlayingTimerMin => _playingTimerMin;
         public float PlayingTimerMax => _playingTimerMax;
 
@@ -18,8 +18,11 @@ namespace KitchenChaos
         [SerializeField] private GameObject _levelOnePrefab;
 
         [Header("Property")]
-        [SerializeField] private float _coundownTimerMin;
-        [SerializeField] private float _coundownTimerMax;
+        [SerializeField] private float _countdownTimerMin;
+        [SerializeField] private float _countdownTimerMax;
+
+        [Space]
+
         [SerializeField] private float _playingTimerMin;
         [SerializeField] private float _playingTimerMax;
     }

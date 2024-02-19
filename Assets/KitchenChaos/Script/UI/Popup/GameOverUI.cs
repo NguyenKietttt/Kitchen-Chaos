@@ -35,7 +35,7 @@ namespace KitchenChaos
             switch (state)
             {
                 case GameState.GameOver:
-                    _amountReceiptDeliveredTxt.SetText(Bootstrap.Instance.DeliveryMgr.AmountSucessfulReceipt.ToString());
+                    _amountReceiptDeliveredTxt.SetText(Bootstrap.Instance.DeliveryMgr.AmountSuccessfulReceipt.ToString());
                     Show();
                     break;
                 default:

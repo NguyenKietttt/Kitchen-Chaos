@@ -179,7 +179,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: 862a9a8a08955ab40a704851b3e792db, type: 2}
-  _rebindKeySO: {fileID: 11400000, guid: 25f5670a436692046b13a8cb5c914c9b, type: 2}
   _button: {fileID: 3710855830100877997}
   _text: {fileID: 7468881270352599981}
 --- !u!1 &748610843650780133
@@ -763,7 +762,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: 05540203244b6eb448f438cafc3cbf6d, type: 2}
-  _rebindKeySO: {fileID: 11400000, guid: 18b8a7e5d5d70344c82588dbcedeba6b, type: 2}
   _button: {fileID: 2866794122708257611}
   _text: {fileID: 6084317549973676995}
 --- !u!1 &2123976416886539647
@@ -1373,11 +1371,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 6
   _type: 2
-  _sfxVolumnBtn: {fileID: 7992196744632073115}
-  _musicVolumnBtn: {fileID: 8865403765912267266}
+  _sfxVolumeBtn: {fileID: 7992196744632073115}
+  _musicVolumeBtn: {fileID: 8865403765912267266}
   _closeBtn: {fileID: 5397742203201409093}
-  _sfxVolumnTxt: {fileID: 794392841389665094}
-  _musicVolumnTxt: {fileID: 478841930639575142}
+  _sfxVolumeTxt: {fileID: 794392841389665094}
+  _musicVolumeTxt: {fileID: 478841930639575142}
 --- !u!1 &2873612753551690947
 GameObject:
   m_ObjectHideFlags: 0
@@ -1691,7 +1689,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: 2eff9c65b5ae21f41b23236119935f30, type: 2}
-  _rebindKeySO: {fileID: 11400000, guid: 54ddca18a018b4646b7f3c121863ff85, type: 2}
   _button: {fileID: 7989338415004851179}
   _text: {fileID: 457341251478802424}
 --- !u!1 &3087872982639206841
@@ -1873,7 +1870,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: 90f4bda98380d0b4895f0e4a71c9bccc, type: 2}
-  _rebindKeySO: {fileID: 11400000, guid: e2b029b05bc1a234ca2b172ece49bc75, type: 2}
   _button: {fileID: 8038413649819936640}
   _text: {fileID: 6978341833916381916}
 --- !u!1 &3370622594995417187
@@ -2488,7 +2484,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: d49e4b8e625f93f4db305062c0b3d4ea, type: 2}
-  _rebindKeySO: {fileID: 11400000, guid: 6a10284f2f4e09a458348833e04479cb, type: 2}
   _button: {fileID: 8305619699792035712}
   _text: {fileID: 7184016229244814880}
 --- !u!1 &4366318726743557873
@@ -2969,7 +2964,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: f37976b7ca21ef049a9c8be7e2491011, type: 2}
-  _rebindKeySO: {fileID: 11400000, guid: 79ea50905a5c19d41afe5ef30bb07911, type: 2}
   _button: {fileID: 734902255074481945}
   _text: {fileID: 2155034544401491567}
 --- !u!1 &6116380753170518597
@@ -3553,7 +3547,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: a108d1bb915719a4db47acd5adbdc40d, type: 2}
-  _rebindKeySO: {fileID: 11400000, guid: a44ae8290ad191340a7ad09073f29fa4, type: 2}
   _button: {fileID: 4110119939906015251}
   _text: {fileID: 895647701365444347}
 --- !u!1 &7295359245652892426
@@ -4168,7 +4161,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: d9ae3c2101dec9145ac902d2417cc32e, type: 2}
-  _rebindKeySO: {fileID: 11400000, guid: eece181599caf0c4e853653b4e95f54c, type: 2}
   _button: {fileID: 5419755649956540436}
   _text: {fileID: 867489962905689600}
 --- !u!1 &8204107124124815685

@@ -364,8 +364,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f940775d1d69d5743bccf463eb2dbaf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainMenuVirutalCam: {fileID: 1526907479}
-  _gameplayVirutalCam: {fileID: 315391027}
+  _mainMenuVirtualCam: {fileID: 1526907479}
+  _gameplayVirtualCam: {fileID: 315391027}
 --- !u!1 &315391026
 GameObject:
   m_ObjectHideFlags: 0
