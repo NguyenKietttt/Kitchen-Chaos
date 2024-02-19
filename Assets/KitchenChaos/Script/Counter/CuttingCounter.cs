@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace KitchenChaos
 {
-    public sealed class CuttingCounter : BaseCounter
+    public sealed class CuttingCounter : BaseCounter, ISecondaryInteractHandler
     {
         private const int MIN_PROGRESS = 0;
 
@@ -16,7 +16,7 @@ namespace KitchenChaos
 
         private int _curCuttingProcess;
 
-        public override void OnInteract(PlayerInteraction player)
+        public override void OnMainInteract(PlayerInteraction player)
         {
             if (HasKitchenObj)
             {
@@ -49,7 +49,7 @@ namespace KitchenChaos
             }
         }
 
-        public override void OnCuttingInteract()
+        public void OnSecondaryInteract()
         {
             if (HasKitchenObj && HasReceiptWithInput(KitchenObj.KitchenObjectSO))
             {

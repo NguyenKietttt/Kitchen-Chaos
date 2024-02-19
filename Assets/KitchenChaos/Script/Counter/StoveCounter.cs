@@ -78,7 +78,7 @@ namespace KitchenChaos
             }
         }
 
-        public override void OnInteract(PlayerInteraction player)
+        public override void OnMainInteract(PlayerInteraction player)
         {
             if (HasKitchenObj)
             {

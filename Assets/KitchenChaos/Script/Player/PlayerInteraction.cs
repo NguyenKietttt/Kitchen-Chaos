@@ -75,18 +75,18 @@ namespace KitchenChaos
 
         private void OnInteractAction()
         {
-            if (CanInteract())
+            if (CanInteract() && _selectedCounter.gameObject.TryGetComponent(out IMainInteractHandler mainInteractHandler))
             {
-                _selectedCounter.OnInteract(this);
+                mainInteractHandler.OnMainInteract(this);
             }
 
         }
 
         private void OnCuttingInteractAction()
         {
-            if (CanInteract())
+            if (CanInteract() && _selectedCounter.gameObject.TryGetComponent(out ISecondaryInteractHandler secondaryInteractHandler))
             {
-                _selectedCounter.OnCuttingInteract();
+                secondaryInteractHandler.OnSecondaryInteract();
             }
         }
 

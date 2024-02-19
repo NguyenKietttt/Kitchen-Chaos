@@ -12,7 +12,7 @@ namespace KitchenChaos
 
         private readonly int _lidAnimKeyHash = Animator.StringToHash("OpenClose");
 
-        public override void OnInteract(PlayerInteraction player)
+        public override void OnMainInteract(PlayerInteraction player)
         {
             if (player.HasKitchenObj)
             {
