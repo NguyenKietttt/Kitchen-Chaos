@@ -19,11 +19,9 @@ namespace KitchenChaos
         private void Update()
         {
             _spawnPlateTimer += Time.deltaTime;
-
             if (_spawnPlateTimer >= _config.PlateSpawnTimerMax)
             {
                 _spawnPlateTimer = _config.PlateSpawnTimerMin;
-
                 if (_curState is GameState.GamePlaying && _platesSpawnAmount < _config.PlateSpawnAmountMax)
                 {
                     _platesSpawnAmount++;
@@ -37,13 +35,13 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
         }
 
-        public override void OnInteract(PlayerController playerController)
+        public override void OnMainInteract(PlayerInteraction player)
         {
-            if (!playerController.HasKitchenObj && _platesSpawnAmount > _config.PlateSpawnTimerMin)
+            if (!player.HasKitchenObj && _platesSpawnAmount > _config.PlateSpawnTimerMin)
             {
                 _platesSpawnAmount--;
 
-                KitchenObject.SpawnKitchenObj(_config.PlateSO, playerController);
+                KitchenObject.SpawnKitchenObj(_config.PlateSO, player);
                 Bootstrap.Instance.EventMgr.RemovePlate?.Invoke();
             }
         }

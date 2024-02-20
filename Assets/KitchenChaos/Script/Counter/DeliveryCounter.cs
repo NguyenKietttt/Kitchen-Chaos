@@ -2,15 +2,12 @@ namespace KitchenChaos
 {
     public sealed class DeliveryCounter : BaseCounter
     {
-        public override void OnInteract(PlayerController playerController)
+        public override void OnMainInteract(PlayerInteraction player)
         {
-            if (playerController.HasKitchenObj)
+            if (player.HasKitchenObj && player.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
             {
-                if (playerController.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
-                {
-                    Bootstrap.Instance.DeliveryMgr.DeliveryReceipt(plateKitchenObj);
-                    playerController.KitchenObj.DestroySelf();
-                }
+                Bootstrap.Instance.DeliveryMgr.DeliveryReceipt(plateKitchenObj);
+                player.KitchenObj.DestroySelf();
             }
         }
     }

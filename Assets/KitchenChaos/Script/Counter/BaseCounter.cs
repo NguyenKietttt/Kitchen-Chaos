@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace KitchenChaos
 {
-    public class BaseCounter : MonoBehaviour, IKitchenObjParent
+    public abstract class BaseCounter : MonoBehaviour, IKitchenObjParent, IMainInteractHandler
     {
         public Transform SpawnPoint => _spawnPoint;
         public KitchenObject KitchenObj => _curKitchenObj;
@@ -24,9 +24,7 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.SelectCounter -= OnCounterSelected;
         }
 
-        public virtual void OnInteract(PlayerController playerController) { }
-
-        public virtual void OnCuttingInteract(PlayerController playerController) { }
+        public virtual void OnMainInteract(PlayerInteraction player) { }
 
         public void SetKitchenObj(KitchenObject newKitchenObj)
         {

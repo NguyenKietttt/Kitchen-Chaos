@@ -78,13 +78,13 @@ namespace KitchenChaos
             }
         }
 
-        public override void OnInteract(PlayerController playerController)
+        public override void OnMainInteract(PlayerInteraction player)
         {
             if (HasKitchenObj)
             {
-                if (playerController.HasKitchenObj)
+                if (player.HasKitchenObj)
                 {
-                    if (playerController.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
+                    if (player.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
                     {
                         KitchenObject kitchenObj = KitchenObj;
                         if (plateKitchenObj.TryAddIngredient(kitchenObj.KitchenObjectSO))
@@ -100,7 +100,7 @@ namespace KitchenChaos
                 }
                 else
                 {
-                    KitchenObj.SetCurKitchenObjParent(playerController);
+                    KitchenObj.SetCurKitchenObjParent(player);
 
                     _curState = StoveCounterState.Idle;
 
@@ -110,9 +110,9 @@ namespace KitchenChaos
             }
             else
             {
-                if (playerController.HasKitchenObj && HasReceiptWithInput(playerController.KitchenObj.KitchenObjectSO))
+                if (player.HasKitchenObj && HasReceiptWithInput(player.KitchenObj.KitchenObjectSO))
                 {
-                    playerController.KitchenObj.SetCurKitchenObjParent(this);
+                    player.KitchenObj.SetCurKitchenObjParent(this);
                     _fryingReceiptSO = GetFryingReceiptSOWithInput(KitchenObj.KitchenObjectSO);
 
                     _fryingTimer = _config.FryingTimerMin;

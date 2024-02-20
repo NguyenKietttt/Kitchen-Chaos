@@ -15,7 +15,7 @@ namespace KitchenChaos
         [SerializeField] private AudioSource _audioSrc;
 
         private float _warningSoundTimer;
-        private bool _shoudPlayWarningSound;
+        private bool _shouldPlayWarningSound;
 
         private void Start()
         {
@@ -25,7 +25,7 @@ namespace KitchenChaos
 
         private void Update()
         {
-            if (!_shoudPlayWarningSound)
+            if (!_shouldPlayWarningSound)
             {
                 _warningSoundTimer = _config.WarningTimerMax;
                 return;
@@ -69,7 +69,7 @@ namespace KitchenChaos
                 return;
             }
 
-            _shoudPlayWarningSound = _stoveCounter.IsFried && progressNormalized >= _config.BurnProgressAmount;
+            _shouldPlayWarningSound = _stoveCounter.IsFried && progressNormalized >= _config.BurnProgressAmount;
         }
     }
 }

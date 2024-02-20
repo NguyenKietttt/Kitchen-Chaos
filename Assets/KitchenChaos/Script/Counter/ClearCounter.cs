@@ -2,41 +2,32 @@ namespace KitchenChaos
 {
     public sealed class ClearCounter : BaseCounter
     {
-        public override void OnInteract(PlayerController playerController)
+        public override void OnMainInteract(PlayerInteraction player)
         {
-            if (HasKitchenObj)
+            if (!HasKitchenObj && player.HasKitchenObj)
             {
-                if (playerController.HasKitchenObj)
+                player.KitchenObj.SetCurKitchenObjParent(this);
+                return;
+            }
+
+            if (!player.HasKitchenObj)
+            {
+                KitchenObj.SetCurKitchenObjParent(player);
+                return;
+            }
+
+            if (player.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
+            {
+                if (plateKitchenObj.TryAddIngredient(KitchenObj.KitchenObjectSO))
                 {
-                    if (playerController.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
-                    {
-                        KitchenObject kitchenObj = KitchenObj;
-                        if (plateKitchenObj.TryAddIngredient(kitchenObj.KitchenObjectSO))
-                        {
-                            kitchenObj.DestroySelf();
-                        }
-                    }
-                    else
-                    {
-                        if (KitchenObj.TryGetPlate(out plateKitchenObj))
-                        {
-                            if (plateKitchenObj.TryAddIngredient(playerController.KitchenObj.KitchenObjectSO))
-                            {
-                                playerController.KitchenObj.DestroySelf();
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    KitchenObj.SetCurKitchenObjParent(playerController);
+                    KitchenObj.DestroySelf();
                 }
             }
             else
             {
-                if (playerController.HasKitchenObj)
+                if (KitchenObj.TryGetPlate(out plateKitchenObj) && plateKitchenObj.TryAddIngredient(player.KitchenObj.KitchenObjectSO))
                 {
-                    playerController.KitchenObj.SetCurKitchenObjParent(this);
+                    player.KitchenObj.DestroySelf();
                 }
             }
         }

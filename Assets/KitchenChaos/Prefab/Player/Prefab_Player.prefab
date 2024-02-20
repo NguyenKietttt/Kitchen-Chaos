@@ -40,7 +40,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5541572680536062746}
-  - component: {fileID: 832291162446513904}
+  - component: {fileID: 1034195985687412486}
+  - component: {fileID: 7094728633247980477}
   m_Layer: 0
   m_Name: Prefab_Player
   m_TagString: Untagged
@@ -67,7 +68,7 @@ Transform:
   - {fileID: 4120290645426146150}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
---- !u!114 &832291162446513904
+--- !u!114 &1034195985687412486
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -76,11 +77,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 6282792218623842890}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22b2df3011bb68445b5b4f6908e70c55, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d3ed73e94c91bf4d96b4158963b68c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _config: {fileID: 11400000, guid: 5373f8eac4b45394f94f6cbabe5e24af, type: 2}
+  _config: {fileID: 11400000, guid: 881cbe4f387baa548b658c22d697b4a9, type: 2}
   _playerAnimator: {fileID: 6241452263999107307}
+--- !u!114 &7094728633247980477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6282792218623842890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d4ae828c82081143b83a4868c5e6584, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 881cbe4f387baa548b658c22d697b4a9, type: 2}
   _kitchenObjHoldPoint: {fileID: 1616143291652384859}
 --- !u!1 &7824466459124904095
 GameObject:
@@ -224,8 +238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 508152cfb6a6a3f4fb6440b62e7b4429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _config: {fileID: 11400000, guid: 9ecca49b41bd5434e8139ecbb14b748d, type: 2}
-  _playerController: {fileID: 832291162446513904}
+  _config: {fileID: 11400000, guid: 881cbe4f387baa548b658c22d697b4a9, type: 2}
   _audioSrc: {fileID: 3486415609050730320}
 --- !u!1001 &3299635207676168622
 PrefabInstance:
@@ -407,7 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c29cb61173581bf41b146de353fb39da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _config: {fileID: 11400000, guid: 3c31e41477c98474394b31e936c938e5, type: 2}
+  _config: {fileID: 11400000, guid: 881cbe4f387baa548b658c22d697b4a9, type: 2}
   _animator: {fileID: 3083325205146450099}
 --- !u!4 &6120322058928061891 stripped
 Transform:

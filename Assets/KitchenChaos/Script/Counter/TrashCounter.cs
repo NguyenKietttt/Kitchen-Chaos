@@ -2,13 +2,15 @@ namespace KitchenChaos
 {
     public sealed class TrashCounter : BaseCounter
     {
-        public override void OnInteract(PlayerController playerController)
+        public override void OnMainInteract(PlayerInteraction player)
         {
-            if (playerController.HasKitchenObj)
+            if (!player.HasKitchenObj)
             {
-                playerController.KitchenObj.DestroySelf();
-                Bootstrap.Instance.EventMgr.InteractWithTrashCounter?.Invoke();
+                return;
             }
+
+            player.KitchenObj.DestroySelf();
+            Bootstrap.Instance.EventMgr.InteractWithTrashCounter?.Invoke();
         }
     }
 }

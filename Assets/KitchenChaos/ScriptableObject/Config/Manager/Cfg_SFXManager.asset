@@ -41,11 +41,11 @@ MonoBehaviour:
   _warningClips:
   - {fileID: 8300000, guid: b90d8099bdbf09a40ab1163556d5b5f4, type: 3}
   - {fileID: 8300000, guid: b59c98e0066c41f42b8100f5cb180f5b, type: 3}
-  _playerPrefsVolumnKey: SFX_VOLUMN_KEY
-  _volumnMin: 0
-  _volumnMax: 1
-  _defaultVolumn: 0.5
-  _volumnStep: 0.1
+  _playerPrefsVolumeKey: SFX_VOLUME_KEY
+  _volumeMin: 0
+  _volumeMax: 1
+  _defaultVolume: 0.5
+  _volumeStep: 0.1
   _chopVolume: 0.2
   _pickupVolume: 0.2
   _dropVolume: 0.2

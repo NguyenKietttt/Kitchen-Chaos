@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23a7f85b7957e314f973504b3b95760a, type: 3}
   m_Name: Cfg_MusicManager
   m_EditorClassIdentifier: 
-  _playerPrefsVolumnKey: MUSIC_VOLUMN_KEY
-  _volumnMin: 0
-  _volumnMax: 1
-  _defaultVolumn: 0.5
-  _volumnStep: 0.1
+  _playerPrefsVolumeKey: MUSIC_VOLUME_KEY
+  _volumeMin: 0
+  _volumeMax: 1
+  _defaultVolume: 0.5
+  _volumeStep: 0.1

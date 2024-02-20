@@ -5,32 +5,32 @@ namespace KitchenChaos
 {
     public sealed class SFXManager : MonoBehaviour
     {
-        public float MasterVolumn => _masterVolumn;
+        public float MasterVolume => _masterVolume;
 
         [Header("Config")]
         [SerializeField] private SFXManagerCfg _config;
 
-        private float _masterVolumn;
+        private float _masterVolume;
 
         public void Init()
         {
             Bootstrap.Instance.EventMgr.DeliverReceiptSuccess += OnDeliverReceiptSuccess;
             Bootstrap.Instance.EventMgr.DeliverReceiptFailed += OnDeliverReceiptFailed;
-            Bootstrap.Instance.EventMgr.CountdownPopup += OnCoundownPopup;
+            Bootstrap.Instance.EventMgr.CountdownPopup += OnCountdownPopup;
             Bootstrap.Instance.EventMgr.StoveWarning += OnStoveWarning;
             Bootstrap.Instance.EventMgr.InteractWithCutCounter += OnInteractWithCutCounter;
             Bootstrap.Instance.EventMgr.PickSomething += OnPickSomething;
             Bootstrap.Instance.EventMgr.PlaceObject += OnObjectPlaced;
             Bootstrap.Instance.EventMgr.InteractWithTrashCounter += OnInteractWithTrashCounter;
 
-            _masterVolumn = PlayerPrefs.GetFloat(_config.PlayerPrefsVolumnKey, _config.DefaultVolumn);
+            _masterVolume = PlayerPrefs.GetFloat(_config.PlayerPrefsVolumeKey, _config.DefaultVolume);
         }
 
         private void OnDestroy()
         {
             Bootstrap.Instance.EventMgr.DeliverReceiptSuccess -= OnDeliverReceiptSuccess;
             Bootstrap.Instance.EventMgr.DeliverReceiptFailed -= OnDeliverReceiptFailed;
-            Bootstrap.Instance.EventMgr.CountdownPopup -= OnCoundownPopup;
+            Bootstrap.Instance.EventMgr.CountdownPopup -= OnCountdownPopup;
             Bootstrap.Instance.EventMgr.StoveWarning -= OnStoveWarning;
             Bootstrap.Instance.EventMgr.InteractWithCutCounter -= OnInteractWithCutCounter;
             Bootstrap.Instance.EventMgr.PickSomething -= OnPickSomething;
@@ -38,16 +38,16 @@ namespace KitchenChaos
             Bootstrap.Instance.EventMgr.InteractWithTrashCounter -= OnInteractWithTrashCounter;
         }
 
-        public void ChangeVolumn()
+        public void ChangeVolume()
         {
-            _masterVolumn += _config.VolumnStep;
+            _masterVolume += _config.VolumeStep;
 
-            if (_masterVolumn > _config.VolumnMax)
+            if (_masterVolume > _config.VolumeMax)
             {
-                _masterVolumn = _config.VolumnMin;
+                _masterVolume = _config.VolumeMin;
             }
 
-            PlayerPrefs.SetFloat(_config.PlayerPrefsVolumnKey, _masterVolumn);
+            PlayerPrefs.SetFloat(_config.PlayerPrefsVolumeKey, _masterVolume);
             PlayerPrefs.Save();
         }
 
@@ -56,7 +56,7 @@ namespace KitchenChaos
             return _config.FootstepClips[Random.Range(0, _config.FootstepClips.Count)];
         }
 
-        private void OnCoundownPopup()
+        private void OnCountdownPopup()
         {
             PlaySound(_config.WarningClips, Camera.main.transform.position, _config.CountdownPopupVolume);
         }
@@ -99,7 +99,7 @@ namespace KitchenChaos
         private void PlaySound(IReadOnlyList<AudioClip> audioClips, Vector3 position, float volumeMultiplier = 1)
         {
             int index = Random.Range(0, audioClips.Count);
-            float finalVolumn = volumeMultiplier * _masterVolumn;
+            float finalVolumn = volumeMultiplier * _masterVolume;
             AudioSource.PlayClipAtPoint(audioClips[index], position, finalVolumn);
         }
     }

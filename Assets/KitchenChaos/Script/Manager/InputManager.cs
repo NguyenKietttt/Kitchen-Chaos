@@ -42,7 +42,7 @@ namespace KitchenChaos
                     PlayerPrefs.SetString(PLAYER_PREFS_BINDING_KEY, _playerInputAction.SaveBindingOverridesAsJson());
                     PlayerPrefs.Save();
 
-                    Bootstrap.Instance.EventMgr.RebindingKey?.Invoke();
+                    Bootstrap.Instance.EventMgr.RebindKey?.Invoke();
                 })
                 .Start();
         }
@@ -85,7 +85,7 @@ namespace KitchenChaos
 
         private void OnPausePerformed(InputAction.CallbackContext obj)
         {
-            Bootstrap.Instance.EventMgr.TooglePause?.Invoke();
+            Bootstrap.Instance.EventMgr.TogglePause?.Invoke();
         }
     }
 }

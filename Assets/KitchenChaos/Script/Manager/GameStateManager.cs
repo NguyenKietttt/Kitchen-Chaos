@@ -18,10 +18,10 @@ namespace KitchenChaos
 
         public void Init()
         {
-            Bootstrap.Instance.EventMgr.TooglePause += OnTogglePaused;
+            Bootstrap.Instance.EventMgr.TogglePause += OnTogglePaused;
             Bootstrap.Instance.EventMgr.Interact += OnInteract;
 
-            _countdownTimer = _config.CoundownTimerMax;
+            _countdownTimer = _config.CountdownTimerMax;
         }
 
         private void Update()
@@ -30,7 +30,7 @@ namespace KitchenChaos
             {
                 case GameState.CountDownToStart:
                     _countdownTimer -= Time.deltaTime;
-                    if (_countdownTimer < _config.CoundownTimerMin)
+                    if (_countdownTimer < _config.CountdownTimerMin)
                     {
                         ChangeState(GameState.GamePlaying);
                     }
@@ -49,7 +49,7 @@ namespace KitchenChaos
 
         public void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.TooglePause -= OnTogglePaused;
+            Bootstrap.Instance.EventMgr.TogglePause -= OnTogglePaused;
             Bootstrap.Instance.EventMgr.Interact -= OnInteract;
         }
 
@@ -58,7 +58,7 @@ namespace KitchenChaos
             switch (state)
             {
                 case GameState.MainMenu:
-                    _countdownTimer = _config.CoundownTimerMax;
+                    _countdownTimer = _config.CountdownTimerMax;
                     _playingTimer = _config.PlayingTimerMin;
 
                     if (_playerObj != null)
@@ -85,7 +85,7 @@ namespace KitchenChaos
                     Bootstrap.Instance.UIManager.Push(UISystem.ScreenID.Tutorial);
                     break;
                 case GameState.GamePlaying:
-                    _countdownTimer = _config.CoundownTimerMax;
+                    _countdownTimer = _config.CountdownTimerMax;
                     break;
                 case GameState.GameOver:
                     _playingTimer = _config.PlayingTimerMin;

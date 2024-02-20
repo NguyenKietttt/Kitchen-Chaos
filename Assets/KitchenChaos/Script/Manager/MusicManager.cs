@@ -4,7 +4,7 @@ namespace KitchenChaos
 {
     public sealed class MusicManager : MonoBehaviour
     {
-        public float MasterVolumn => _masterVolumn;
+        public float MasterVolume => _masterVolume;
 
         [Header("Config")]
         [SerializeField] private MusicManagerCfg _config;
@@ -12,26 +12,26 @@ namespace KitchenChaos
         [Header("Internal Ref")]
         [SerializeField] private AudioSource _audioSrc;
 
-        private float _masterVolumn;
+        private float _masterVolume;
 
         private void Start()
         {
-            _masterVolumn = PlayerPrefs.GetFloat(_config.PlayerPrefsVolumnKey, _config.DefaultVolumn);
-            _audioSrc.volume = _masterVolumn;
+            _masterVolume = PlayerPrefs.GetFloat(_config.PlayerPrefsVolumeKey, _config.DefaultVolume);
+            _audioSrc.volume = _masterVolume;
         }
 
-        public void ChangeVolumn()
+        public void ChangeVolume()
         {
-            _masterVolumn += _config.VolumnStep;
+            _masterVolume += _config.VolumeStep;
 
-            if (_masterVolumn > _config.VolumnMax)
+            if (_masterVolume > _config.VolumeMax)
             {
-                _masterVolumn = _config.VolumnMin;
+                _masterVolume = _config.VolumeMin;
             }
 
-            _audioSrc.volume = _masterVolumn;
+            _audioSrc.volume = _masterVolume;
 
-            PlayerPrefs.SetFloat(_config.PlayerPrefsVolumnKey, _masterVolumn);
+            PlayerPrefs.SetFloat(_config.PlayerPrefsVolumeKey, _masterVolume);
             PlayerPrefs.Save();
         }
     }

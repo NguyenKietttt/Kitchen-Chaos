@@ -2,25 +2,22 @@ using UnityEngine;
 
 namespace KitchenChaos
 {
-    public sealed class PlayerController : MonoBehaviour, IKitchenObjParent
+    public sealed class PlayerInteraction : MonoBehaviour, IKitchenObjParent
     {
         public Transform SpawnPoint => _kitchenObjHoldPoint;
         public KitchenObject KitchenObj => _kitchenObj;
         public bool HasKitchenObj => _kitchenObj != null;
-        public bool IsMoving => _isMoving;
 
         [Header("Config")]
-        [SerializeField] private PlayerControllerCfg _config;
+        [SerializeField] private PlayerCfg _config;
 
         [Header("Internal Ref")]
-        [SerializeField] private PlayerAnimator _playerAnimator;
         [SerializeField] private Transform _kitchenObjHoldPoint;
 
         private BaseCounter _selectedCounter;
         private KitchenObject _kitchenObj;
         private GameState _curState;
         private Vector3 _lastInteractionDir;
-        private bool _isMoving;
 
         private void OnEnable()
         {
@@ -32,9 +29,6 @@ namespace KitchenChaos
         private void Update()
         {
             Vector2 input = Bootstrap.Instance.InputMgr.InputVectorNormalized;
-            bool canMove = CanMove(input);
-
-            HandleMovement(canMove, input);
             HandleCounterSelection(input);
         }
 
@@ -81,96 +75,19 @@ namespace KitchenChaos
 
         private void OnInteractAction()
         {
-            if (_curState is not GameState.GamePlaying)
+            if (CanInteract() && _selectedCounter.gameObject.TryGetComponent(out IMainInteractHandler mainInteractHandler))
             {
-                return;
+                mainInteractHandler.OnMainInteract(this);
             }
 
-            if (_selectedCounter != null)
-            {
-                _selectedCounter.OnInteract(this);
-            }
         }
 
         private void OnCuttingInteractAction()
         {
-            if (_curState is not GameState.GamePlaying)
+            if (CanInteract() && _selectedCounter.gameObject.TryGetComponent(out ISecondaryInteractHandler secondaryInteractHandler))
             {
-                return;
+                secondaryInteractHandler.OnSecondaryInteract();
             }
-
-            if (_selectedCounter != null)
-            {
-                _selectedCounter.OnCuttingInteract(this);
-            }
-        }
-
-        private void HandleMovement(bool canMove, Vector2 input)
-        {
-            if (canMove)
-            {
-                Vector3 moveDir = new(input.x, 0, input.y);
-                float moveDistance = _config.MoveSpeed * Time.deltaTime;
-
-                if (!CanMove(moveDir, moveDistance))
-                {
-                    moveDir = TryMoveHugWall(moveDir, moveDistance);
-                }
-
-                if (CanMove(moveDir, moveDistance))
-                {
-                    UpdatePosition(moveDir, moveDistance);
-                }
-
-                UpdateRotationByMovingDirection(moveDir);
-                _isMoving = true;
-            }
-            else
-            {
-                _isMoving = false;
-            }
-
-            _playerAnimator.UpdateWalkingAnim(canMove);
-        }
-
-        private Vector3 TryMoveHugWall(Vector3 moveDir, float moveDistance)
-        {
-            Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
-
-            if ((moveDirX.x <= -_config.MoveOffset || moveDirX.x >= _config.MoveOffset) && CanMove(moveDirX, moveDistance))
-            {
-                return moveDirX;
-            }
-
-            Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
-
-            if ((moveDirZ.z <= -_config.MoveOffset || moveDirZ.z >= _config.MoveOffset) && CanMove(moveDirZ, moveDistance))
-            {
-                return moveDirZ;
-            }
-
-            return moveDir.normalized;
-        }
-
-        private bool CanMove(Vector3 moveDir, float moveDistance)
-        {
-            Vector3 curPos = transform.position;
-            return !Physics.CapsuleCast(curPos, curPos + (Vector3.up * _config.Height), _config.Radius, moveDir, moveDistance);
-        }
-
-        public bool CanMove(Vector2 input)
-        {
-            return input != Vector2.zero;
-        }
-
-        private void UpdatePosition(Vector3 moveDir, float moveDistance)
-        {
-            transform.position += moveDir * moveDistance;
-        }
-
-        private void UpdateRotationByMovingDirection(Vector3 moveDir)
-        {
-            transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * _config.RotateSpeed);
         }
 
         public void SetKitchenObj(KitchenObject newKitchenObj)
@@ -191,6 +108,11 @@ namespace KitchenChaos
         private void OnGameStateChanged(GameState state)
         {
             _curState = state;
+        }
+
+        private bool CanInteract()
+        {
+            return _curState is GameState.GamePlaying && _selectedCounter != null;
         }
     }
 }

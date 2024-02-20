@@ -7,7 +7,7 @@ namespace KitchenChaos
     public sealed class DeliveryManager : MonoBehaviour
     {
         public IReadOnlyList<DishReceiptSO> WaitingReceiptsSO => _waitingReceiptsSO.AsReadOnly();
-        public int AmountSucessfulReceipt => _amountSucessfulReceipt;
+        public int AmountSuccessfulReceipt => _amountSuccessfulReceipt;
 
         private readonly List<DishReceiptSO> _waitingReceiptsSO = new();
 
@@ -16,7 +16,7 @@ namespace KitchenChaos
 
         private GameState _curState;
         private float _spawnReceiptTimer;
-        private int _amountSucessfulReceipt;
+        private int _amountSuccessfulReceipt;
 
         public void Init()
         {
@@ -80,7 +80,7 @@ namespace KitchenChaos
 
                     if (isPlateContentMatchesReceipt)
                     {
-                        _amountSucessfulReceipt++;
+                        _amountSuccessfulReceipt++;
                         _waitingReceiptsSO.RemoveAt(i);
 
                         Bootstrap.Instance.EventMgr.CompleteReceipt?.Invoke();
@@ -99,7 +99,7 @@ namespace KitchenChaos
             _waitingReceiptsSO.Clear();
 
             _spawnReceiptTimer = _config.SpawnReceiptTimerMin;
-            _amountSucessfulReceipt = _config.WaitingReceiptMin;
+            _amountSuccessfulReceipt = _config.WaitingReceiptMin;
         }
 
         private void OnGameStateChanged(GameState state)

@@ -44,7 +44,7 @@ namespace KitchenChaos
 
         private void OnResumeButtonClicked()
         {
-            Bootstrap.Instance.EventMgr.TooglePause?.Invoke();
+            Bootstrap.Instance.EventMgr.TogglePause?.Invoke();
         }
 
         private void OnOptionsButtonClicked()

@@ -7,8 +7,8 @@ namespace KitchenChaos
         // Input
         public Action Interact;
         public Action CuttingInteract;
-        public Action TooglePause;
-        public Action RebindingKey;
+        public Action TogglePause;
+        public Action RebindKey;
         public Action PickSomething;
     }
 }

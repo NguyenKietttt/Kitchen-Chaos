@@ -37,10 +37,10 @@ namespace KitchenChaos
             IEnumerable<DishReceiptSO> waitingDishReceipts = Bootstrap.Instance.DeliveryMgr.WaitingReceiptsSO;
             foreach (DishReceiptSO receipt in waitingDishReceipts)
             {
-                DeliveryManagerSingleUI waitingReceipUI = Instantiate(_config.ReceiptTemplateUI, _container);
-                waitingReceipUI.SetReceiptName(receipt.Name);
-                waitingReceipUI.SetIngredientIcons(receipt.KitchenObjsSO);
-                waitingReceipUI.Show();
+                DeliveryManagerSingleUI waitingReceiptUI = Instantiate(_config.ReceiptTemplateUI, _container);
+                waitingReceiptUI.SetReceiptName(receipt.Name);
+                waitingReceiptUI.SetIngredientIcons(receipt.KitchenObjsSO);
+                waitingReceiptUI.Show();
             }
         }
 

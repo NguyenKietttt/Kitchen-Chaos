@@ -9,8 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dca9d10a2db22b348940fa2ca2219c0a, type: 3}
-  m_Name: Cfg_PlayerSFX
+  m_Script: {fileID: 11500000, guid: 2b96ff02243f86e4698e8a0d3b726cc3, type: 3}
+  m_Name: Cfg_Player
   m_EditorClassIdentifier: 
+  _radius: 0.7
+  _moveOffset: 0.5
+  _heightOffset: 0.5
+  _height: 2
+  _moveSpeed: 7
+  _rotateSpeed: 10
+  _interactDistance: 2
+  _counterLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _isWalkingKey: IsWalking
   _footstepTimerMin: 0
   _footstepTimerMax: 0.1

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace KitchenChaos
 {
-    public sealed class CuttingCounter : BaseCounter
+    public sealed class CuttingCounter : BaseCounter, ISecondaryInteractHandler
     {
         private const int MIN_PROGRESS = 0;
 
@@ -16,13 +16,13 @@ namespace KitchenChaos
 
         private int _curCuttingProcess;
 
-        public override void OnInteract(PlayerController playerController)
+        public override void OnMainInteract(PlayerInteraction player)
         {
             if (HasKitchenObj)
             {
-                if (playerController.HasKitchenObj)
+                if (player.HasKitchenObj)
                 {
-                    if (playerController.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
+                    if (player.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
                     {
                         KitchenObject kitchenObj = KitchenObj;
                         if (plateKitchenObj.TryAddIngredient(kitchenObj.KitchenObjectSO))
@@ -34,22 +34,22 @@ namespace KitchenChaos
                 else
                 {
                     _curCuttingProcess = MIN_PROGRESS;
-                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(MIN_PROGRESS, gameObject.GetInstanceID());
+                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), MIN_PROGRESS);
 
-                    KitchenObj.SetCurKitchenObjParent(playerController);
+                    KitchenObj.SetCurKitchenObjParent(player);
                 }
             }
             else
             {
-                if (playerController.HasKitchenObj && HasReceiptWithInput(playerController.KitchenObj.KitchenObjectSO))
+                if (player.HasKitchenObj && HasReceiptWithInput(player.KitchenObj.KitchenObjectSO))
                 {
-                    playerController.KitchenObj.SetCurKitchenObjParent(this);
+                    player.KitchenObj.SetCurKitchenObjParent(this);
                     UpdateCounterProgress(MIN_PROGRESS);
                 }
             }
         }
 
-        public override void OnCuttingInteract(PlayerController playerController)
+        public void OnSecondaryInteract()
         {
             if (HasKitchenObj && HasReceiptWithInput(KitchenObj.KitchenObjectSO))
             {

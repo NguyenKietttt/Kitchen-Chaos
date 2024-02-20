@@ -48,11 +48,9 @@ namespace KitchenChaos
                 plateKitchenObj = curPlateKitchenObj;
                 return true;
             }
-            else
-            {
-                plateKitchenObj = null;
-                return false;
-            }
+
+            plateKitchenObj = null;
+            return false;
         }
     }
 }
