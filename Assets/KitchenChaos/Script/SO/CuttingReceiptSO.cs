@@ -14,6 +14,6 @@ namespace KitchenChaos
         [SerializeField] private KitchenObjectSO _output;
 
         [Header("Property")]
-        [SerializeField] private int _cuttingProcessMax;
+        [SerializeField, Min(1)] private int _cuttingProcessMax;
     }
 }
