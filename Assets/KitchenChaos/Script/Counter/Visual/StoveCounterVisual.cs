@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -11,14 +12,22 @@ namespace KitchenChaos
         [SerializeField] private GameObject _stoveOnObj;
         [SerializeField] private GameObject _particlesObj;
 
+        private EventManager _eventMgr;
+
+        private void Awake()
+        {
+            RegisterServices();
+        }
+
         private void Start()
         {
-            Bootstrap.Instance.EventMgr.ChangeStoveCounterState += OnStoveCounterStateChanged;
+            SubscribeEvents();
         }
 
         private void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.ChangeStoveCounterState -= OnStoveCounterStateChanged;
+            UnsubscribeEvents();
+            DeregisterServices();
         }
 
         private void OnStoveCounterStateChanged(int senderID, StoveCounterState state)
@@ -31,6 +40,26 @@ namespace KitchenChaos
             bool isActiveVisual = state is StoveCounterState.Frying or StoveCounterState.Fried;
             _stoveOnObj.SetActive(isActiveVisual);
             _particlesObj.SetActive(isActiveVisual);
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr.ChangeStoveCounterState += OnStoveCounterStateChanged;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr.ChangeStoveCounterState -= OnStoveCounterStateChanged;
         }
     }
 }

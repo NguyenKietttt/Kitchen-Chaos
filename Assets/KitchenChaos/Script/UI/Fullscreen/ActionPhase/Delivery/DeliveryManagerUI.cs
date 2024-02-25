@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -11,30 +12,32 @@ namespace KitchenChaos
         [Header("Internal Ref")]
         [SerializeField] private Transform _container;
 
+        private EventManager _eventMgr;
+        private DeliveryManager _deliveryMgr;
+
         private void Awake()
         {
+            RegisterServices();
             _config.ReceiptTemplateUI.Hide();
         }
 
         private void Start()
         {
-            Bootstrap.Instance.EventMgr.SpawnReceipt += UpdateVisual;
-            Bootstrap.Instance.EventMgr.CompleteReceipt += UpdateVisual;
-
+            SubscribeEvents();
             UpdateVisual();
         }
 
         private void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.SpawnReceipt -= UpdateVisual;
-            Bootstrap.Instance.EventMgr.CompleteReceipt -= UpdateVisual;
+            UnsubscribeEvents();
+            DeregisterServices();
         }
 
         public void UpdateVisual()
         {
             ClearPreviousVisual();
 
-            IEnumerable<DishReceiptSO> waitingDishReceipts = Bootstrap.Instance.DeliveryMgr.WaitingReceiptsSO;
+            IEnumerable<DishReceiptSO> waitingDishReceipts = _deliveryMgr.WaitingReceiptsSO;
             foreach (DishReceiptSO receipt in waitingDishReceipts)
             {
                 DeliveryManagerSingleUI waitingReceiptUI = Instantiate(_config.ReceiptTemplateUI, _container);
@@ -50,6 +53,30 @@ namespace KitchenChaos
             {
                 Destroy(child.gameObject);
             }
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+            _deliveryMgr = ServiceLocator.Instance.Get<DeliveryManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+            _deliveryMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr.SpawnReceipt += UpdateVisual;
+            _eventMgr.CompleteReceipt += UpdateVisual;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr.SpawnReceipt -= UpdateVisual;
+            _eventMgr.CompleteReceipt -= UpdateVisual;
         }
     }
 }

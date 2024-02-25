@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -14,18 +15,22 @@ namespace KitchenChaos
         [Header("Config")]
         [SerializeField] private DeliveryManagerCfg _config;
 
+        private EventManager _eventMgr;
+
         private GameState _curState;
         private float _spawnReceiptTimer;
         private int _amountSuccessfulReceipt;
 
         public void Init()
         {
-            Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
+            RegisterServices();
+            _eventMgr.ChangeGameState += OnGameStateChanged;
         }
 
-        public void OnDestroy()
+        private void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
+            _eventMgr.ChangeGameState -= OnGameStateChanged;
+            DeregisterServices();
         }
 
         private void Update()
@@ -47,7 +52,7 @@ namespace KitchenChaos
                     DishReceiptSO waitingReceiptSO = _config.DishReceiptsS0.Receipts[index];
                     _waitingReceiptsSO.Add(waitingReceiptSO);
 
-                    Bootstrap.Instance.EventMgr.SpawnReceipt?.Invoke();
+                    _eventMgr.SpawnReceipt?.Invoke();
                 }
             }
         }
@@ -83,15 +88,15 @@ namespace KitchenChaos
                         _amountSuccessfulReceipt++;
                         _waitingReceiptsSO.RemoveAt(i);
 
-                        Bootstrap.Instance.EventMgr.CompleteReceipt?.Invoke();
-                        Bootstrap.Instance.EventMgr.DeliverReceiptSuccess?.Invoke();
+                        _eventMgr.CompleteReceipt?.Invoke();
+                        _eventMgr.DeliverReceiptSuccess?.Invoke();
 
                         return;
                     }
                 }
             }
 
-            Bootstrap.Instance.EventMgr.DeliverReceiptFailed?.Invoke();
+            _eventMgr.DeliverReceiptFailed?.Invoke();
         }
 
         private void Reset()
@@ -112,6 +117,16 @@ namespace KitchenChaos
                     Reset();
                     break;
             }
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
         }
     }
 }

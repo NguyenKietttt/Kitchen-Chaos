@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -12,11 +13,18 @@ namespace KitchenChaos
         [SerializeField] private StoveCounter _stoveCounter;
         [SerializeField] private CanvasGroup _canvasGroup;
 
+        private EventManager _eventMgr;
+
         private Sequence _warningSequence;
+
+        private void Awake()
+        {
+            RegisterServices();
+        }
 
         private void Start()
         {
-            Bootstrap.Instance.EventMgr.UpdateCounterProgress += OnCounterProgressChanged;
+            SubscribeEvents();
 
             SetupWarningSequence();
             Hide();
@@ -25,7 +33,9 @@ namespace KitchenChaos
         private void OnDestroy()
         {
             DOTween.Clear(true);
-            Bootstrap.Instance.EventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
+
+            UnsubscribeEvents();
+            DeregisterServices();
         }
 
         private void OnCounterProgressChanged(int senderID, float progressNormalized)
@@ -63,6 +73,26 @@ namespace KitchenChaos
                 .Append(_canvasGroup.DOFade(0.0f, 0.2f));
 
             _warningSequence.SetLoops(-1, LoopType.Restart);
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr.UpdateCounterProgress += OnCounterProgressChanged;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
         }
     }
 }

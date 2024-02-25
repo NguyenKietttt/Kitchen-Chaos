@@ -34,7 +34,7 @@ namespace KitchenChaos
                 else
                 {
                     _curCuttingProcess = MIN_PROGRESS;
-                    Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), MIN_PROGRESS);
+                    _eventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), MIN_PROGRESS);
 
                     KitchenObj.SetCurKitchenObjParent(player);
                 }
@@ -56,7 +56,7 @@ namespace KitchenChaos
                 TriggerCutAnim();
                 UpdateCounterProgress(++_curCuttingProcess);
 
-                Bootstrap.Instance.EventMgr.InteractWithCutCounter?.Invoke();
+                _eventMgr.InteractWithCutCounter?.Invoke();
             }
         }
 
@@ -66,7 +66,7 @@ namespace KitchenChaos
             CuttingReceiptSO outputCuttingReceiptSO = GetCuttingReceiptSOWithInput(KitchenObj.KitchenObjectSO);
             float progressNormalized = (float)_curCuttingProcess / outputCuttingReceiptSO.CuttingProcessMax;
 
-            Bootstrap.Instance.EventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), progressNormalized);
+            _eventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), progressNormalized);
 
             SpawnOutputCuttingKitchenObj(outputCuttingReceiptSO);
         }

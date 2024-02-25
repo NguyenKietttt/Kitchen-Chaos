@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -10,23 +11,30 @@ namespace KitchenChaos
         [Header("External Ref")]
         [SerializeField] private PlateKitchenObject _plateKitchenObj;
 
+        private EventManager _eventMgr;
+
+        private void Awake()
+        {
+            RegisterServices();
+        }
+
         private void Start()
         {
             DisableCompleteVisual();
-
-            Bootstrap.Instance.EventMgr.AddIngredientSuccess += OnAddIngredientSuccess;
+            _eventMgr.AddIngredientSuccess += OnAddIngredientSuccess;
         }
 
         private void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.AddIngredientSuccess -= OnAddIngredientSuccess;
+            _eventMgr.AddIngredientSuccess -= OnAddIngredientSuccess;
+            DeregisterServices();
         }
 
         private void DisableCompleteVisual()
         {
-            for (int i = 0; i < _KitchenObjSOToGameObjs.Length; i++)
+            foreach (KitchenObjSOToGameObj kitchenObjSOGameObj in _KitchenObjSOToGameObjs)
             {
-                _KitchenObjSOToGameObjs[i].GameObj.SetActive(false);
+                kitchenObjSOGameObj.GameObj.SetActive(false);
             }
         }
 
@@ -37,14 +45,23 @@ namespace KitchenChaos
                 return;
             }
 
-            for (int i = 0; i < _KitchenObjSOToGameObjs.Length; i++)
+            foreach (KitchenObjSOToGameObj kitchenObjSOGameObj in _KitchenObjSOToGameObjs)
             {
-                KitchenObjSOToGameObj kitchenObjSOGameObj = _KitchenObjSOToGameObjs[i];
                 if (kitchenObjSOGameObj.KitchenObjSO == kitchenObjSO)
                 {
                     kitchenObjSOGameObj.GameObj.SetActive(true);
                 }
             }
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
         }
     }
 }

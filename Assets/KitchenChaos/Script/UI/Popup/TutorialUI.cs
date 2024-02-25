@@ -1,6 +1,7 @@
 using TMPro;
 using UISystem;
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -26,10 +27,14 @@ namespace KitchenChaos
         [SerializeField] private TextMeshProUGUI _gamepadInteractTxt;
         [SerializeField] private TextMeshProUGUI _gamepadCutTxt;
 
+        private EventManager _eventMgr;
+        private UIManager _uiMgr;
+        private InputManager _inputMgr;
+
         public override void OnPush(object[] datas = null)
         {
-            Bootstrap.Instance.EventMgr.RebindKey += UpdateVisual;
-            Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
+            RegisterServices();
+            SubscribeEvents();
 
             UpdateVisual();
         }
@@ -46,8 +51,8 @@ namespace KitchenChaos
 
         public override void OnPop()
         {
-            Bootstrap.Instance.EventMgr.RebindKey -= UpdateVisual;
-            Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
+            UnsubscribeEvents();
+            DeregisterServices();
 
             Destroy(gameObject);
         }
@@ -56,21 +61,21 @@ namespace KitchenChaos
         {
             if (state is GameState.CountDownToStart)
             {
-                Bootstrap.Instance.UIManager.Pop();
+                _uiMgr.Pop();
             }
         }
 
         private void UpdateVisual()
         {
-            _keyboardMoveUpTxt.SetText(_rebindKeyMoveUpSO.GetDisplayString());
-            _keyboardMoveDownTxt.SetText(_rebindKeyMoveDownSO.GetDisplayString());
-            _keyboardMoveLeftTxt.SetText(_rebindKeyMoveLeftSO.GetDisplayString());
-            _keyboardMoveRightTxt.SetText(_rebindKeyMoveRightSO.GetDisplayString());
-            _keyboardInteractTxt.SetText(_rebindKeyInteractSO.GetDisplayString());
-            _keyboardCutTxt.SetText(_rebindKeyCutSO.GetDisplayString());
+            _keyboardMoveUpTxt.SetText(GetKeyDisplayString(_rebindKeyMoveUpSO));
+            _keyboardMoveDownTxt.SetText(GetKeyDisplayString(_rebindKeyMoveDownSO));
+            _keyboardMoveLeftTxt.SetText(GetKeyDisplayString(_rebindKeyMoveLeftSO));
+            _keyboardMoveRightTxt.SetText(GetKeyDisplayString(_rebindKeyMoveRightSO));
+            _keyboardInteractTxt.SetText(GetKeyDisplayString(_rebindKeyInteractSO));
+            _keyboardCutTxt.SetText(GetKeyDisplayString(_rebindKeyCutSO));
 
-            _gamepadInteractTxt.SetText(_rebindKeyInteractGamepadSO.GetDisplayString());
-            _gamepadCutTxt.SetText(_rebindKeyCutGamepadSO.GetDisplayString());
+            _gamepadInteractTxt.SetText(GetKeyDisplayString(_rebindKeyInteractGamepadSO));
+            _gamepadCutTxt.SetText(GetKeyDisplayString(_rebindKeyCutGamepadSO));
         }
 
         private void Show()
@@ -81,6 +86,41 @@ namespace KitchenChaos
         private void Hide()
         {
             gameObject.SetActive(false);
+        }
+
+        private string GetKeyDisplayString(RebindKeySO rebindKeySO)
+        {
+            string actionName = rebindKeySO.ActionName;
+            int index = rebindKeySO.Index;
+            string displayString = _inputMgr.GetKeyDisplayString(actionName, index);
+
+            return displayString;
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+            _uiMgr = ServiceLocator.Instance.Get<UIManager>();
+            _inputMgr = ServiceLocator.Instance.Get<InputManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+            _uiMgr = null;
+            _inputMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr.RebindKey += UpdateVisual;
+            _eventMgr.ChangeGameState += OnGameStateChanged;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr.RebindKey -= UpdateVisual;
+            _eventMgr.ChangeGameState -= OnGameStateChanged;
         }
     }
 }

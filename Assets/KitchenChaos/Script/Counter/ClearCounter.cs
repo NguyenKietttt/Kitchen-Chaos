@@ -4,13 +4,18 @@ namespace KitchenChaos
     {
         public override void OnMainInteract(PlayerInteraction player)
         {
+            if (!HasKitchenObj && !player.HasKitchenObj)
+            {
+                return;
+            }
+
             if (!HasKitchenObj && player.HasKitchenObj)
             {
                 player.KitchenObj.SetCurKitchenObjParent(this);
                 return;
             }
 
-            if (!player.HasKitchenObj)
+            if (HasKitchenObj && !player.HasKitchenObj)
             {
                 KitchenObj.SetCurKitchenObjParent(player);
                 return;

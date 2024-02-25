@@ -1,6 +1,7 @@
 using UISystem;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -13,7 +14,19 @@ namespace KitchenChaos
         [SerializeField] private Button _playBtn;
         [SerializeField] private Button _quitBtn;
 
+        private GameStateManager _gameStateMgr;
+
         private GameObject _decorationObj;
+
+        private void Awake()
+        {
+            RegisterServices();
+        }
+
+        private void OnDestroy()
+        {
+            DeregisterServices();
+        }
 
         public override void OnPush(object[] datas = null)
         {
@@ -48,7 +61,7 @@ namespace KitchenChaos
 
         private void OnPlayButtonClicked()
         {
-            Bootstrap.Instance.GameStateMgr.ChangeState(GameState.WaitingToStart);
+            _gameStateMgr.ChangeState(GameState.WaitingToStart);
         }
 
         private void OnQuitButtonClicked()
@@ -70,6 +83,16 @@ namespace KitchenChaos
         {
             gameObject.SetActive(false);
             _decorationObj.SetActive(false);
+        }
+
+        private void RegisterServices()
+        {
+            _gameStateMgr = ServiceLocator.Instance.Get<GameStateManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _gameStateMgr = null;
         }
     }
 }

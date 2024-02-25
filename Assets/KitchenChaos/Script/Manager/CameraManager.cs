@@ -1,5 +1,6 @@
 using Cinemachine;
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -9,14 +10,22 @@ namespace KitchenChaos
         [SerializeField] private CinemachineVirtualCamera _mainMenuVirtualCam;
         [SerializeField] private CinemachineVirtualCamera _gameplayVirtualCam;
 
+        private EventManager _eventMgr;
+
         private void Awake()
         {
-            Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
+            RegisterServices();
+        }
+
+        private void Start()
+        {
+            _eventMgr.ChangeGameState += OnGameStateChanged;
         }
 
         private void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
+            _eventMgr.ChangeGameState -= OnGameStateChanged;
+            DeregisterServices();
         }
 
         private void OnGameStateChanged(GameState state)
@@ -47,6 +56,16 @@ namespace KitchenChaos
 
                     break;
             }
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
         }
     }
 }

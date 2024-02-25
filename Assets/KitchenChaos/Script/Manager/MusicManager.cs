@@ -14,7 +14,7 @@ namespace KitchenChaos
 
         private float _masterVolume;
 
-        private void Start()
+        public void Init()
         {
             _masterVolume = PlayerPrefs.GetFloat(_config.PlayerPrefsVolumeKey, _config.DefaultVolume);
             _audioSrc.volume = _masterVolume;

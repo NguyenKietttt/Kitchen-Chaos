@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -11,11 +11,22 @@ namespace KitchenChaos
 
         private readonly HashSet<KitchenObjectSO> _kitchenObjHashSet = new();
 
+        private EventManager _eventMgr;
         private PlateKitchenObjectCfg _plateConfig;
+
+        private void Awake()
+        {
+            RegisterServices();
+        }
 
         private void Start()
         {
             _plateConfig = (PlateKitchenObjectCfg)_config;
+        }
+
+        private void OnDestroy()
+        {
+            DeregisterServices();
         }
 
         public bool TryAddIngredient(KitchenObjectSO kitchenObjSO)
@@ -27,11 +38,21 @@ namespace KitchenChaos
 
             if (_kitchenObjHashSet.Add(kitchenObjSO))
             {
-                Bootstrap.Instance.EventMgr.AddIngredientSuccess?.Invoke(GetInstanceID(), kitchenObjSO);
+                _eventMgr.AddIngredientSuccess?.Invoke(GetInstanceID(), kitchenObjSO);
                 return true;
             }
 
             return false;
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
         }
     }
 }

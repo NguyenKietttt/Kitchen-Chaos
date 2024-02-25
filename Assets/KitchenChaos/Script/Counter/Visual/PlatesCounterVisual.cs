@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -13,16 +14,22 @@ namespace KitchenChaos
 
         private readonly Stack<GameObject> _plateVisuals = new();
 
+        private EventManager _eventMgr;
+
+        private void Awake()
+        {
+            RegisterServices();
+        }
+
         private void Start()
         {
-            Bootstrap.Instance.EventMgr.SpawnPlate += OnPlateSpawned;
-            Bootstrap.Instance.EventMgr.RemovePlate += OnPlateRemoved;
+            SubscribeEvents();
         }
 
         private void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.SpawnPlate -= OnPlateSpawned;
-            Bootstrap.Instance.EventMgr.RemovePlate -= OnPlateRemoved;
+            UnsubscribeEvents();
+            DeregisterServices();
         }
 
         private void OnPlateSpawned()
@@ -39,6 +46,28 @@ namespace KitchenChaos
             {
                 Destroy(_plateVisuals.Pop());
             }
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr.SpawnPlate += OnPlateSpawned;
+            _eventMgr.RemovePlate += OnPlateRemoved;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr.SpawnPlate -= OnPlateSpawned;
+            _eventMgr.RemovePlate -= OnPlateRemoved;
         }
     }
 }

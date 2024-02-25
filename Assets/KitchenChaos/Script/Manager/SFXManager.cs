@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -10,32 +11,22 @@ namespace KitchenChaos
         [Header("Config")]
         [SerializeField] private SFXManagerCfg _config;
 
+        private EventManager _eventMgr;
+
         private float _masterVolume;
 
         public void Init()
         {
-            Bootstrap.Instance.EventMgr.DeliverReceiptSuccess += OnDeliverReceiptSuccess;
-            Bootstrap.Instance.EventMgr.DeliverReceiptFailed += OnDeliverReceiptFailed;
-            Bootstrap.Instance.EventMgr.CountdownPopup += OnCountdownPopup;
-            Bootstrap.Instance.EventMgr.StoveWarning += OnStoveWarning;
-            Bootstrap.Instance.EventMgr.InteractWithCutCounter += OnInteractWithCutCounter;
-            Bootstrap.Instance.EventMgr.PickSomething += OnPickSomething;
-            Bootstrap.Instance.EventMgr.PlaceObject += OnObjectPlaced;
-            Bootstrap.Instance.EventMgr.InteractWithTrashCounter += OnInteractWithTrashCounter;
+            RegisterServices();
+            SubscribeEvents();
 
             _masterVolume = PlayerPrefs.GetFloat(_config.PlayerPrefsVolumeKey, _config.DefaultVolume);
         }
 
         private void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.DeliverReceiptSuccess -= OnDeliverReceiptSuccess;
-            Bootstrap.Instance.EventMgr.DeliverReceiptFailed -= OnDeliverReceiptFailed;
-            Bootstrap.Instance.EventMgr.CountdownPopup -= OnCountdownPopup;
-            Bootstrap.Instance.EventMgr.StoveWarning -= OnStoveWarning;
-            Bootstrap.Instance.EventMgr.InteractWithCutCounter -= OnInteractWithCutCounter;
-            Bootstrap.Instance.EventMgr.PickSomething -= OnPickSomething;
-            Bootstrap.Instance.EventMgr.PlaceObject -= OnObjectPlaced;
-            Bootstrap.Instance.EventMgr.InteractWithTrashCounter -= OnInteractWithTrashCounter;
+            UnsubscribeEvents();
+            DeregisterServices();
         }
 
         public void ChangeVolume()
@@ -99,8 +90,42 @@ namespace KitchenChaos
         private void PlaySound(IReadOnlyList<AudioClip> audioClips, Vector3 position, float volumeMultiplier = 1)
         {
             int index = Random.Range(0, audioClips.Count);
-            float finalVolumn = volumeMultiplier * _masterVolume;
-            AudioSource.PlayClipAtPoint(audioClips[index], position, finalVolumn);
+            float finalVolume = volumeMultiplier * _masterVolume;
+            AudioSource.PlayClipAtPoint(audioClips[index], position, finalVolume);
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr.DeliverReceiptSuccess += OnDeliverReceiptSuccess;
+            _eventMgr.DeliverReceiptFailed += OnDeliverReceiptFailed;
+            _eventMgr.CountdownPopup += OnCountdownPopup;
+            _eventMgr.StoveWarning += OnStoveWarning;
+            _eventMgr.InteractWithCutCounter += OnInteractWithCutCounter;
+            _eventMgr.PickSomething += OnPickSomething;
+            _eventMgr.PlaceObject += OnObjectPlaced;
+            _eventMgr.InteractWithTrashCounter += OnInteractWithTrashCounter;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr.DeliverReceiptSuccess -= OnDeliverReceiptSuccess;
+            _eventMgr.DeliverReceiptFailed -= OnDeliverReceiptFailed;
+            _eventMgr.CountdownPopup -= OnCountdownPopup;
+            _eventMgr.StoveWarning -= OnStoveWarning;
+            _eventMgr.InteractWithCutCounter -= OnInteractWithCutCounter;
+            _eventMgr.PickSomething -= OnPickSomething;
+            _eventMgr.PlaceObject -= OnObjectPlaced;
+            _eventMgr.InteractWithTrashCounter -= OnInteractWithTrashCounter;
         }
     }
 }

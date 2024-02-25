@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -11,14 +12,22 @@ namespace KitchenChaos
         [Header("Internal Ref")]
         [SerializeField] private PlateKitchenObject _plateKitchenObj;
 
+        private EventManager _eventMgr;
+
+        private void Awake()
+        {
+            RegisterServices();
+        }
+
         private void Start()
         {
-            Bootstrap.Instance.EventMgr.AddIngredientSuccess += UpdateVisual;
+            SubscribeEvents();
         }
 
         private void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.AddIngredientSuccess -= UpdateVisual;
+            UnsubscribeEvents();
+            DeregisterServices();
         }
 
         private void UpdateVisual(int senderID, KitchenObjectSO kitchenObjSO)
@@ -44,6 +53,26 @@ namespace KitchenChaos
             {
                 Destroy(child.gameObject);
             }
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr.AddIngredientSuccess += UpdateVisual;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr.AddIngredientSuccess -= UpdateVisual;
         }
     }
 }

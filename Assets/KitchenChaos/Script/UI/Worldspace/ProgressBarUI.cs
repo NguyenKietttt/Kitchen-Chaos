@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -14,9 +15,16 @@ namespace KitchenChaos
         [Header("Internal Ref")]
         [SerializeField] private Image _progressImg;
 
+        private EventManager _eventMgr;
+
+        private void Awake()
+        {
+            RegisterServices();
+        }
+
         private void Start()
         {
-            Bootstrap.Instance.EventMgr.UpdateCounterProgress += OnCounterProgressChanged;
+            SubscribeEvents();
 
             _progressImg.fillAmount = _config.MinProgress;
             Hide();
@@ -24,7 +32,8 @@ namespace KitchenChaos
 
         private void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
+            UnsubscribeEvents();
+            DeregisterServices();
         }
 
         private void OnCounterProgressChanged(int senderID, float progressNormalized)
@@ -54,6 +63,26 @@ namespace KitchenChaos
         private void Hide()
         {
             gameObject.SetActive(false);
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr.UpdateCounterProgress += OnCounterProgressChanged;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
         }
     }
 }

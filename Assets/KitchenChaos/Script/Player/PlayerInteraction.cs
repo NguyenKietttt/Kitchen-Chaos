@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -14,29 +15,38 @@ namespace KitchenChaos
         [Header("Internal Ref")]
         [SerializeField] private Transform _kitchenObjHoldPoint;
 
+        private EventManager _eventMgr;
+        private InputManager _inputMgr;
+
         private BaseCounter _selectedCounter;
         private KitchenObject _kitchenObj;
         private GameState _curState;
         private Vector3 _lastInteractionDir;
 
+        private void Awake()
+        {
+            RegisterServices();
+        }
+
         private void OnEnable()
         {
-            Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
-            Bootstrap.Instance.EventMgr.Interact += OnInteractAction;
-            Bootstrap.Instance.EventMgr.CuttingInteract += OnCuttingInteractAction;
+            SubscribeEvents();
         }
 
         private void Update()
         {
-            Vector2 input = Bootstrap.Instance.InputMgr.InputVectorNormalized;
+            Vector2 input = _inputMgr.InputVectorNormalized;
             HandleCounterSelection(input);
         }
 
         private void OnDisable()
         {
-            Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
-            Bootstrap.Instance.EventMgr.Interact -= OnInteractAction;
-            Bootstrap.Instance.EventMgr.CuttingInteract -= OnCuttingInteractAction;
+            UnsubscribeEvents();
+        }
+
+        private void OnDestroy()
+        {
+            DeregisterServices();
         }
 
         private void HandleCounterSelection(Vector2 input)
@@ -57,19 +67,19 @@ namespace KitchenChaos
                     if (_selectedCounter == null || _selectedCounter != baseCounter)
                     {
                         _selectedCounter = baseCounter;
-                        Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(_selectedCounter.gameObject.GetInstanceID());
+                        _eventMgr.SelectCounter?.Invoke(_selectedCounter.gameObject.GetInstanceID());
                     }
                 }
                 else
                 {
                     _selectedCounter = null;
-                    Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(int.MinValue);
+                    _eventMgr.SelectCounter?.Invoke(int.MinValue);
                 }
             }
             else
             {
                 _selectedCounter = null;
-                Bootstrap.Instance.EventMgr.SelectCounter?.Invoke(int.MinValue);
+                _eventMgr.SelectCounter?.Invoke(int.MinValue);
             }
         }
 
@@ -96,7 +106,7 @@ namespace KitchenChaos
 
             if (newKitchenObj != null)
             {
-                Bootstrap.Instance.EventMgr.PickSomething?.Invoke();
+                _eventMgr.PickSomething?.Invoke();
             }
         }
 
@@ -113,6 +123,32 @@ namespace KitchenChaos
         private bool CanInteract()
         {
             return _curState is GameState.GamePlaying && _selectedCounter != null;
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+            _inputMgr = ServiceLocator.Instance.Get<InputManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+            _inputMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr.ChangeGameState += OnGameStateChanged;
+            _eventMgr.Interact += OnInteractAction;
+            _eventMgr.CuttingInteract += OnCuttingInteractAction;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr.ChangeGameState -= OnGameStateChanged;
+            _eventMgr.Interact -= OnInteractAction;
+            _eventMgr.CuttingInteract -= OnCuttingInteractAction;
         }
     }
 }

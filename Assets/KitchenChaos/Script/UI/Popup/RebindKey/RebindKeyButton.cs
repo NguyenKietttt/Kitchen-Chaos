@@ -2,6 +2,7 @@ using TMPro;
 using UISystem;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -14,9 +15,12 @@ namespace KitchenChaos
         [SerializeField] private Button _button;
         [SerializeField] private TextMeshProUGUI _text;
 
+        private InputManager _inputMgr;
+        private UIManager _uiMgr;
+
         private void Awake()
         {
-            _button.onClick.AddListener(OnClicked);
+            RegisterServices();
         }
 
         private void OnEnable()
@@ -24,28 +28,60 @@ namespace KitchenChaos
             UpdateText();
         }
 
+        private void Start()
+        {
+            SubscribeEvents();
+        }
+
         private void OnDestroy()
         {
-            _button.onClick.RemoveAllListeners();
+            UnsubscribeEvents();
+            DeregisterServices();
         }
 
         private void OnClicked()
         {
-            Bootstrap.Instance.UIManager.Push(ScreenID.RebindKey);
+            _uiMgr.Push(ScreenID.RebindKey);
 
-            string actionName = _config.RebindKeySO.GetActionName();
+            string actionName = _config.RebindKeySO.ActionName;
             int index = _config.RebindKeySO.Index;
 
-            Bootstrap.Instance.InputMgr.RebindBinding(actionName, index, () =>
+            _inputMgr.RebindBinding(actionName, index, () =>
             {
-                Bootstrap.Instance.UIManager.Pop();
+                _uiMgr.Pop();
                 UpdateText();
             });
         }
 
         private void UpdateText()
         {
-            _text.SetText(_config.RebindKeySO.GetDisplayString());
+            string actionName = _config.RebindKeySO.ActionName;
+            int index = _config.RebindKeySO.Index;
+            string keyDisplayString = _inputMgr.GetKeyDisplayString(actionName, index);
+
+            _text.SetText(keyDisplayString);
+        }
+
+        private void RegisterServices()
+        {
+            _inputMgr = ServiceLocator.Instance.Get<InputManager>();
+            _uiMgr = ServiceLocator.Instance.Get<UIManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _inputMgr = null;
+            _uiMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _button.onClick.AddListener(OnClicked);
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _button.onClick.RemoveAllListeners();
         }
     }
 }

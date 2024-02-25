@@ -2,6 +2,7 @@ using TMPro;
 using UISystem;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -11,23 +12,27 @@ namespace KitchenChaos
         [SerializeField] private TextMeshProUGUI _amountReceiptDeliveredTxt;
         [SerializeField] private Button _mainMenuBtn;
 
+        private EventManager _eventMgr;
+        private GameStateManager _gameStateMgr;
+        private DeliveryManager _deliveryMgr;
+
         public override void OnPush(object[] datas = null)
         {
-            Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
-            _mainMenuBtn.onClick.AddListener(() => OnMainMenuBtnClicked());
+            RegisterServices();
+            SubscribeEvents();
         }
 
         public override void OnPop()
         {
-            _mainMenuBtn.onClick.RemoveAllListeners();
-            Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
+            UnsubscribeEvents();
+            DeregisterServices();
 
             Destroy(gameObject);
         }
 
         private void OnMainMenuBtnClicked()
         {
-            Bootstrap.Instance.GameStateMgr.ChangeState(GameState.MainMenu);
+            _gameStateMgr.ChangeState(GameState.MainMenu);
         }
 
         private void OnGameStateChanged(GameState state)
@@ -35,7 +40,8 @@ namespace KitchenChaos
             switch (state)
             {
                 case GameState.GameOver:
-                    _amountReceiptDeliveredTxt.SetText(Bootstrap.Instance.DeliveryMgr.AmountSuccessfulReceipt.ToString());
+                    string AmountSuccessfulReceiptString = _deliveryMgr.AmountSuccessfulReceipt.ToString();
+                    _amountReceiptDeliveredTxt.SetText(AmountSuccessfulReceiptString);
                     Show();
                     break;
                 default:
@@ -52,6 +58,32 @@ namespace KitchenChaos
         private void Hide()
         {
             gameObject.SetActive(false);
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+            _gameStateMgr = ServiceLocator.Instance.Get<GameStateManager>();
+            _deliveryMgr = ServiceLocator.Instance.Get<DeliveryManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+            _gameStateMgr = null;
+            _deliveryMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _mainMenuBtn.onClick.AddListener(() => OnMainMenuBtnClicked());
+            _eventMgr.ChangeGameState += OnGameStateChanged;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _mainMenuBtn.onClick.RemoveAllListeners();
+            _eventMgr.ChangeGameState -= OnGameStateChanged;
         }
     }
 }
