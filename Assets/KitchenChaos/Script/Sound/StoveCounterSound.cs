@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -14,13 +15,19 @@ namespace KitchenChaos
         [SerializeField] private StoveCounter _stoveCounter;
         [SerializeField] private AudioSource _audioSrc;
 
+        private EventManager _eventMgr;
+
         private float _warningSoundTimer;
         private bool _shouldPlayWarningSound;
 
+        private void Awake()
+        {
+            RegisterServices();
+        }
+
         private void Start()
         {
-            Bootstrap.Instance.EventMgr.ChangeStoveCounterState += OnStoveCounterState;
-            Bootstrap.Instance.EventMgr.UpdateCounterProgress += OnCounterProgressChanged;
+            SubscribeEvents();
         }
 
         private void Update()
@@ -35,14 +42,14 @@ namespace KitchenChaos
             if (_warningSoundTimer <= _config.WarningTimerMin)
             {
                 _warningSoundTimer = _config.WarningTimerMax;
-                Bootstrap.Instance.EventMgr.StoveWarning?.Invoke();
+                _eventMgr.StoveWarning?.Invoke();
             }
         }
 
         private void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.ChangeStoveCounterState -= OnStoveCounterState;
-            Bootstrap.Instance.EventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
+            UnsubscribeEvents();
+            DeregisterServices();
         }
 
         private void OnStoveCounterState(int senderID, StoveCounterState state)
@@ -70,6 +77,28 @@ namespace KitchenChaos
             }
 
             _shouldPlayWarningSound = _stoveCounter.IsFried && progressNormalized >= _config.BurnProgressAmount;
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr.ChangeStoveCounterState += OnStoveCounterState;
+            _eventMgr.UpdateCounterProgress += OnCounterProgressChanged;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr.ChangeStoveCounterState -= OnStoveCounterState;
+            _eventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
         }
     }
 }

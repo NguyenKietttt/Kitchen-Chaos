@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -11,13 +11,20 @@ namespace KitchenChaos
         [Header("Internal Ref")]
         [SerializeField] private AudioSource _audioSrc;
 
+        private EventManager _eventMgr;
+        private SFXManager _sfxMgr;
+
         private float _footstepTimer;
         private bool _isPlayerMoving;
 
+        private void Awake()
+        {
+            RegisterServices();
+        }
+
         private void OnEnable()
         {
-            Bootstrap.Instance.EventMgr.PlayerMove += OnPlayerMove;
-            Bootstrap.Instance.EventMgr.PlayerStop += OnPlayerStop;
+            SubscribeEvents();
         }
 
         private void Update()
@@ -28,9 +35,20 @@ namespace KitchenChaos
                 _footstepTimer = _config.FootstepTimerMin;
                 if (_isPlayerMoving)
                 {
-                    _audioSrc.PlayOneShot(Bootstrap.Instance.SFXMgr.GetRandomFootStepAudioClip());
+                    AudioClip footstepClip = _sfxMgr.GetRandomFootStepAudioClip();
+                    _audioSrc.PlayOneShot(footstepClip);
                 }
             }
+        }
+
+        private void OnDisable()
+        {
+            UnsubscribeEvents();
+        }
+
+        private void OnDestroy()
+        {
+            DeregisterServices();
         }
 
         private void OnPlayerMove()
@@ -41,6 +59,30 @@ namespace KitchenChaos
         private void OnPlayerStop()
         {
             _isPlayerMoving = false;
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+            _sfxMgr = ServiceLocator.Instance.Get<SFXManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+            _sfxMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr.PlayerMove += OnPlayerMove;
+            _eventMgr.PlayerStop += OnPlayerStop;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr.PlayerMove -= OnPlayerMove;
+            _eventMgr.PlayerStop -= OnPlayerStop;
         }
     }
 }

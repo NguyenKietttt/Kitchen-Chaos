@@ -3,6 +3,7 @@ using TMPro;
 using UISystem;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -20,13 +21,16 @@ namespace KitchenChaos
         [SerializeField] private TextMeshProUGUI _sfxVolumeTxt;
         [SerializeField] private TextMeshProUGUI _musicVolumeTxt;
 
+        private UIManager _uiMgr;
+        private SFXManager _sfxMgr;
+        private MusicManager _musicMgr;
+
         private readonly StringBuilder _stringBuilder = new();
 
         public override void OnPush(object[] datas = null)
         {
-            _sfxVolumeBtn.onClick.AddListener(OnSFXVolumeButtonClicked);
-            _musicVolumeBtn.onClick.AddListener(OnMusicVolumeButtonClicked);
-            _closeBtn.onClick.AddListener(OnCloseButtonClicked);
+            RegisterServices();
+            SubscribeEvents();
 
             UpdateSFXVolumeText();
             UpdateMusicVolume();
@@ -46,9 +50,8 @@ namespace KitchenChaos
 
         public override void OnPop()
         {
-            _sfxVolumeBtn.onClick.RemoveAllListeners();
-            _musicVolumeBtn.onClick.RemoveAllListeners();
-            _closeBtn.onClick.RemoveAllListeners();
+            UnsubscribeEvents();
+            DeregisterServices();
 
             Destroy(gameObject);
             Time.timeScale = 1;
@@ -56,19 +59,19 @@ namespace KitchenChaos
 
         private void OnSFXVolumeButtonClicked()
         {
-            Bootstrap.Instance.SFXMgr.ChangeVolume();
+            _sfxMgr.ChangeVolume();
             UpdateSFXVolumeText();
         }
 
         private void OnMusicVolumeButtonClicked()
         {
-            Bootstrap.Instance.MusicMgr.ChangeVolume();
+            _musicMgr.ChangeVolume();
             UpdateMusicVolume();
         }
 
         private void OnCloseButtonClicked()
         {
-            Bootstrap.Instance.UIManager.Pop();
+            _uiMgr.Pop();
         }
 
         private void UpdateSFXVolumeText()
@@ -76,7 +79,7 @@ namespace KitchenChaos
             _stringBuilder
                 .Clear()
                 .Append("Sound Effects: ")
-                .Append(Mathf.Ceil(Bootstrap.Instance.SFXMgr.MasterVolume * ROUND_TO_ONE_MULTIPLICAND));
+                .Append(Mathf.Ceil(_sfxMgr.MasterVolume * ROUND_TO_ONE_MULTIPLICAND));
 
             _sfxVolumeTxt.SetText(_stringBuilder);
         }
@@ -86,9 +89,37 @@ namespace KitchenChaos
             _stringBuilder
                 .Clear()
                 .Append("Music: ")
-                .Append(Mathf.Ceil(Bootstrap.Instance.MusicMgr.MasterVolume * ROUND_TO_ONE_MULTIPLICAND));
+                .Append(Mathf.Ceil(_musicMgr.MasterVolume * ROUND_TO_ONE_MULTIPLICAND));
 
             _musicVolumeTxt.SetText(_stringBuilder);
+        }
+
+        private void RegisterServices()
+        {
+            _uiMgr = ServiceLocator.Instance.Get<UIManager>();
+            _sfxMgr = ServiceLocator.Instance.Get<SFXManager>();
+            _musicMgr = ServiceLocator.Instance.Get<MusicManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _uiMgr = null;
+            _sfxMgr = null;
+            _musicMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _sfxVolumeBtn.onClick.AddListener(OnSFXVolumeButtonClicked);
+            _musicVolumeBtn.onClick.AddListener(OnMusicVolumeButtonClicked);
+            _closeBtn.onClick.AddListener(OnCloseButtonClicked);
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _sfxVolumeBtn.onClick.RemoveAllListeners();
+            _musicVolumeBtn.onClick.RemoveAllListeners();
+            _closeBtn.onClick.RemoveAllListeners();
         }
     }
 }

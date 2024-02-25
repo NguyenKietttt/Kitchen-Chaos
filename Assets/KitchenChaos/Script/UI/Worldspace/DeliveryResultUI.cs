@@ -2,6 +2,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -16,18 +17,23 @@ namespace KitchenChaos
         [SerializeField] private TextMeshProUGUI _messageTxt;
         [SerializeField] private CanvasGroup _canvasGroup;
 
+        private EventManager _eventMgr;
+
+        private void Awake()
+        {
+            RegisterServices();
+        }
+
         private void Start()
         {
-            Bootstrap.Instance.EventMgr.DeliverReceiptSuccess += OnDeliverReceiptSuccess;
-            Bootstrap.Instance.EventMgr.DeliverReceiptFailed += OnDeliverReceiptFailed;
-
+            SubscribeEvents();
             Hide();
         }
 
         private void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.DeliverReceiptSuccess -= OnDeliverReceiptSuccess;
-            Bootstrap.Instance.EventMgr.DeliverReceiptFailed -= OnDeliverReceiptFailed;
+            UnsubscribeEvents();
+            DeregisterServices();
         }
 
         private void Show()
@@ -81,6 +87,28 @@ namespace KitchenChaos
                 .AppendCallback(() => _canvasGroup.alpha = 1.0f)
                 .Append(_canvasGroup.DOFade(1.0f, 0.5f))
                 .Append(_canvasGroup.DOFade(0.0f, 0.5f));
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr.DeliverReceiptSuccess += OnDeliverReceiptSuccess;
+            _eventMgr.DeliverReceiptFailed += OnDeliverReceiptFailed;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr.DeliverReceiptSuccess -= OnDeliverReceiptSuccess;
+            _eventMgr.DeliverReceiptFailed -= OnDeliverReceiptFailed;
         }
     }
 }

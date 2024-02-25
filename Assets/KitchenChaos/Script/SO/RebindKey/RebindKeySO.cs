@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -26,7 +27,7 @@ namespace KitchenChaos
             }
 
             _isInited = true;
-            _inputAction = Bootstrap.Instance.InputMgr.PlayerInputAction.asset.FindAction(_inputActionRef.action.name);
+            _inputAction = ServiceLocator.Instance.Get<InputManager>().PlayerInputAction.asset.FindAction(_inputActionRef.action.name);
         }
 
         public string GetActionName()

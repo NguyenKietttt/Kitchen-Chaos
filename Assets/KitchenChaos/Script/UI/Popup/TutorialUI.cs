@@ -1,6 +1,7 @@
 using TMPro;
 using UISystem;
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -26,10 +27,13 @@ namespace KitchenChaos
         [SerializeField] private TextMeshProUGUI _gamepadInteractTxt;
         [SerializeField] private TextMeshProUGUI _gamepadCutTxt;
 
+        private EventManager _eventMgr;
+        private UIManager _uiMgr;
+
         public override void OnPush(object[] datas = null)
         {
-            Bootstrap.Instance.EventMgr.RebindKey += UpdateVisual;
-            Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
+            RegisterServices();
+            SubscribeEvents();
 
             UpdateVisual();
         }
@@ -46,8 +50,8 @@ namespace KitchenChaos
 
         public override void OnPop()
         {
-            Bootstrap.Instance.EventMgr.RebindKey -= UpdateVisual;
-            Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
+            UnsubscribeEvents();
+            DeregisterServices();
 
             Destroy(gameObject);
         }
@@ -56,7 +60,7 @@ namespace KitchenChaos
         {
             if (state is GameState.CountDownToStart)
             {
-                Bootstrap.Instance.UIManager.Pop();
+                _uiMgr.Pop();
             }
         }
 
@@ -81,6 +85,30 @@ namespace KitchenChaos
         private void Hide()
         {
             gameObject.SetActive(false);
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+            _uiMgr = ServiceLocator.Instance.Get<UIManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+            _uiMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr.RebindKey += UpdateVisual;
+            _eventMgr.ChangeGameState += OnGameStateChanged;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr.RebindKey -= UpdateVisual;
+            _eventMgr.ChangeGameState -= OnGameStateChanged;
         }
     }
 }

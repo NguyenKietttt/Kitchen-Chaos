@@ -10,7 +10,7 @@ namespace KitchenChaos
             }
 
             player.KitchenObj.DestroySelf();
-            Bootstrap.Instance.EventMgr.InteractWithTrashCounter?.Invoke();
+            _eventMgr.InteractWithTrashCounter?.Invoke();
         }
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -10,10 +11,23 @@ namespace KitchenChaos
         [Header("Internal Ref")]
         [SerializeField] private PlayerAnimator _playerAnimator;
 
+        private EventManager _eventMgr;
+        private InputManager _inputMgr;
+
+        private void Awake()
+        {
+            RegisterServices();
+        }
+
         private void Update()
         {
-            Vector2 input = Bootstrap.Instance.InputMgr.InputVectorNormalized;
+            Vector2 input = _inputMgr.InputVectorNormalized;
             HandleMovement(input);
+        }
+
+        private void OnDestroy()
+        {
+            DeregisterServices();
         }
 
         private void HandleMovement(Vector2 input)
@@ -34,11 +48,11 @@ namespace KitchenChaos
                 }
 
                 UpdateRotationByMovingDirection(moveDir);
-                Bootstrap.Instance.EventMgr.PlayerMove?.Invoke();
+                _eventMgr.PlayerMove?.Invoke();
             }
             else
             {
-                Bootstrap.Instance.EventMgr.PlayerStop?.Invoke();
+                _eventMgr.PlayerStop?.Invoke();
             }
 
             _playerAnimator.UpdateWalkingAnim(input != Vector2.zero);
@@ -75,6 +89,18 @@ namespace KitchenChaos
         {
             Vector3 curPos = transform.position;
             return !Physics.CapsuleCast(curPos, curPos + (Vector3.up * _config.Height), _config.Radius, moveDir, moveDistance);
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+            _inputMgr = ServiceLocator.Instance.Get<InputManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+            _inputMgr = null;
         }
     }
 }

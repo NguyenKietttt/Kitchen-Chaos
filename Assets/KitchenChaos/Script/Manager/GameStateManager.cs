@@ -1,4 +1,6 @@
+using UISystem;
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -10,6 +12,9 @@ namespace KitchenChaos
         [Header("Config")]
         [SerializeField] private GameStateManagerCfg _config;
 
+        private EventManager _eventMgr;
+        private UIManager _uiMgr;
+
         private GameState _curState;
         private GameObject _playerObj;
         private GameObject _levelObj;
@@ -18,8 +23,10 @@ namespace KitchenChaos
 
         public void Init()
         {
-            Bootstrap.Instance.EventMgr.TogglePause += OnTogglePaused;
-            Bootstrap.Instance.EventMgr.Interact += OnInteract;
+            RegisterServices();
+
+            _eventMgr.TogglePause += OnTogglePaused;
+            _eventMgr.Interact += OnInteract;
 
             _countdownTimer = _config.CountdownTimerMax;
         }
@@ -47,10 +54,12 @@ namespace KitchenChaos
             }
         }
 
-        public void OnDestroy()
+        private void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.TogglePause -= OnTogglePaused;
-            Bootstrap.Instance.EventMgr.Interact -= OnInteract;
+            _eventMgr.TogglePause -= OnTogglePaused;
+            _eventMgr.Interact -= OnInteract;
+
+            DeregisterServices();
         }
 
         public void ChangeState(GameState state)
@@ -73,28 +82,28 @@ namespace KitchenChaos
                         _levelObj = null;
                     }
 
-                    Bootstrap.Instance.UIManager.Push(UISystem.ScreenID.MainMenu);
+                    _uiMgr.Push(ScreenID.MainMenu);
 
                     break;
                 case GameState.WaitingToStart:
-                    Bootstrap.Instance.UIManager.Push(UISystem.ScreenID.ActionPhase);
+                    _uiMgr.Push(ScreenID.ActionPhase);
 
                     _playerObj = Instantiate(_config.PlayerPrefab);
                     _levelObj = Instantiate(_config.LevelOnePrefab);
 
-                    Bootstrap.Instance.UIManager.Push(UISystem.ScreenID.Tutorial);
+                    _uiMgr.Push(ScreenID.Tutorial);
                     break;
                 case GameState.GamePlaying:
                     _countdownTimer = _config.CountdownTimerMax;
                     break;
                 case GameState.GameOver:
                     _playingTimer = _config.PlayingTimerMin;
-                    Bootstrap.Instance.UIManager.Push(UISystem.ScreenID.GameOver);
+                    _uiMgr.Push(ScreenID.GameOver);
                     break;
             }
 
             _curState = state;
-            Bootstrap.Instance.EventMgr.ChangeGameState?.Invoke(_curState);
+            _eventMgr.ChangeGameState?.Invoke(_curState);
         }
 
         private void OnInteract()
@@ -114,12 +123,24 @@ namespace KitchenChaos
 
             if (Time.timeScale == 1)
             {
-                Bootstrap.Instance.UIManager.Push(UISystem.ScreenID.GamePause);
+                _uiMgr.Push(ScreenID.GamePause);
             }
             else
             {
-                Bootstrap.Instance.UIManager.Pop();
+                _uiMgr.Pop();
             }
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+            _uiMgr = ServiceLocator.Instance.Get<UIManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+            _uiMgr = null;
         }
     }
 }

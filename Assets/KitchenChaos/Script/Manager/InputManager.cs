@@ -1,28 +1,33 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
-    public sealed class InputManager
+    public sealed class InputManager : MonoBehaviour
     {
         private const string PLAYER_PREFS_BINDING_KEY = "PLAYER_PREFS_BINDING_KEY";
 
         public PlayerInputAction PlayerInputAction => _playerInputAction;
         public Vector2 InputVectorNormalized => _playerInputAction.Player.Move.ReadValue<Vector2>();
 
+        private EventManager _eventMgr;
+
         private PlayerInputAction _playerInputAction;
 
-        public InputManager()
+        public void Init()
         {
+            RegisterServices();
             InitPlayerInputAction();
             SubscribeEvents();
         }
 
-        public void OnDestroy()
+        private void OnDestroy()
         {
-            UnsubscribeEvents();
             _playerInputAction.Dispose();
+            UnsubscribeEvents();
+            DeregisterServices();
         }
 
         public void RebindBinding(string actionName, int bindingIndex, Action onActionRebound)
@@ -42,7 +47,7 @@ namespace KitchenChaos
                     PlayerPrefs.SetString(PLAYER_PREFS_BINDING_KEY, _playerInputAction.SaveBindingOverridesAsJson());
                     PlayerPrefs.Save();
 
-                    Bootstrap.Instance.EventMgr.RebindKey?.Invoke();
+                    _eventMgr.RebindKey?.Invoke();
                 })
                 .Start();
         }
@@ -59,6 +64,31 @@ namespace KitchenChaos
             _playerInputAction.Enable();
         }
 
+        private void OnInteractPerformed(InputAction.CallbackContext obj)
+        {
+            _eventMgr.Interact?.Invoke();
+        }
+
+        private void OnCuttingInteractPerformed(InputAction.CallbackContext obj)
+        {
+            _eventMgr.CuttingInteract?.Invoke();
+        }
+
+        private void OnPausePerformed(InputAction.CallbackContext obj)
+        {
+            _eventMgr.TogglePause?.Invoke();
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+        }
+
         private void SubscribeEvents()
         {
             _playerInputAction.Player.Interact.performed += OnInteractPerformed;
@@ -71,21 +101,6 @@ namespace KitchenChaos
             _playerInputAction.Player.Interact.performed -= OnInteractPerformed;
             _playerInputAction.Player.CuttingInteract.performed -= OnCuttingInteractPerformed;
             _playerInputAction.Player.Pause.performed -= OnPausePerformed;
-        }
-
-        private void OnInteractPerformed(InputAction.CallbackContext obj)
-        {
-            Bootstrap.Instance.EventMgr.Interact?.Invoke();
-        }
-
-        private void OnCuttingInteractPerformed(InputAction.CallbackContext obj)
-        {
-            Bootstrap.Instance.EventMgr.CuttingInteract?.Invoke();
-        }
-
-        private void OnPausePerformed(InputAction.CallbackContext obj)
-        {
-            Bootstrap.Instance.EventMgr.TogglePause?.Invoke();
         }
     }
 }

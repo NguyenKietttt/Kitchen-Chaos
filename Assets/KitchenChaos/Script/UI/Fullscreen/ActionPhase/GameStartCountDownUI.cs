@@ -1,6 +1,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityServiceLocator;
 
 namespace KitchenChaos
 {
@@ -10,17 +11,25 @@ namespace KitchenChaos
         [SerializeField] private TextMeshProUGUI _countDownTxt;
         [SerializeField] private CanvasGroup _canvasGroup;
 
+        private EventManager _eventMgr;
+        private GameStateManager _gameStateMgr;
+
         private int _preCountdownNumber;
+
+        private void Awake()
+        {
+            RegisterServices();
+        }
 
         private void Start()
         {
-            Bootstrap.Instance.EventMgr.ChangeGameState += OnGameStateChanged;
+            SubscribeEvents();
             Hide();
         }
 
         private void Update()
         {
-            int countdownNumber = Mathf.CeilToInt(Bootstrap.Instance.GameStateMgr.CountDownTimer);
+            int countdownNumber = Mathf.CeilToInt(_gameStateMgr.CountDownTimer);
             _countDownTxt.SetText(countdownNumber.ToString());
 
             if (_preCountdownNumber != countdownNumber)
@@ -28,13 +37,14 @@ namespace KitchenChaos
                 _preCountdownNumber = countdownNumber;
                 PlayShowingSequence();
 
-                Bootstrap.Instance.EventMgr.CountdownPopup?.Invoke();
+                _eventMgr.CountdownPopup?.Invoke();
             }
         }
 
         private void OnDestroy()
         {
-            Bootstrap.Instance.EventMgr.ChangeGameState -= OnGameStateChanged;
+            UnsubscribeEvents();
+            DeregisterServices();
         }
 
         private void OnGameStateChanged(GameState state)
@@ -79,6 +89,28 @@ namespace KitchenChaos
                 .AppendCallback(() => _canvasGroup.alpha = 1.0f)
                 .Append(_canvasGroup.DOFade(1.0f, 0.5f))
                 .Append(_canvasGroup.DOFade(0.0f, 0.5f));
+        }
+
+        private void RegisterServices()
+        {
+            _eventMgr = ServiceLocator.Instance.Get<EventManager>();
+            _gameStateMgr = ServiceLocator.Instance.Get<GameStateManager>();
+        }
+
+        private void DeregisterServices()
+        {
+            _eventMgr = null;
+            _gameStateMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr.ChangeGameState += OnGameStateChanged;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr.ChangeGameState -= OnGameStateChanged;
         }
     }
 }
