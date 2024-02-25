@@ -30,6 +30,12 @@ namespace KitchenChaos
             DeregisterServices();
         }
 
+        public string GetKeyDisplayString(string actionName, int bindingIndex)
+        {
+            InputAction inputAction = _playerInputAction.asset.FindAction(actionName);
+            return inputAction.bindings[bindingIndex].ToDisplayString();
+        }
+
         public void RebindBinding(string actionName, int bindingIndex, Action onActionRebound)
         {
             _playerInputAction.Disable();

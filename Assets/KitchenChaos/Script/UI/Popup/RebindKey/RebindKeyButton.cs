@@ -43,7 +43,7 @@ namespace KitchenChaos
         {
             _uiMgr.Push(ScreenID.RebindKey);
 
-            string actionName = _config.RebindKeySO.GetActionName();
+            string actionName = _config.RebindKeySO.ActionName;
             int index = _config.RebindKeySO.Index;
 
             _inputMgr.RebindBinding(actionName, index, () =>
@@ -55,7 +55,10 @@ namespace KitchenChaos
 
         private void UpdateText()
         {
-            string keyDisplayString = _config.RebindKeySO.GetDisplayString();
+            string actionName = _config.RebindKeySO.ActionName;
+            int index = _config.RebindKeySO.Index;
+            string keyDisplayString = _inputMgr.GetKeyDisplayString(actionName, index);
+
             _text.SetText(keyDisplayString);
         }
 
