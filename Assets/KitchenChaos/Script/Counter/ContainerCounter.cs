@@ -1,3 +1,4 @@
+using KitchenChaos.Utils;
 using UnityEngine;
 
 namespace KitchenChaos
@@ -5,10 +6,10 @@ namespace KitchenChaos
     public sealed class ContainerCounter : BaseCounter
     {
         [Header("Child Config")]
-        [SerializeField] private KitchenObjectSO _kitchenObjSO;
+        [SerializeField] private KitchenObjectSO? _kitchenObjSO;
 
         [Header("Child Internal Ref")]
-        [SerializeField] private Animator _animator;
+        [SerializeField] private Animator? _animator;
 
         private readonly int _lidAnimKeyHash = Animator.StringToHash("OpenClose");
 
@@ -20,12 +21,22 @@ namespace KitchenChaos
             }
 
             TriggerLidAnim();
-            KitchenObject.SpawnKitchenObj(_kitchenObjSO, player);
+            KitchenObject.SpawnKitchenObj(_kitchenObjSO!, player);
+        }
+
+        protected override void CheckNullEditorReferences()
+        {
+            base.CheckNullEditorReferences();
+
+            if (_kitchenObjSO == null || _animator == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
+            }
         }
 
         private void TriggerLidAnim()
         {
-            _animator.SetTrigger(_lidAnimKeyHash);
+            _animator!.SetTrigger(_lidAnimKeyHash);
         }
     }
 }

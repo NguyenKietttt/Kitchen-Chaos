@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using KitchenChaos.Utils;
 using UnityEngine;
 using UnityServiceLocator;
 
@@ -7,12 +8,17 @@ namespace KitchenChaos
     public sealed class PlateIconUI : MonoBehaviour
     {
         [Header("Config")]
-        [SerializeField] private PlateIconUICfg _config;
+        [SerializeField] private PlateIconUICfg? _config;
 
         [Header("Internal Ref")]
-        [SerializeField] private PlateKitchenObject _plateKitchenObj;
+        [SerializeField] private PlateKitchenObject? _plateKitchenObj;
 
-        private EventManager _eventMgr;
+        private EventManager? _eventMgr;
+
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
 
         private void Awake()
         {
@@ -32,7 +38,7 @@ namespace KitchenChaos
 
         private void UpdateVisual(int senderID, KitchenObjectSO kitchenObjSO)
         {
-            if (senderID != _plateKitchenObj.GetInstanceID())
+            if (senderID != _plateKitchenObj!.GetInstanceID())
             {
                 return;
             }
@@ -42,7 +48,7 @@ namespace KitchenChaos
             IReadOnlyCollection<KitchenObjectSO> kitchenObjHashSet = _plateKitchenObj.KitchenObjHashSet;
             foreach (KitchenObjectSO kitchenObjectSO in kitchenObjHashSet)
             {
-                PlateIconSingleUI plateIconSingleUI = Instantiate(_config.PlateIconSingleUI, transform);
+                PlateIconSingleUI plateIconSingleUI = Instantiate(_config!.PlateIconSingleUI, transform);
                 plateIconSingleUI.SetIcon(kitchenObjectSO);
             }
         }
@@ -52,6 +58,14 @@ namespace KitchenChaos
             foreach (Transform child in transform)
             {
                 Destroy(child.gameObject);
+            }
+        }
+
+        private void CheckNullEditorReferences()
+        {
+            if (_config == null || _plateKitchenObj == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
             }
         }
 
@@ -67,12 +81,12 @@ namespace KitchenChaos
 
         private void SubscribeEvents()
         {
-            _eventMgr.AddIngredientSuccess += UpdateVisual;
+            _eventMgr!.AddIngredientSuccess += UpdateVisual;
         }
 
         private void UnsubscribeEvents()
         {
-            _eventMgr.AddIngredientSuccess -= UpdateVisual;
+            _eventMgr!.AddIngredientSuccess -= UpdateVisual;
         }
     }
 }

@@ -1,3 +1,5 @@
+using System.Linq;
+using KitchenChaos.Utils;
 using UnityEngine;
 
 namespace KitchenChaos
@@ -7,10 +9,10 @@ namespace KitchenChaos
         private const int MIN_PROGRESS = 0;
 
         [Header("Child Config")]
-        [SerializeField] private CuttingReceiptSO[] _cuttingReceipts;
+        [SerializeField] private CuttingReceiptSO[]? _cuttingReceipts;
 
         [Header("Child Internal Ref")]
-        [SerializeField] private Animator _animator;
+        [SerializeField] private Animator? _animator;
 
         private readonly int _cutAnimKeyHash = Animator.StringToHash("Cut");
 
@@ -22,10 +24,10 @@ namespace KitchenChaos
             {
                 if (player.HasKitchenObj)
                 {
-                    if (player.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
+                    if (player.KitchenObj.TryGetPlate(out PlateKitchenObject? plateKitchenObj))
                     {
-                        KitchenObject kitchenObj = KitchenObj;
-                        if (plateKitchenObj.TryAddIngredient(kitchenObj.KitchenObjectSO))
+                        KitchenObject? kitchenObj = _curKitchenObj;
+                        if (plateKitchenObj!.TryAddIngredient(kitchenObj!.KitchenObjectSO))
                         {
                             kitchenObj.DestroySelf();
                         }
@@ -34,9 +36,9 @@ namespace KitchenChaos
                 else
                 {
                     _curCuttingProcess = MIN_PROGRESS;
-                    _eventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), MIN_PROGRESS);
+                    _eventMgr!.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), MIN_PROGRESS);
 
-                    KitchenObj.SetCurKitchenObjParent(player);
+                    _curKitchenObj!.SetCurKitchenObjParent(player);
                 }
             }
             else
@@ -51,31 +53,52 @@ namespace KitchenChaos
 
         public void OnSecondaryInteract()
         {
-            if (HasKitchenObj && HasReceiptWithInput(KitchenObj.KitchenObjectSO))
+            if (HasKitchenObj && HasReceiptWithInput(_curKitchenObj!.KitchenObjectSO))
             {
                 TriggerCutAnim();
                 UpdateCounterProgress(++_curCuttingProcess);
 
-                _eventMgr.InteractWithCutCounter?.Invoke();
+                _eventMgr!.InteractWithCutCounter?.Invoke();
+            }
+        }
+
+        protected override void CheckNullEditorReferences()
+        {
+            base.CheckNullEditorReferences();
+
+            if (_animator == null || _cuttingReceipts?.Length <= 0)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
             }
         }
 
         private void UpdateCounterProgress(int newCuttingProgress)
         {
+            if (_curKitchenObj == null)
+            {
+                CustomLog.LogError(this, nameof(_curKitchenObj), "Somehow is null!!!");
+                return;
+            }
+
+            CuttingReceiptSO? outputCuttingReceiptSO = GetCuttingReceiptSOWithInput(_curKitchenObj.KitchenObjectSO);
+
+            if (outputCuttingReceiptSO == null)
+            {
+                CustomLog.LogError(this, nameof(outputCuttingReceiptSO), "There is no match receipt!!!");
+                return;
+            }
+
             _curCuttingProcess = newCuttingProgress;
-            CuttingReceiptSO outputCuttingReceiptSO = GetCuttingReceiptSOWithInput(KitchenObj.KitchenObjectSO);
             float progressNormalized = (float)_curCuttingProcess / outputCuttingReceiptSO.CuttingProcessMax;
-
-            _eventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), progressNormalized);
-
+            _eventMgr!.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), progressNormalized);
             SpawnOutputCuttingKitchenObj(outputCuttingReceiptSO);
         }
 
         private void SpawnOutputCuttingKitchenObj(CuttingReceiptSO outputCuttingReceiptSO)
         {
-            if (_curCuttingProcess >= outputCuttingReceiptSO.CuttingProcessMax)
+            if (_curCuttingProcess >= outputCuttingReceiptSO.CuttingProcessMax && HasKitchenObj)
             {
-                KitchenObj.DestroySelf();
+                _curKitchenObj!.DestroySelf();
                 KitchenObject.SpawnKitchenObj(outputCuttingReceiptSO.Output, this);
             }
         }
@@ -85,22 +108,14 @@ namespace KitchenChaos
             return GetCuttingReceiptSOWithInput(inputKitchenObjSO) != null;
         }
 
-        private CuttingReceiptSO GetCuttingReceiptSOWithInput(KitchenObjectSO inputKitchenObjSO)
+        private CuttingReceiptSO? GetCuttingReceiptSOWithInput(KitchenObjectSO inputKitchenObjSO)
         {
-            foreach (CuttingReceiptSO cuttingReceipt in _cuttingReceipts)
-            {
-                if (cuttingReceipt.Input == inputKitchenObjSO)
-                {
-                    return cuttingReceipt;
-                }
-            }
-
-            return null;
+            return _cuttingReceipts!.FirstOrDefault(p => p.Input == inputKitchenObjSO);
         }
 
         private void TriggerCutAnim()
         {
-            _animator.SetTrigger(_cutAnimKeyHash);
+            _animator!.SetTrigger(_cutAnimKeyHash);
         }
     }
 }

@@ -1,3 +1,4 @@
+using KitchenChaos.Utils;
 using UnityEngine;
 
 namespace KitchenChaos
@@ -7,32 +8,45 @@ namespace KitchenChaos
         public float MasterVolume => _masterVolume;
 
         [Header("Config")]
-        [SerializeField] private MusicManagerCfg _config;
+        [SerializeField] private MusicManagerCfg? _config;
 
         [Header("Internal Ref")]
-        [SerializeField] private AudioSource _audioSrc;
+        [SerializeField] private AudioSource? _audioSrc;
 
         private float _masterVolume;
 
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
+
         public void Init()
         {
-            _masterVolume = PlayerPrefs.GetFloat(_config.PlayerPrefsVolumeKey, _config.DefaultVolume);
-            _audioSrc.volume = _masterVolume;
+            _masterVolume = PlayerPrefs.GetFloat(_config!.PlayerPrefsVolumeKey, _config.DefaultVolume);
+            _audioSrc!.volume = _masterVolume;
         }
 
         public void ChangeVolume()
         {
-            _masterVolume += _config.VolumeStep;
+            _masterVolume += _config!.VolumeStep;
 
             if (_masterVolume > _config.VolumeMax)
             {
                 _masterVolume = _config.VolumeMin;
             }
 
-            _audioSrc.volume = _masterVolume;
+            _audioSrc!.volume = _masterVolume;
 
             PlayerPrefs.SetFloat(_config.PlayerPrefsVolumeKey, _masterVolume);
             PlayerPrefs.Save();
+        }
+
+        private void CheckNullEditorReferences()
+        {
+            if (_config == null || _audioSrc == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using KitchenChaos.Utils;
 using UnityEngine;
 using UnityServiceLocator;
 
@@ -7,15 +8,20 @@ namespace KitchenChaos
     public sealed class StoveWarningUI : MonoBehaviour
     {
         [Header("Config")]
-        [SerializeField] private StoveWarningUICfg _config;
+        [SerializeField] private StoveWarningUICfg? _config;
 
         [Header("Internal Ref")]
-        [SerializeField] private StoveCounter _stoveCounter;
-        [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private StoveCounter? _stoveCounter;
+        [SerializeField] private CanvasGroup? _canvasGroup;
 
-        private EventManager _eventMgr;
+        private EventManager? _eventMgr;
 
-        private Sequence _warningSequence;
+        private Sequence? _warningSequence;
+
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
 
         private void Awake()
         {
@@ -40,12 +46,12 @@ namespace KitchenChaos
 
         private void OnCounterProgressChanged(int senderID, float progressNormalized)
         {
-            if (senderID != _stoveCounter.gameObject.GetInstanceID())
+            if (senderID != _stoveCounter!.gameObject.GetInstanceID())
             {
                 return;
             }
 
-            if (_stoveCounter.IsFried && progressNormalized >= _config.BurnProgressAmount)
+            if (_stoveCounter!.IsFried && progressNormalized >= _config!.BurnProgressAmount)
             {
                 Show();
             }
@@ -68,11 +74,19 @@ namespace KitchenChaos
         private void SetupWarningSequence()
         {
             _warningSequence = DOTween.Sequence()
-                .AppendCallback(() => _canvasGroup.alpha = 0)
-                .Append(_canvasGroup.DOFade(1.0f, 0.1f))
-                .Append(_canvasGroup.DOFade(0.0f, 0.2f));
+                .AppendCallback(() => _canvasGroup!.alpha = 0)
+                .Append(_canvasGroup!.DOFade(1.0f, 0.1f))
+                .Append(_canvasGroup!.DOFade(0.0f, 0.2f));
 
-            _warningSequence.SetLoops(-1, LoopType.Restart);
+            _warningSequence!.SetLoops(-1, LoopType.Restart);
+        }
+
+        private void CheckNullEditorReferences()
+        {
+            if (_config == null || _stoveCounter == null || _canvasGroup == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
+            }
         }
 
         private void RegisterServices()
@@ -87,12 +101,12 @@ namespace KitchenChaos
 
         private void SubscribeEvents()
         {
-            _eventMgr.UpdateCounterProgress += OnCounterProgressChanged;
+            _eventMgr!.UpdateCounterProgress += OnCounterProgressChanged;
         }
 
         private void UnsubscribeEvents()
         {
-            _eventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
+            _eventMgr!.UpdateCounterProgress -= OnCounterProgressChanged;
         }
     }
 }

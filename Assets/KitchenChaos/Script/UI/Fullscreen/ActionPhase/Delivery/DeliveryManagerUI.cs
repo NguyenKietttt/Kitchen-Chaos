@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using KitchenChaos.Utils;
 using UnityEngine;
 using UnityServiceLocator;
 
@@ -7,18 +8,23 @@ namespace KitchenChaos
     public sealed class DeliveryManagerUI : MonoBehaviour
     {
         [Header("Config")]
-        [SerializeField] private DeliveryManagerUICfg _config;
+        [SerializeField] private DeliveryManagerUICfg? _config;
 
         [Header("Internal Ref")]
-        [SerializeField] private Transform _container;
+        [SerializeField] private Transform? _container;
 
-        private EventManager _eventMgr;
-        private DeliveryManager _deliveryMgr;
+        private EventManager? _eventMgr;
+        private DeliveryManager? _deliveryMgr;
+
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
 
         private void Awake()
         {
             RegisterServices();
-            _config.ReceiptTemplateUI.Hide();
+            _config!.ReceiptTemplateUI.Hide();
         }
 
         private void Start()
@@ -37,10 +43,10 @@ namespace KitchenChaos
         {
             ClearPreviousVisual();
 
-            IEnumerable<DishReceiptSO> waitingDishReceipts = _deliveryMgr.WaitingReceiptsSO;
+            IEnumerable<DishReceiptSO> waitingDishReceipts = _deliveryMgr!.WaitingReceiptsSO;
             foreach (DishReceiptSO receipt in waitingDishReceipts)
             {
-                DeliveryManagerSingleUI waitingReceiptUI = Instantiate(_config.ReceiptTemplateUI, _container);
+                DeliveryManagerSingleUI waitingReceiptUI = Instantiate(_config!.ReceiptTemplateUI, _container);
                 waitingReceiptUI.SetReceiptName(receipt.Name);
                 waitingReceiptUI.SetIngredientIcons(receipt.KitchenObjsSO);
                 waitingReceiptUI.Show();
@@ -49,9 +55,17 @@ namespace KitchenChaos
 
         private void ClearPreviousVisual()
         {
-            foreach (Transform child in _container)
+            foreach (Transform child in _container!)
             {
                 Destroy(child.gameObject);
+            }
+        }
+
+        private void CheckNullEditorReferences()
+        {
+            if (_config == null || _container == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
             }
         }
 
@@ -69,14 +83,14 @@ namespace KitchenChaos
 
         private void SubscribeEvents()
         {
-            _eventMgr.SpawnReceipt += UpdateVisual;
-            _eventMgr.CompleteReceipt += UpdateVisual;
+            _eventMgr!.SpawnReceipt += UpdateVisual;
+            _eventMgr!.CompleteReceipt += UpdateVisual;
         }
 
         private void UnsubscribeEvents()
         {
-            _eventMgr.SpawnReceipt -= UpdateVisual;
-            _eventMgr.CompleteReceipt -= UpdateVisual;
+            _eventMgr!.SpawnReceipt -= UpdateVisual;
+            _eventMgr!.CompleteReceipt -= UpdateVisual;
         }
     }
 }

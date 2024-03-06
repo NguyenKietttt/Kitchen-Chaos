@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using KitchenChaos.Utils;
 using UnityEngine;
 using UnityServiceLocator;
 
@@ -13,23 +14,28 @@ namespace KitchenChaos
         private readonly List<DishReceiptSO> _waitingReceiptsSO = new();
 
         [Header("Config")]
-        [SerializeField] private DeliveryManagerCfg _config;
+        [SerializeField] private DeliveryManagerCfg? _config;
 
-        private EventManager _eventMgr;
+        private EventManager? _eventMgr;
 
         private GameState _curState;
         private float _spawnReceiptTimer;
         private int _amountSuccessfulReceipt;
 
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
+
         public void Init()
         {
             RegisterServices();
-            _eventMgr.ChangeGameState += OnGameStateChanged;
+            SubscribeEvents();
         }
 
         private void OnDestroy()
         {
-            _eventMgr.ChangeGameState -= OnGameStateChanged;
+            UnsubscribeEvents();
             DeregisterServices();
         }
 
@@ -42,7 +48,7 @@ namespace KitchenChaos
 
             _spawnReceiptTimer += Time.deltaTime;
 
-            if (_spawnReceiptTimer >= _config.SpawnReceiptTimerMax)
+            if (_spawnReceiptTimer >= _config!.SpawnReceiptTimerMax)
             {
                 _spawnReceiptTimer = _config.SpawnReceiptTimerMin;
 
@@ -52,7 +58,7 @@ namespace KitchenChaos
                     DishReceiptSO waitingReceiptSO = _config.DishReceiptsS0.Receipts[index];
                     _waitingReceiptsSO.Add(waitingReceiptSO);
 
-                    _eventMgr.SpawnReceipt?.Invoke();
+                    _eventMgr!.SpawnReceipt?.Invoke();
                 }
             }
         }
@@ -88,7 +94,7 @@ namespace KitchenChaos
                         _amountSuccessfulReceipt++;
                         _waitingReceiptsSO.RemoveAt(i);
 
-                        _eventMgr.CompleteReceipt?.Invoke();
+                        _eventMgr!.CompleteReceipt?.Invoke();
                         _eventMgr.DeliverReceiptSuccess?.Invoke();
 
                         return;
@@ -96,14 +102,14 @@ namespace KitchenChaos
                 }
             }
 
-            _eventMgr.DeliverReceiptFailed?.Invoke();
+            _eventMgr!.DeliverReceiptFailed?.Invoke();
         }
 
         private void Reset()
         {
             _waitingReceiptsSO.Clear();
 
-            _spawnReceiptTimer = _config.SpawnReceiptTimerMin;
+            _spawnReceiptTimer = _config!.SpawnReceiptTimerMin;
             _amountSuccessfulReceipt = _config.WaitingReceiptMin;
         }
 
@@ -119,6 +125,14 @@ namespace KitchenChaos
             }
         }
 
+        private void CheckNullEditorReferences()
+        {
+            if (_config == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
+            }
+        }
+
         private void RegisterServices()
         {
             _eventMgr = ServiceLocator.Instance.Get<EventManager>();
@@ -127,6 +141,16 @@ namespace KitchenChaos
         private void DeregisterServices()
         {
             _eventMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr!.ChangeGameState += OnGameStateChanged;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr!.ChangeGameState -= OnGameStateChanged;
         }
     }
 }

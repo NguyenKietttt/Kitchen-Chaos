@@ -1,4 +1,5 @@
 using DG.Tweening;
+using KitchenChaos.Utils;
 using TMPro;
 using UnityEngine;
 using UnityServiceLocator;
@@ -8,13 +9,18 @@ namespace KitchenChaos
     public sealed class GameStartCountDownUI : MonoBehaviour
     {
         [Header("Internal Ref")]
-        [SerializeField] private TextMeshProUGUI _countDownTxt;
-        [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private TextMeshProUGUI? _countDownTxt;
+        [SerializeField] private CanvasGroup? _canvasGroup;
 
-        private EventManager _eventMgr;
-        private GameStateManager _gameStateMgr;
+        private EventManager? _eventMgr;
+        private GameStateManager? _gameStateMgr;
 
         private int _preCountdownNumber;
+
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
 
         private void Awake()
         {
@@ -29,15 +35,15 @@ namespace KitchenChaos
 
         private void Update()
         {
-            int countdownNumber = Mathf.CeilToInt(_gameStateMgr.CountDownTimer);
-            _countDownTxt.SetText(countdownNumber.ToString());
+            int countdownNumber = Mathf.CeilToInt(_gameStateMgr!.CountDownTimer);
+            _countDownTxt!.SetText(countdownNumber.ToString());
 
             if (_preCountdownNumber != countdownNumber)
             {
                 _preCountdownNumber = countdownNumber;
                 PlayShowingSequence();
 
-                _eventMgr.CountdownPopup?.Invoke();
+                _eventMgr!.CountdownPopup?.Invoke();
             }
         }
 
@@ -86,9 +92,17 @@ namespace KitchenChaos
 
             // Fade
             DOTween.Sequence()
-                .AppendCallback(() => _canvasGroup.alpha = 1.0f)
-                .Append(_canvasGroup.DOFade(1.0f, 0.5f))
-                .Append(_canvasGroup.DOFade(0.0f, 0.5f));
+                .AppendCallback(() => _canvasGroup!.alpha = 1.0f)
+                .Append(_canvasGroup!.DOFade(1.0f, 0.5f))
+                .Append(_canvasGroup!.DOFade(0.0f, 0.5f));
+        }
+
+        private void CheckNullEditorReferences()
+        {
+            if (_countDownTxt == null || _canvasGroup == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
+            }
         }
 
         private void RegisterServices()
@@ -105,12 +119,12 @@ namespace KitchenChaos
 
         private void SubscribeEvents()
         {
-            _eventMgr.ChangeGameState += OnGameStateChanged;
+            _eventMgr!.ChangeGameState += OnGameStateChanged;
         }
 
         private void UnsubscribeEvents()
         {
-            _eventMgr.ChangeGameState -= OnGameStateChanged;
+            _eventMgr!.ChangeGameState -= OnGameStateChanged;
         }
     }
 }

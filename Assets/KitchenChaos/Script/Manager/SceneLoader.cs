@@ -10,12 +10,12 @@ namespace KitchenChaos
         private readonly WaitForSeconds _waitForHalfSecond = new(0.5f);
         private readonly WaitForEndOfFrame _waitForEndFrame = new();
 
-        public void LoadAsync(SceneState scene, Action onLoaded = null)
+        public void LoadAsync(SceneState scene, Action? onLoaded = null)
         {
             StartCoroutine(LoadSceneCoroutine(scene, onLoaded));
         }
 
-        private IEnumerator LoadSceneCoroutine(SceneState scene, Action onLoaded = null)
+        private IEnumerator LoadSceneCoroutine(SceneState scene, Action? onLoaded = null)
         {
             yield return _waitForHalfSecond;
 

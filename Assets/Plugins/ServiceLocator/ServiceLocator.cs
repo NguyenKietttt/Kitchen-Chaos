@@ -11,13 +11,18 @@ namespace UnityServiceLocator
 
         private readonly Dictionary<Type, object> _serviceDic = new();
 
-        public void Register<TService>(TService serviceInstance, Action onRegistered = null)
+        public void Register<TService>(TService serviceInstance, Action? onRegistered = null)
         {
             Type serviceType = typeof(TService);
 
             if (_serviceDic.ContainsKey(serviceType))
             {
                 throw new Exception($"{serviceType.Name} has been already registered!");
+            }
+
+            if (serviceInstance == null)
+            {
+                throw new NullReferenceException($"{nameof(serviceInstance)} is null!");
             }
 
             _serviceDic.Add(serviceType, serviceInstance);

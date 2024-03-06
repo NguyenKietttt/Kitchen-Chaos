@@ -1,4 +1,5 @@
 using Cinemachine;
+using KitchenChaos.Utils;
 using UnityEngine;
 using UnityServiceLocator;
 
@@ -7,10 +8,15 @@ namespace KitchenChaos
     public sealed class CameraManager : MonoBehaviour
     {
         [Header("External Ref")]
-        [SerializeField] private CinemachineVirtualCamera _mainMenuVirtualCam;
-        [SerializeField] private CinemachineVirtualCamera _gameplayVirtualCam;
+        [SerializeField] private CinemachineVirtualCamera? _mainMenuVirtualCam;
+        [SerializeField] private CinemachineVirtualCamera? _gameplayVirtualCam;
 
-        private EventManager _eventMgr;
+        private EventManager? _eventMgr;
+
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
 
         private void Awake()
         {
@@ -19,12 +25,12 @@ namespace KitchenChaos
 
         private void Start()
         {
-            _eventMgr.ChangeGameState += OnGameStateChanged;
+            SubscribeEvents();
         }
 
         private void OnDestroy()
         {
-            _eventMgr.ChangeGameState -= OnGameStateChanged;
+            UnsubscribeEvents();
             DeregisterServices();
         }
 
@@ -46,15 +52,23 @@ namespace KitchenChaos
             switch (state)
             {
                 case CameraState.MainMenu:
-                    _mainMenuVirtualCam.enabled = true;
-                    _gameplayVirtualCam.enabled = false;
+                    _mainMenuVirtualCam!.enabled = true;
+                    _gameplayVirtualCam!.enabled = false;
 
                     break;
                 case CameraState.Gameplay:
-                    _mainMenuVirtualCam.enabled = false;
-                    _gameplayVirtualCam.enabled = true;
+                    _mainMenuVirtualCam!.enabled = false;
+                    _gameplayVirtualCam!.enabled = true;
 
                     break;
+            }
+        }
+
+        private void CheckNullEditorReferences()
+        {
+            if (_mainMenuVirtualCam == null || _gameplayVirtualCam == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
             }
         }
 
@@ -66,6 +80,16 @@ namespace KitchenChaos
         private void DeregisterServices()
         {
             _eventMgr = null;
+        }
+
+        private void SubscribeEvents()
+        {
+            _eventMgr!.ChangeGameState += OnGameStateChanged;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            _eventMgr!.ChangeGameState -= OnGameStateChanged;
         }
     }
 }

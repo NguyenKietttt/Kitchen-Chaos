@@ -8,7 +8,7 @@ namespace KitchenChaos
         public KitchenObject KitchenObj { get; }
         public bool HasKitchenObj { get; }
 
-        public void SetKitchenObj(KitchenObject newKitchenObj);
+        public void SetKitchenObj(KitchenObject? newKitchenObj);
 
         public void ClearKitchenObj();
     }

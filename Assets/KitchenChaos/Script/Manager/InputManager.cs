@@ -9,12 +9,11 @@ namespace KitchenChaos
     {
         private const string PLAYER_PREFS_BINDING_KEY = "PLAYER_PREFS_BINDING_KEY";
 
-        public PlayerInputAction PlayerInputAction => _playerInputAction;
-        public Vector2 InputVectorNormalized => _playerInputAction.Player.Move.ReadValue<Vector2>();
+        public Vector2 InputVectorNormalized => _playerInputAction!.Player.Move.ReadValue<Vector2>();
 
-        private EventManager _eventMgr;
+        private EventManager? _eventMgr;
 
-        private PlayerInputAction _playerInputAction;
+        private PlayerInputAction? _playerInputAction;
 
         public void Init()
         {
@@ -25,20 +24,20 @@ namespace KitchenChaos
 
         private void OnDestroy()
         {
-            _playerInputAction.Dispose();
+            _playerInputAction!.Dispose();
             UnsubscribeEvents();
             DeregisterServices();
         }
 
         public string GetKeyDisplayString(string actionName, int bindingIndex)
         {
-            InputAction inputAction = _playerInputAction.asset.FindAction(actionName);
+            InputAction inputAction = _playerInputAction!.asset.FindAction(actionName);
             return inputAction.bindings[bindingIndex].ToDisplayString();
         }
 
         public void RebindBinding(string actionName, int bindingIndex, Action onActionRebound)
         {
-            _playerInputAction.Disable();
+            _playerInputAction!.Disable();
 
             InputAction inputAction = _playerInputAction.asset.FindAction(actionName);
 
@@ -53,7 +52,7 @@ namespace KitchenChaos
                     PlayerPrefs.SetString(PLAYER_PREFS_BINDING_KEY, _playerInputAction.SaveBindingOverridesAsJson());
                     PlayerPrefs.Save();
 
-                    _eventMgr.RebindKey?.Invoke();
+                    _eventMgr!.RebindKey?.Invoke();
                 })
                 .Start();
         }
@@ -72,17 +71,17 @@ namespace KitchenChaos
 
         private void OnInteractPerformed(InputAction.CallbackContext obj)
         {
-            _eventMgr.Interact?.Invoke();
+            _eventMgr!.Interact?.Invoke();
         }
 
         private void OnCuttingInteractPerformed(InputAction.CallbackContext obj)
         {
-            _eventMgr.CuttingInteract?.Invoke();
+            _eventMgr!.CuttingInteract?.Invoke();
         }
 
         private void OnPausePerformed(InputAction.CallbackContext obj)
         {
-            _eventMgr.TogglePause?.Invoke();
+            _eventMgr!.TogglePause?.Invoke();
         }
 
         private void RegisterServices()
@@ -97,16 +96,16 @@ namespace KitchenChaos
 
         private void SubscribeEvents()
         {
-            _playerInputAction.Player.Interact.performed += OnInteractPerformed;
-            _playerInputAction.Player.CuttingInteract.performed += OnCuttingInteractPerformed;
-            _playerInputAction.Player.Pause.performed += OnPausePerformed;
+            _playerInputAction!.Player.Interact.performed += OnInteractPerformed;
+            _playerInputAction!.Player.CuttingInteract.performed += OnCuttingInteractPerformed;
+            _playerInputAction!.Player.Pause.performed += OnPausePerformed;
         }
 
         private void UnsubscribeEvents()
         {
-            _playerInputAction.Player.Interact.performed -= OnInteractPerformed;
-            _playerInputAction.Player.CuttingInteract.performed -= OnCuttingInteractPerformed;
-            _playerInputAction.Player.Pause.performed -= OnPausePerformed;
+            _playerInputAction!.Player.Interact.performed -= OnInteractPerformed;
+            _playerInputAction!.Player.CuttingInteract.performed -= OnCuttingInteractPerformed;
+            _playerInputAction!.Player.Pause.performed -= OnPausePerformed;
         }
     }
 }

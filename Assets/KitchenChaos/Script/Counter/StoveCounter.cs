@@ -1,3 +1,5 @@
+using System.Linq;
+using KitchenChaos.Utils;
 using UnityEngine;
 
 namespace KitchenChaos
@@ -7,10 +9,10 @@ namespace KitchenChaos
         public bool IsFried => _curState is StoveCounterState.Fried;
 
         [Header("Child Config")]
-        [SerializeField] private StoveCounterCfg _config;
+        [SerializeField] private StoveCounterCfg? _config;
 
-        private FryingReceiptSO _fryingReceiptSO;
-        private BurningReceiptSO _burningReceiptSO;
+        private FryingReceiptSO? _fryingReceiptSO;
+        private BurningReceiptSO? _burningReceiptSO;
         private StoveCounterState _curState;
         private float _fryingTimer;
         private float _burningTimer;
@@ -39,73 +41,33 @@ namespace KitchenChaos
             }
         }
 
-        private void OnFryingState()
-        {
-            _fryingTimer += Time.deltaTime;
-
-            float progressNormalized = _fryingTimer / _fryingReceiptSO.FryingTimeMax;
-            _eventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), progressNormalized);
-
-            if (_fryingTimer >= _fryingReceiptSO.FryingTimeMax)
-            {
-                KitchenObj.DestroySelf();
-                KitchenObject.SpawnKitchenObj(_fryingReceiptSO.Output, this);
-
-                _burningTimer = _config.BurningTimerMin;
-                _curState = StoveCounterState.Fried;
-                _burningReceiptSO = GetBurningReceiptSOWithInput(KitchenObj.KitchenObjectSO);
-
-                _eventMgr.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
-            }
-        }
-
-        private void OnFriedState()
-        {
-            _burningTimer += Time.deltaTime;
-
-            float progressNormalized = _burningTimer / _burningReceiptSO.BurningTimeMax;
-            _eventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), progressNormalized);
-
-            if (_burningTimer >= _burningReceiptSO.BurningTimeMax)
-            {
-                KitchenObj.DestroySelf();
-                KitchenObject.SpawnKitchenObj(_burningReceiptSO.Output, this);
-
-                _curState = StoveCounterState.Burned;
-
-                _eventMgr.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
-                _eventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), _config.ProgressMin);
-            }
-        }
-
         public override void OnMainInteract(PlayerInteraction player)
         {
             if (HasKitchenObj)
             {
                 if (player.HasKitchenObj)
                 {
-                    if (player.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
+                    if (player.KitchenObj.TryGetPlate(out PlateKitchenObject? plateKitchenObj))
                     {
-                        KitchenObject kitchenObj = KitchenObj;
-                        if (plateKitchenObj.TryAddIngredient(kitchenObj.KitchenObjectSO))
+                        if (plateKitchenObj!.TryAddIngredient(_curKitchenObj!.KitchenObjectSO))
                         {
-                            kitchenObj.DestroySelf();
+                            _curKitchenObj!.DestroySelf();
 
                             _curState = StoveCounterState.Idle;
 
-                            _eventMgr.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
-                            _eventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), _config.ProgressMin);
+                            _eventMgr!.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
+                            _eventMgr!.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), _config!.ProgressMin);
                         }
                     }
                 }
                 else
                 {
-                    KitchenObj.SetCurKitchenObjParent(player);
+                    _curKitchenObj!.SetCurKitchenObjParent(player);
 
                     _curState = StoveCounterState.Idle;
 
-                    _eventMgr.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
-                    _eventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), _config.ProgressMin);
+                    _eventMgr!.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
+                    _eventMgr!.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), _config!.ProgressMin);
                 }
             }
             else
@@ -113,16 +75,77 @@ namespace KitchenChaos
                 if (player.HasKitchenObj && HasReceiptWithInput(player.KitchenObj.KitchenObjectSO))
                 {
                     player.KitchenObj.SetCurKitchenObjParent(this);
-                    _fryingReceiptSO = GetFryingReceiptSOWithInput(KitchenObj.KitchenObjectSO);
+                    _fryingReceiptSO = GetFryingReceiptSOWithInput(KitchenObj!.KitchenObjectSO);
 
-                    _fryingTimer = _config.FryingTimerMin;
+                    _fryingTimer = _config!.FryingTimerMin;
                     _curState = StoveCounterState.Frying;
 
-                    _eventMgr.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
+                    _eventMgr!.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
 
                     float progressNormalized = _fryingTimer / _fryingReceiptSO.FryingTimeMax;
-                    _eventMgr.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), progressNormalized);
+                    _eventMgr!.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), progressNormalized);
                 }
+            }
+        }
+
+        protected override void CheckNullEditorReferences()
+        {
+            base.CheckNullEditorReferences();
+
+            if (_config == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
+            }
+        }
+
+        private void OnFryingState()
+        {
+            if (_fryingReceiptSO == null)
+            {
+                CustomLog.LogError(this, nameof(_fryingReceiptSO), "Somehow is null!!!");
+                return;
+            }
+
+            _fryingTimer += Time.deltaTime;
+
+            float progressNormalized = _fryingTimer / _fryingReceiptSO.FryingTimeMax;
+            _eventMgr!.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), progressNormalized);
+
+            if (_fryingTimer >= _fryingReceiptSO.FryingTimeMax)
+            {
+                _curKitchenObj!.DestroySelf();
+                KitchenObject.SpawnKitchenObj(_fryingReceiptSO.Output, this);
+
+                _burningTimer = _config!.BurningTimerMin;
+                _curState = StoveCounterState.Fried;
+                _burningReceiptSO = GetBurningReceiptSOWithInput(_curKitchenObj!.KitchenObjectSO);
+
+                _eventMgr!.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
+            }
+        }
+
+        private void OnFriedState()
+        {
+            if (_burningReceiptSO == null)
+            {
+                CustomLog.LogError(this, nameof(_burningReceiptSO), "Somehow is null!!!");
+                return;
+            }
+
+            _burningTimer += Time.deltaTime;
+
+            float progressNormalized = _burningTimer / _burningReceiptSO.BurningTimeMax;
+            _eventMgr!.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), progressNormalized);
+
+            if (_burningTimer >= _burningReceiptSO.BurningTimeMax)
+            {
+                _curKitchenObj!.DestroySelf();
+                KitchenObject.SpawnKitchenObj(_burningReceiptSO.Output, this);
+
+                _curState = StoveCounterState.Burned;
+
+                _eventMgr!.ChangeStoveCounterState?.Invoke(gameObject.GetInstanceID(), _curState);
+                _eventMgr!.UpdateCounterProgress?.Invoke(gameObject.GetInstanceID(), _config!.ProgressMin);
             }
         }
 
@@ -133,28 +156,12 @@ namespace KitchenChaos
 
         private FryingReceiptSO GetFryingReceiptSOWithInput(KitchenObjectSO inputKitchenObjSO)
         {
-            foreach (FryingReceiptSO fryingReceiptSO in _config.FryingReceipts)
-            {
-                if (fryingReceiptSO.Input == inputKitchenObjSO)
-                {
-                    return fryingReceiptSO;
-                }
-            }
-
-            return null;
+            return _config!.FryingReceipts.FirstOrDefault(p => p.Input == inputKitchenObjSO);
         }
 
         private BurningReceiptSO GetBurningReceiptSOWithInput(KitchenObjectSO inputKitchenObjSO)
         {
-            foreach (BurningReceiptSO burningReceiptSO in _config.BurningReceipts)
-            {
-                if (burningReceiptSO.Input == inputKitchenObjSO)
-                {
-                    return burningReceiptSO;
-                }
-            }
-
-            return null;
+            return _config!.BurningReceipts.FirstOrDefault(p => p.Input == inputKitchenObjSO);
         }
     }
 }

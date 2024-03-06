@@ -1,15 +1,21 @@
+using KitchenChaos.Utils;
 using UnityEngine;
 
 namespace KitchenChaos
 {
     public class KitchenObject : MonoBehaviour
     {
-        public KitchenObjectSO KitchenObjectSO => _config.KitchenObjSO;
+        public KitchenObjectSO KitchenObjectSO => _config!.KitchenObjSO;
 
         [Header("Config")]
-        [SerializeField] protected KitchenObjectCfg _config;
+        [SerializeField] protected KitchenObjectCfg? _config;
 
-        private IKitchenObjParent _curKitchenObjParent;
+        private IKitchenObjParent? _curKitchenObjParent;
+
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
 
         public static KitchenObject SpawnKitchenObj(KitchenObjectSO kitchenObjectSO, IKitchenObjParent kitchenObjParent)
         {
@@ -37,11 +43,11 @@ namespace KitchenChaos
 
         public void DestroySelf()
         {
-            _curKitchenObjParent.ClearKitchenObj();
+            _curKitchenObjParent!.ClearKitchenObj();
             Destroy(gameObject);
         }
 
-        public bool TryGetPlate(out PlateKitchenObject plateKitchenObj)
+        public bool TryGetPlate(out PlateKitchenObject? plateKitchenObj)
         {
             if (this is PlateKitchenObject curPlateKitchenObj)
             {
@@ -51,6 +57,14 @@ namespace KitchenChaos
 
             plateKitchenObj = null;
             return false;
+        }
+
+        private void CheckNullEditorReferences()
+        {
+            if (_config == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
+            }
         }
     }
 }

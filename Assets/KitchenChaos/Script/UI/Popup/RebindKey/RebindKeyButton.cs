@@ -1,3 +1,4 @@
+using KitchenChaos.Utils;
 using TMPro;
 using UISystem;
 using UnityEngine;
@@ -9,14 +10,19 @@ namespace KitchenChaos
     public sealed class RebindKeyButton : MonoBehaviour
     {
         [Header("Config")]
-        [SerializeField] private RebindKeyButtonCfg _config;
+        [SerializeField] private RebindKeyButtonCfg? _config;
 
         [Header("Internal Ref")]
-        [SerializeField] private Button _button;
-        [SerializeField] private TextMeshProUGUI _text;
+        [SerializeField] private Button? _button;
+        [SerializeField] private TextMeshProUGUI? _text;
 
-        private InputManager _inputMgr;
-        private UIManager _uiMgr;
+        private InputManager? _inputMgr;
+        private UIManager? _uiMgr;
+
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
 
         private void Awake()
         {
@@ -41,12 +47,12 @@ namespace KitchenChaos
 
         private void OnClicked()
         {
-            _uiMgr.Push(ScreenID.RebindKey);
+            _uiMgr!.Push(ScreenID.RebindKey);
 
-            string actionName = _config.RebindKeySO.ActionName;
+            string actionName = _config!.RebindKeySO.ActionName;
             int index = _config.RebindKeySO.Index;
 
-            _inputMgr.RebindBinding(actionName, index, () =>
+            _inputMgr!.RebindBinding(actionName, index, () =>
             {
                 _uiMgr.Pop();
                 UpdateText();
@@ -55,11 +61,19 @@ namespace KitchenChaos
 
         private void UpdateText()
         {
-            string actionName = _config.RebindKeySO.ActionName;
+            string actionName = _config!.RebindKeySO.ActionName;
             int index = _config.RebindKeySO.Index;
-            string keyDisplayString = _inputMgr.GetKeyDisplayString(actionName, index);
+            string keyDisplayString = _inputMgr!.GetKeyDisplayString(actionName, index);
 
-            _text.SetText(keyDisplayString);
+            _text!.SetText(keyDisplayString);
+        }
+
+        private void CheckNullEditorReferences()
+        {
+            if (_config == null || _button == null || _text == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
+            }
         }
 
         private void RegisterServices()
@@ -76,12 +90,12 @@ namespace KitchenChaos
 
         private void SubscribeEvents()
         {
-            _button.onClick.AddListener(OnClicked);
+            _button!.onClick.AddListener(OnClicked);
         }
 
         private void UnsubscribeEvents()
         {
-            _button.onClick.RemoveAllListeners();
+            _button!.onClick.RemoveAllListeners();
         }
     }
 }

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using KitchenChaos.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,15 +10,20 @@ namespace KitchenChaos
     public sealed class DeliveryResultUI : MonoBehaviour
     {
         [Header("Config")]
-        [SerializeField] private DeliveryResultUICfg _config;
+        [SerializeField] private DeliveryResultUICfg? _config;
 
         [Header("Internal Ref")]
-        [SerializeField] private Image _backgroundImg;
-        [SerializeField] private Image _iconImg;
-        [SerializeField] private TextMeshProUGUI _messageTxt;
-        [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private Image? _backgroundImg;
+        [SerializeField] private Image? _iconImg;
+        [SerializeField] private TextMeshProUGUI? _messageTxt;
+        [SerializeField] private CanvasGroup? _canvasGroup;
 
-        private EventManager _eventMgr;
+        private EventManager? _eventMgr;
+
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
 
         private void Awake()
         {
@@ -48,23 +54,23 @@ namespace KitchenChaos
 
         private void OnDeliverReceiptSuccess()
         {
-            UpdateNotiResult(_config.SuccessColor, _config.SuccessSpr, "DELIVERY\nSUCCESS");
+            UpdateNotiResult(_config!.SuccessColor, _config!.SuccessSpr, "DELIVERY\nSUCCESS");
             PlayShowingSequence();
             Show();
         }
 
         private void OnDeliverReceiptFailed()
         {
-            UpdateNotiResult(_config.FailedColor, _config.FailedSpr, "DELIVERY\nFAILED");
+            UpdateNotiResult(_config!.FailedColor, _config!.FailedSpr, "DELIVERY\nFAILED");
             PlayShowingSequence();
             Show();
         }
 
         private void UpdateNotiResult(Color bgColor, Sprite iconSpr, string message)
         {
-            _backgroundImg.color = bgColor;
-            _iconImg.sprite = iconSpr;
-            _messageTxt.SetText(message);
+            _backgroundImg!.color = bgColor;
+            _iconImg!.sprite = iconSpr;
+            _messageTxt!.SetText(message);
         }
 
         private void PlayShowingSequence()
@@ -84,9 +90,18 @@ namespace KitchenChaos
 
             // Fade
             DOTween.Sequence()
-                .AppendCallback(() => _canvasGroup.alpha = 1.0f)
-                .Append(_canvasGroup.DOFade(1.0f, 0.5f))
-                .Append(_canvasGroup.DOFade(0.0f, 0.5f));
+                .AppendCallback(() => _canvasGroup!.alpha = 1.0f)
+                .Append(_canvasGroup!.DOFade(1.0f, 0.5f))
+                .Append(_canvasGroup!.DOFade(0.0f, 0.5f));
+        }
+
+        private void CheckNullEditorReferences()
+        {
+            if (_config == null || _backgroundImg == null || _iconImg == null
+                || _messageTxt == null || _canvasGroup == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
+            }
         }
 
         private void RegisterServices()
@@ -101,14 +116,14 @@ namespace KitchenChaos
 
         private void SubscribeEvents()
         {
-            _eventMgr.DeliverReceiptSuccess += OnDeliverReceiptSuccess;
-            _eventMgr.DeliverReceiptFailed += OnDeliverReceiptFailed;
+            _eventMgr!.DeliverReceiptSuccess += OnDeliverReceiptSuccess;
+            _eventMgr!.DeliverReceiptFailed += OnDeliverReceiptFailed;
         }
 
         private void UnsubscribeEvents()
         {
-            _eventMgr.DeliverReceiptSuccess -= OnDeliverReceiptSuccess;
-            _eventMgr.DeliverReceiptFailed -= OnDeliverReceiptFailed;
+            _eventMgr!.DeliverReceiptSuccess -= OnDeliverReceiptSuccess;
+            _eventMgr!.DeliverReceiptFailed -= OnDeliverReceiptFailed;
         }
     }
 }

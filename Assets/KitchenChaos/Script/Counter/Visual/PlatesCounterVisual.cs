@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using KitchenChaos.Utils;
 using UnityEngine;
 using UnityServiceLocator;
 
@@ -7,14 +8,19 @@ namespace KitchenChaos
     public sealed class PlatesCounterVisual : MonoBehaviour
     {
         [Header("Config")]
-        [SerializeField] private PlateCounterVisualCfg _config;
+        [SerializeField] private PlateCounterVisualCfg? _config;
 
         [Header("External Ref")]
-        [SerializeField] private Transform _spawnPoint;
+        [SerializeField] private Transform? _spawnPoint;
 
-        private readonly Stack<GameObject> _plateVisuals = new();
+        private readonly Stack<GameObject> _plateVisualStack = new();
 
-        private EventManager _eventMgr;
+        private EventManager? _eventMgr;
+
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
 
         private void Awake()
         {
@@ -34,17 +40,25 @@ namespace KitchenChaos
 
         private void OnPlateSpawned()
         {
-            GameObject plateVisual = Instantiate(_config.PlateVisualPrefab, _spawnPoint);
-            plateVisual.transform.localPosition = new Vector3(0.0f, _config.PlateOffsetY * _plateVisuals.Count, 0.0f);
+            GameObject plateVisual = Instantiate(_config!.PlateVisualPrefab, _spawnPoint!);
+            plateVisual.transform.localPosition = new Vector3(0.0f, _config!.PlateOffsetY * _plateVisualStack.Count, 0.0f);
 
-            _plateVisuals.Push(plateVisual);
+            _plateVisualStack.Push(plateVisual);
         }
 
         private void OnPlateRemoved()
         {
-            if (_plateVisuals.Count > _config.PlateAmountMin)
+            if (_plateVisualStack.Count > _config!.PlateAmountMin)
             {
-                Destroy(_plateVisuals.Pop());
+                Destroy(_plateVisualStack.Pop());
+            }
+        }
+
+        private void CheckNullEditorReferences()
+        {
+            if (_config == null || _spawnPoint == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
             }
         }
 
@@ -60,14 +74,14 @@ namespace KitchenChaos
 
         private void SubscribeEvents()
         {
-            _eventMgr.SpawnPlate += OnPlateSpawned;
-            _eventMgr.RemovePlate += OnPlateRemoved;
+            _eventMgr!.SpawnPlate += OnPlateSpawned;
+            _eventMgr!.RemovePlate += OnPlateRemoved;
         }
 
         private void UnsubscribeEvents()
         {
-            _eventMgr.SpawnPlate -= OnPlateSpawned;
-            _eventMgr.RemovePlate -= OnPlateRemoved;
+            _eventMgr!.SpawnPlate -= OnPlateSpawned;
+            _eventMgr!.RemovePlate -= OnPlateRemoved;
         }
     }
 }

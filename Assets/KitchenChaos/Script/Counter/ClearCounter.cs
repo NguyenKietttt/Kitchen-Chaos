@@ -17,20 +17,20 @@ namespace KitchenChaos
 
             if (HasKitchenObj && !player.HasKitchenObj)
             {
-                KitchenObj.SetCurKitchenObjParent(player);
+                _curKitchenObj!.SetCurKitchenObjParent(player);
                 return;
             }
 
-            if (player.KitchenObj.TryGetPlate(out PlateKitchenObject plateKitchenObj))
+            if (player.KitchenObj.TryGetPlate(out PlateKitchenObject? plateKitchenObj))
             {
-                if (plateKitchenObj.TryAddIngredient(KitchenObj.KitchenObjectSO))
+                if (plateKitchenObj!.TryAddIngredient(_curKitchenObj!.KitchenObjectSO))
                 {
-                    KitchenObj.DestroySelf();
+                    _curKitchenObj!.DestroySelf();
                 }
             }
             else
             {
-                if (KitchenObj.TryGetPlate(out plateKitchenObj) && plateKitchenObj.TryAddIngredient(player.KitchenObj.KitchenObjectSO))
+                if (_curKitchenObj!.TryGetPlate(out plateKitchenObj) && plateKitchenObj!.TryAddIngredient(player.KitchenObj.KitchenObjectSO))
                 {
                     player.KitchenObj.DestroySelf();
                 }

@@ -1,3 +1,4 @@
+using KitchenChaos.Utils;
 using UISystem;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,15 +9,20 @@ namespace KitchenChaos
     public sealed class MainMenuUI : BaseScreen
     {
         [Header("Config")]
-        [SerializeField] private MainMenuUICfg _config;
+        [SerializeField] private MainMenuUICfg? _config;
 
         [Header("Internal Ref")]
-        [SerializeField] private Button _playBtn;
-        [SerializeField] private Button _quitBtn;
+        [SerializeField] private Button? _playBtn;
+        [SerializeField] private Button? _quitBtn;
 
-        private GameStateManager _gameStateMgr;
+        private GameStateManager? _gameStateMgr;
 
-        private GameObject _decorationObj;
+        private GameObject? _decorationObj;
+
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
 
         private void Awake()
         {
@@ -28,12 +34,12 @@ namespace KitchenChaos
             DeregisterServices();
         }
 
-        public override void OnPush(object[] datas = null)
+        public override void OnPush(object[]? datas = null)
         {
-            _playBtn.onClick.AddListener(OnPlayButtonClicked);
-            _quitBtn.onClick.AddListener(OnQuitButtonClicked);
+            _playBtn!.onClick.AddListener(OnPlayButtonClicked);
+            _quitBtn!.onClick.AddListener(OnQuitButtonClicked);
 
-            _decorationObj = Instantiate(_config.DecorationPrefab);
+            _decorationObj = Instantiate(_config!.DecorationPrefab);
 
             _playBtn.Select();
 
@@ -52,8 +58,8 @@ namespace KitchenChaos
 
         public override void OnPop()
         {
-            _playBtn.onClick.RemoveAllListeners();
-            _quitBtn.onClick.RemoveAllListeners();
+            _playBtn!.onClick.RemoveAllListeners();
+            _quitBtn!.onClick.RemoveAllListeners();
 
             Destroy(gameObject);
             Destroy(_decorationObj);
@@ -61,7 +67,7 @@ namespace KitchenChaos
 
         private void OnPlayButtonClicked()
         {
-            _gameStateMgr.ChangeState(GameState.WaitingToStart);
+            _gameStateMgr!.ChangeState(GameState.WaitingToStart);
         }
 
         private void OnQuitButtonClicked()
@@ -76,13 +82,21 @@ namespace KitchenChaos
         private void Show()
         {
             gameObject.SetActive(true);
-            _decorationObj.SetActive(true);
+            _decorationObj!.SetActive(true);
         }
 
         private void Hide()
         {
             gameObject.SetActive(false);
-            _decorationObj.SetActive(false);
+            _decorationObj!.SetActive(false);
+        }
+
+        private void CheckNullEditorReferences()
+        {
+            if (_config == null || _playBtn == null || _quitBtn == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
+            }
         }
 
         private void RegisterServices()
