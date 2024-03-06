@@ -13,7 +13,7 @@ namespace KitchenChaos
         public float VolumeStep => _volumeStep;
 
         [Header("Property")]
-        [SerializeField] private string _playerPrefsVolumeKey;
+        [SerializeField] private string _playerPrefsVolumeKey = string.Empty;
 
         [Space]
 

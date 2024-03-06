@@ -46,7 +46,7 @@ namespace KitchenChaos
         [SerializeField] private int _interactDistance;
 
         [Header("Animation")]
-        [SerializeField] private string _isWalkingKey;
+        [SerializeField] private string _isWalkingKey = string.Empty;
 
         [Header("SFX")]
         [SerializeField] private float _footstepTimerMin;

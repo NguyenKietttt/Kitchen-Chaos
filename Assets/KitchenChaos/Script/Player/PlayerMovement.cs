@@ -1,3 +1,4 @@
+using KitchenChaos.Utils;
 using UnityEngine;
 using UnityServiceLocator;
 
@@ -6,13 +7,18 @@ namespace KitchenChaos
     public sealed class PlayerMovement : MonoBehaviour
     {
         [Header("Config")]
-        [SerializeField] private PlayerCfg _config;
+        [SerializeField] private PlayerCfg? _config;
 
         [Header("Internal Ref")]
-        [SerializeField] private PlayerAnimator _playerAnimator;
+        [SerializeField] private PlayerAnimator? _playerAnimator;
 
-        private EventManager _eventMgr;
-        private InputManager _inputMgr;
+        private EventManager? _eventMgr;
+        private InputManager? _inputMgr;
+
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
 
         private void Awake()
         {
@@ -21,7 +27,7 @@ namespace KitchenChaos
 
         private void Update()
         {
-            Vector2 input = _inputMgr.InputVectorNormalized;
+            Vector2 input = _inputMgr!.InputVectorNormalized;
             HandleMovement(input);
         }
 
@@ -35,7 +41,7 @@ namespace KitchenChaos
             if (input != Vector2.zero)
             {
                 Vector3 moveDir = new(input.x, 0, input.y);
-                float moveDistance = _config.MoveSpeed * Time.deltaTime;
+                float moveDistance = _config!.MoveSpeed * Time.deltaTime;
 
                 if (!CanMove(moveDir, moveDistance))
                 {
@@ -48,26 +54,26 @@ namespace KitchenChaos
                 }
 
                 UpdateRotationByMovingDirection(moveDir);
-                _eventMgr.PlayerMove?.Invoke();
+                _eventMgr!.PlayerMove?.Invoke();
             }
             else
             {
-                _eventMgr.PlayerStop?.Invoke();
+                _eventMgr!.PlayerStop?.Invoke();
             }
 
-            _playerAnimator.UpdateWalkingAnim(input != Vector2.zero);
+            _playerAnimator!.UpdateWalkingAnim(input != Vector2.zero);
         }
 
         private Vector3 TryMoveHugWall(Vector3 moveDir, float moveDistance)
         {
             Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
-            if ((moveDirX.x <= -_config.MoveOffset || moveDirX.x >= _config.MoveOffset) && CanMove(moveDirX, moveDistance))
+            if ((moveDirX.x <= -_config!.MoveOffset || moveDirX.x >= _config!.MoveOffset) && CanMove(moveDirX, moveDistance))
             {
                 return moveDirX;
             }
 
             Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
-            if ((moveDirZ.z <= -_config.MoveOffset || moveDirZ.z >= _config.MoveOffset) && CanMove(moveDirZ, moveDistance))
+            if ((moveDirZ.z <= -_config!.MoveOffset || moveDirZ.z >= _config!.MoveOffset) && CanMove(moveDirZ, moveDistance))
             {
                 return moveDirZ;
             }
@@ -82,13 +88,21 @@ namespace KitchenChaos
 
         private void UpdateRotationByMovingDirection(Vector3 moveDir)
         {
-            transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * _config.RotateSpeed);
+            transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * _config!.RotateSpeed);
         }
 
         private bool CanMove(Vector3 moveDir, float moveDistance)
         {
             Vector3 curPos = transform.position;
-            return !Physics.CapsuleCast(curPos, curPos + (Vector3.up * _config.Height), _config.Radius, moveDir, moveDistance);
+            return !Physics.CapsuleCast(curPos, curPos + (Vector3.up * _config!.Height), _config!.Radius, moveDir, moveDistance);
+        }
+
+        private void CheckNullEditorReferences()
+        {
+            if (_config == null || _playerAnimator == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
+            }
         }
 
         private void RegisterServices()

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using KitchenChaos.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityServiceLocator;
@@ -8,15 +9,20 @@ namespace KitchenChaos
     public sealed class ProgressBarFlashingUI : MonoBehaviour
     {
         [Header("Config")]
-        [SerializeField] private ProgressBarFlashingUICfg _config;
+        [SerializeField] private ProgressBarFlashingUICfg? _config;
 
         [Header("Internal Ref")]
-        [SerializeField] private StoveCounter _stoveCounter;
-        [SerializeField] private Image _progressBarImg;
+        [SerializeField] private StoveCounter? _stoveCounter;
+        [SerializeField] private Image? _progressBarImg;
 
-        private EventManager _eventMgr;
+        private EventManager? _eventMgr;
 
-        private Sequence _flashingSequence;
+        private Sequence? _flashingSequence;
+
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
 
         private void Awake()
         {
@@ -39,14 +45,14 @@ namespace KitchenChaos
 
         private void OnCounterProgressChanged(int senderID, float progressNormalized)
         {
-            if (senderID != _stoveCounter.gameObject.GetInstanceID())
+            if (senderID != _stoveCounter!.gameObject.GetInstanceID())
             {
                 return;
             }
 
-            if (_stoveCounter.IsFried && progressNormalized >= _config.BurnProgressAmount)
+            if (_stoveCounter!.IsFried && progressNormalized >= _config!.BurnProgressAmount)
             {
-                if (!_flashingSequence.IsPlaying())
+                if (!_flashingSequence!.IsPlaying())
                 {
                     PlayFlashingSequence();
                 }
@@ -59,21 +65,29 @@ namespace KitchenChaos
 
         private void PlayFlashingSequence()
         {
-            _flashingSequence.Restart();
+            _flashingSequence!.Restart();
         }
 
         private void ResetProgressBarColor()
         {
-            _flashingSequence.Pause();
-            _progressBarImg.color = _config.IdleColor;
+            _flashingSequence!.Pause();
+            _progressBarImg!.color = _config!.IdleColor;
         }
 
         private void PrepareFlashingSequence()
         {
             _flashingSequence = DOTween.Sequence()
-                .Append(_progressBarImg.DOColor(_config.WarningColor, 0.1f))
-                .Append(_progressBarImg.DOColor(_config.IdleColor, 0.1f))
+                .Append(_progressBarImg!.DOColor(_config!.WarningColor, 0.1f))
+                .Append(_progressBarImg!.DOColor(_config!.IdleColor, 0.1f))
                 .SetLoops(-1, LoopType.Restart);
+        }
+
+        private void CheckNullEditorReferences()
+        {
+            if (_config == null || _stoveCounter == null || _progressBarImg == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
+            }
         }
 
         private void RegisterServices()
@@ -88,12 +102,12 @@ namespace KitchenChaos
 
         private void SubscribeEvents()
         {
-            _eventMgr.UpdateCounterProgress += OnCounterProgressChanged;
+            _eventMgr!.UpdateCounterProgress += OnCounterProgressChanged;
         }
 
         private void UnsubscribeEvents()
         {
-            _eventMgr.UpdateCounterProgress -= OnCounterProgressChanged;
+            _eventMgr!.UpdateCounterProgress -= OnCounterProgressChanged;
         }
     }
 }

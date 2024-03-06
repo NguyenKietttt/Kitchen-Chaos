@@ -11,8 +11,8 @@ namespace KitchenChaos
 
         private readonly HashSet<KitchenObjectSO> _kitchenObjHashSet = new();
 
-        private EventManager _eventMgr;
-        private PlateKitchenObjectCfg _plateConfig;
+        private EventManager? _eventMgr;
+        private PlateKitchenObjectCfg? _plateConfig;
 
         private void Awake()
         {
@@ -21,7 +21,7 @@ namespace KitchenChaos
 
         private void Start()
         {
-            _plateConfig = (PlateKitchenObjectCfg)_config;
+            _plateConfig = (PlateKitchenObjectCfg)_config!;
         }
 
         private void OnDestroy()
@@ -31,14 +31,14 @@ namespace KitchenChaos
 
         public bool TryAddIngredient(KitchenObjectSO kitchenObjSO)
         {
-            if (!_plateConfig.ValidKitchenObjSOs.Contains(kitchenObjSO))
+            if (!_plateConfig!.ValidKitchenObjSOs.Contains(kitchenObjSO))
             {
                 return false;
             }
 
             if (_kitchenObjHashSet.Add(kitchenObjSO))
             {
-                _eventMgr.AddIngredientSuccess?.Invoke(GetInstanceID(), kitchenObjSO);
+                _eventMgr!.AddIngredientSuccess?.Invoke(GetInstanceID(), kitchenObjSO);
                 return true;
             }
 

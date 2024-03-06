@@ -1,3 +1,4 @@
+using KitchenChaos.Utils;
 using TMPro;
 using UISystem;
 using UnityEngine;
@@ -9,14 +10,19 @@ namespace KitchenChaos
     public sealed class GameOverUI : BaseScreen
     {
         [Header("Internal Ref")]
-        [SerializeField] private TextMeshProUGUI _amountReceiptDeliveredTxt;
-        [SerializeField] private Button _mainMenuBtn;
+        [SerializeField] private TextMeshProUGUI? _amountReceiptDeliveredTxt;
+        [SerializeField] private Button? _mainMenuBtn;
 
-        private EventManager _eventMgr;
-        private GameStateManager _gameStateMgr;
-        private DeliveryManager _deliveryMgr;
+        private EventManager? _eventMgr;
+        private GameStateManager? _gameStateMgr;
+        private DeliveryManager? _deliveryMgr;
 
-        public override void OnPush(object[] datas = null)
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
+
+        public override void OnPush(object[]? datas = null)
         {
             RegisterServices();
             SubscribeEvents();
@@ -32,7 +38,7 @@ namespace KitchenChaos
 
         private void OnMainMenuBtnClicked()
         {
-            _gameStateMgr.ChangeState(GameState.MainMenu);
+            _gameStateMgr!.ChangeState(GameState.MainMenu);
         }
 
         private void OnGameStateChanged(GameState state)
@@ -40,8 +46,8 @@ namespace KitchenChaos
             switch (state)
             {
                 case GameState.GameOver:
-                    string AmountSuccessfulReceiptString = _deliveryMgr.AmountSuccessfulReceipt.ToString();
-                    _amountReceiptDeliveredTxt.SetText(AmountSuccessfulReceiptString);
+                    string AmountSuccessfulReceiptString = _deliveryMgr!.AmountSuccessfulReceipt.ToString();
+                    _amountReceiptDeliveredTxt!.SetText(AmountSuccessfulReceiptString);
                     Show();
                     break;
                 default:
@@ -60,6 +66,14 @@ namespace KitchenChaos
             gameObject.SetActive(false);
         }
 
+        private void CheckNullEditorReferences()
+        {
+            if (_amountReceiptDeliveredTxt == null || _mainMenuBtn == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
+            }
+        }
+
         private void RegisterServices()
         {
             _eventMgr = ServiceLocator.Instance.Get<EventManager>();
@@ -76,14 +90,14 @@ namespace KitchenChaos
 
         private void SubscribeEvents()
         {
-            _mainMenuBtn.onClick.AddListener(() => OnMainMenuBtnClicked());
-            _eventMgr.ChangeGameState += OnGameStateChanged;
+            _mainMenuBtn!.onClick.AddListener(() => OnMainMenuBtnClicked());
+            _eventMgr!.ChangeGameState += OnGameStateChanged;
         }
 
         private void UnsubscribeEvents()
         {
-            _mainMenuBtn.onClick.RemoveAllListeners();
-            _eventMgr.ChangeGameState -= OnGameStateChanged;
+            _mainMenuBtn!.onClick.RemoveAllListeners();
+            _eventMgr!.ChangeGameState -= OnGameStateChanged;
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Text;
+using KitchenChaos.Utils;
 using TMPro;
 using UISystem;
 using UnityEngine;
@@ -12,22 +13,27 @@ namespace KitchenChaos
         private const int ROUND_TO_ONE_MULTIPLICAND = 10;
 
         [Header("Internal Ref")]
-        [SerializeField] private Button _sfxVolumeBtn;
-        [SerializeField] private Button _musicVolumeBtn;
-        [SerializeField] private Button _closeBtn;
+        [SerializeField] private Button? _sfxVolumeBtn;
+        [SerializeField] private Button? _musicVolumeBtn;
+        [SerializeField] private Button? _closeBtn;
 
         [Space]
 
-        [SerializeField] private TextMeshProUGUI _sfxVolumeTxt;
-        [SerializeField] private TextMeshProUGUI _musicVolumeTxt;
+        [SerializeField] private TextMeshProUGUI? _sfxVolumeTxt;
+        [SerializeField] private TextMeshProUGUI? _musicVolumeTxt;
 
-        private UIManager _uiMgr;
-        private SFXManager _sfxMgr;
-        private MusicManager _musicMgr;
+        private UIManager? _uiMgr;
+        private SFXManager? _sfxMgr;
+        private MusicManager? _musicMgr;
 
         private readonly StringBuilder _stringBuilder = new();
 
-        public override void OnPush(object[] datas = null)
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
+
+        public override void OnPush(object[]? datas = null)
         {
             RegisterServices();
             SubscribeEvents();
@@ -59,19 +65,19 @@ namespace KitchenChaos
 
         private void OnSFXVolumeButtonClicked()
         {
-            _sfxMgr.ChangeVolume();
+            _sfxMgr!.ChangeVolume();
             UpdateSFXVolumeText();
         }
 
         private void OnMusicVolumeButtonClicked()
         {
-            _musicMgr.ChangeVolume();
+            _musicMgr!.ChangeVolume();
             UpdateMusicVolume();
         }
 
         private void OnCloseButtonClicked()
         {
-            _uiMgr.Pop();
+            _uiMgr!.Pop();
         }
 
         private void UpdateSFXVolumeText()
@@ -79,9 +85,9 @@ namespace KitchenChaos
             _stringBuilder
                 .Clear()
                 .Append("Sound Effects: ")
-                .Append(Mathf.Ceil(_sfxMgr.MasterVolume * ROUND_TO_ONE_MULTIPLICAND));
+                .Append(Mathf.Ceil(_sfxMgr!.MasterVolume * ROUND_TO_ONE_MULTIPLICAND));
 
-            _sfxVolumeTxt.SetText(_stringBuilder);
+            _sfxVolumeTxt!.SetText(_stringBuilder);
         }
 
         private void UpdateMusicVolume()
@@ -89,9 +95,18 @@ namespace KitchenChaos
             _stringBuilder
                 .Clear()
                 .Append("Music: ")
-                .Append(Mathf.Ceil(_musicMgr.MasterVolume * ROUND_TO_ONE_MULTIPLICAND));
+                .Append(Mathf.Ceil(_musicMgr!.MasterVolume * ROUND_TO_ONE_MULTIPLICAND));
 
-            _musicVolumeTxt.SetText(_stringBuilder);
+            _musicVolumeTxt!.SetText(_stringBuilder);
+        }
+
+        private void CheckNullEditorReferences()
+        {
+            if (_sfxVolumeBtn == null || _musicVolumeBtn == null || _closeBtn == null
+                || _sfxVolumeTxt == null || _musicVolumeTxt == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
+            }
         }
 
         private void RegisterServices()
@@ -110,16 +125,16 @@ namespace KitchenChaos
 
         private void SubscribeEvents()
         {
-            _sfxVolumeBtn.onClick.AddListener(OnSFXVolumeButtonClicked);
-            _musicVolumeBtn.onClick.AddListener(OnMusicVolumeButtonClicked);
-            _closeBtn.onClick.AddListener(OnCloseButtonClicked);
+            _sfxVolumeBtn!.onClick.AddListener(OnSFXVolumeButtonClicked);
+            _musicVolumeBtn!.onClick.AddListener(OnMusicVolumeButtonClicked);
+            _closeBtn!.onClick.AddListener(OnCloseButtonClicked);
         }
 
         private void UnsubscribeEvents()
         {
-            _sfxVolumeBtn.onClick.RemoveAllListeners();
-            _musicVolumeBtn.onClick.RemoveAllListeners();
-            _closeBtn.onClick.RemoveAllListeners();
+            _sfxVolumeBtn!.onClick.RemoveAllListeners();
+            _musicVolumeBtn!.onClick.RemoveAllListeners();
+            _closeBtn!.onClick.RemoveAllListeners();
         }
     }
 }

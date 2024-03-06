@@ -4,6 +4,6 @@ namespace KitchenChaos
 {
     public sealed partial class EventManager
     {
-        public Action<GameState> ChangeGameState;
+        public Action<GameState>? ChangeGameState;
     }
 }

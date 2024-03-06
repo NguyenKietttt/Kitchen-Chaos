@@ -11,7 +11,7 @@ namespace UISystem
         [SerializeField] private ScreenID _id;
         [SerializeField] private ScreenType _type;
 
-        public virtual void OnPush(object[] datas = null) { }
+        public virtual void OnPush(object[]? datas = null) { }
 
         public virtual void OnFocus() { }
 

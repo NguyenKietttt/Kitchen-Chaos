@@ -1,3 +1,4 @@
+using KitchenChaos.Utils;
 using UISystem;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,15 +9,20 @@ namespace KitchenChaos
     public sealed class PauseMenuUI : BaseScreen
     {
         [Header("Internal Ref")]
-        [SerializeField] private Button _resumeBtn;
-        [SerializeField] private Button _optionsBtn;
-        [SerializeField] private Button _mainMenuBtn;
+        [SerializeField] private Button? _resumeBtn;
+        [SerializeField] private Button? _optionsBtn;
+        [SerializeField] private Button? _mainMenuBtn;
 
-        private EventManager _eventMgr;
-        private GameStateManager _gameStateMgr;
-        private UIManager _uiMgr;
+        private EventManager? _eventMgr;
+        private GameStateManager? _gameStateMgr;
+        private UIManager? _uiMgr;
 
-        public override void OnPush(object[] datas = null)
+        private void OnValidate()
+        {
+            CheckNullEditorReferences();
+        }
+
+        public override void OnPush(object[]? datas = null)
         {
             RegisterServices();
             SubscribeEvents();
@@ -47,17 +53,17 @@ namespace KitchenChaos
 
         private void OnResumeButtonClicked()
         {
-            _eventMgr.TogglePause?.Invoke();
+            _eventMgr!.TogglePause?.Invoke();
         }
 
         private void OnOptionsButtonClicked()
         {
-            _uiMgr.Push(ScreenID.Option);
+            _uiMgr!.Push(ScreenID.Option);
         }
 
         private void OnMainMenuButtonClicked()
         {
-            _gameStateMgr.ChangeState(GameState.MainMenu);
+            _gameStateMgr!.ChangeState(GameState.MainMenu);
         }
 
         private void Show()
@@ -68,6 +74,14 @@ namespace KitchenChaos
         private void Hide()
         {
             gameObject.SetActive(false);
+        }
+
+        private void CheckNullEditorReferences()
+        {
+            if (_resumeBtn == null || _optionsBtn == null || _mainMenuBtn == null)
+            {
+                CustomLog.LogError(this, "missing references in editor!!!");
+            }
         }
 
         private void RegisterServices()
@@ -86,16 +100,16 @@ namespace KitchenChaos
 
         private void SubscribeEvents()
         {
-            _resumeBtn.onClick.AddListener(OnResumeButtonClicked);
-            _optionsBtn.onClick.AddListener(OnOptionsButtonClicked);
-            _mainMenuBtn.onClick.AddListener(OnMainMenuButtonClicked);
+            _resumeBtn!.onClick.AddListener(OnResumeButtonClicked);
+            _optionsBtn!.onClick.AddListener(OnOptionsButtonClicked);
+            _mainMenuBtn!.onClick.AddListener(OnMainMenuButtonClicked);
         }
 
         private void UnsubscribeEvents()
         {
-            _resumeBtn.onClick.RemoveAllListeners();
-            _optionsBtn.onClick.RemoveAllListeners();
-            _mainMenuBtn.onClick.RemoveAllListeners();
+            _resumeBtn!.onClick.RemoveAllListeners();
+            _optionsBtn!.onClick.RemoveAllListeners();
+            _mainMenuBtn!.onClick.RemoveAllListeners();
         }
     }
 }
