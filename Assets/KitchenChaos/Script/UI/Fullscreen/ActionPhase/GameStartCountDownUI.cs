@@ -101,7 +101,7 @@ namespace KitchenChaos
         {
             if (_countDownTxt == null || _canvasGroup == null)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
 

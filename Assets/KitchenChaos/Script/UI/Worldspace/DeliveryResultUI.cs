@@ -17,6 +17,7 @@ namespace KitchenChaos
         [SerializeField] private Image? _iconImg;
         [SerializeField] private TextMeshProUGUI? _messageTxt;
         [SerializeField] private CanvasGroup? _canvasGroup;
+        [SerializeField] private Canvas? _canvas;
 
         private EventManager? _eventMgr;
 
@@ -32,6 +33,8 @@ namespace KitchenChaos
 
         private void Start()
         {
+            _canvas!.worldCamera = Camera.main;
+
             SubscribeEvents();
             Hide();
         }
@@ -98,9 +101,9 @@ namespace KitchenChaos
         private void CheckNullEditorReferences()
         {
             if (_config == null || _backgroundImg == null || _iconImg == null
-                || _messageTxt == null || _canvasGroup == null)
+                || _messageTxt == null || _canvasGroup == null || _canvas == null)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
 

@@ -63,7 +63,7 @@ namespace KitchenChaos
         {
             if (_config == null)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
     }

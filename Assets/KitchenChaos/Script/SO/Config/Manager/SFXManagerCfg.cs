@@ -74,7 +74,7 @@ namespace KitchenChaos
                 || _footstepClips?.Length <= 0 || _objectDropClips?.Length <= 0 || _objectPickupClips?.Length <= 0
                 || _trashClips?.Length <= 0 || _warningClips?.Length <= 0)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
     }

@@ -40,7 +40,7 @@ namespace KitchenChaos
             if (_sceneLoader == null || _uiManager == null || _sfxMgr == null
                 || _musicMgr == null || _deliveryMgr == null || _gameStateMgr == null || _inputMgr == null)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
 

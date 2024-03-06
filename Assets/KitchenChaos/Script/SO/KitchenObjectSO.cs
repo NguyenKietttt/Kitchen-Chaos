@@ -26,7 +26,7 @@ namespace KitchenChaos
         {
             if (_prefab == null || _sprite == null)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
     }

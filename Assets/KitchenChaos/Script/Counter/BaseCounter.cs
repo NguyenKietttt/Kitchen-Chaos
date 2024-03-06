@@ -59,7 +59,7 @@ namespace KitchenChaos
         {
             if (_selectedVisualObj == null || _spawnPoint == null)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
 

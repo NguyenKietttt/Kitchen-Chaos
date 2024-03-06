@@ -66,12 +66,12 @@ namespace KitchenChaos
         {
             if (_plateKitchenObj == null)
             {
-                CustomLog.LogWarning(this, "missing references in editor! (if it's already registered in parent prefab, skip this message!)");
+                CustomLog.LogWarning(this, "missing external references in editor! (if it's already registered in parent prefab, skip this message!)");
             }
 
             if (_KitchenObjSOToGameObjs?.Length <= 0)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
 

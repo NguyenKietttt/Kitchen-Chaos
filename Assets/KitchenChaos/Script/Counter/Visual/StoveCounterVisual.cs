@@ -52,7 +52,7 @@ namespace KitchenChaos
         {
             if (_stoveCounterObj == null || _stoveOnObj == null || _particlesObj == null)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
 

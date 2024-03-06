@@ -17,7 +17,7 @@ namespace KitchenChaos
         {
             if (_listValidKitchenObjSO?.Length <= 0)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
     }

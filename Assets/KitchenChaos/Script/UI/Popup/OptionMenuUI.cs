@@ -105,7 +105,7 @@ namespace KitchenChaos
             if (_sfxVolumeBtn == null || _musicVolumeBtn == null || _closeBtn == null
                 || _sfxVolumeTxt == null || _musicVolumeTxt == null)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
 

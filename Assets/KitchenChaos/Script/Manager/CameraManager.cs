@@ -68,7 +68,7 @@ namespace KitchenChaos
         {
             if (_mainMenuVirtualCam == null || _gameplayVirtualCam == null)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
 

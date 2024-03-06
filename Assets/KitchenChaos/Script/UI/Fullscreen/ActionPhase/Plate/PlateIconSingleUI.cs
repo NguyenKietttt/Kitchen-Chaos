@@ -23,7 +23,7 @@ namespace KitchenChaos
         {
             if (_iconImg == null)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
     }

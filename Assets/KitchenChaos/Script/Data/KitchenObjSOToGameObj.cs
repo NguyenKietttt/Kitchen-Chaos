@@ -14,7 +14,7 @@ namespace KitchenChaos
         {
             if (_kitchenObjSO == null)
             {
-                CustomLog.LogError(this, nameof(_kitchenObjSO), "missing references in editor!!!");
+                CustomLog.LogError(this, nameof(_kitchenObjSO), "missing internal references in editor!");
             }
 
             return _kitchenObjSO;
@@ -24,7 +24,7 @@ namespace KitchenChaos
         {
             if (_gameObj == null)
             {
-                CustomLog.LogError(this, nameof(_gameObj), "missing references in editor!!!");
+                CustomLog.LogError(this, nameof(_gameObj), "missing internal references in editor!");
             }
 
             return _gameObj;

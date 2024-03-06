@@ -80,7 +80,7 @@ namespace KitchenChaos
         {
             if (_resumeBtn == null || _optionsBtn == null || _mainMenuBtn == null)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
 

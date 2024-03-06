@@ -28,7 +28,7 @@ namespace KitchenChaos
         {
             if (_fryingReceipts?.Length <= 0 || _burningReceipts?.Length <= 0)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
     }

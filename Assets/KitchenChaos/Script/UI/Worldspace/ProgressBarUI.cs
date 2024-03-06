@@ -15,6 +15,7 @@ namespace KitchenChaos
 
         [Header("Internal Ref")]
         [SerializeField] private Image? _progressImg;
+        [SerializeField] private Canvas? _canvas;
 
         private EventManager? _eventMgr;
 
@@ -30,6 +31,8 @@ namespace KitchenChaos
 
         private void Start()
         {
+            _canvas!.worldCamera = Camera.main;
+
             SubscribeEvents();
 
             _progressImg!.fillAmount = _config!.MinProgress;
@@ -73,9 +76,14 @@ namespace KitchenChaos
 
         private void CheckNullEditorReferences()
         {
-            if (_config == null || _progressCounterObj == null || _progressImg == null)
+            if (_progressCounterObj == null)
             {
-                CustomLog.LogError(this, "missing references in editor!!!");
+                CustomLog.LogWarning(this, "missing external references in editor! (if it's already registered in parent prefab, skip this message!)");
+            }
+
+            if (_config == null || _progressImg == null || _canvas == null)
+            {
+                CustomLog.LogError(this, "missing internal references in editor!");
             }
         }
 
